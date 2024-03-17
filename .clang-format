@@ -1,0 +1,48 @@
+BasedOnStyle: LLVM
+# 访问说明符(public、private等)的偏移(缩进或者对齐)
+AccessModifierOffset:	0
+# 连续赋值时，对齐所有等号
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+#主要用于结构体位段的对齐
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+#连续声明对齐 需要注意，这个方法配置最好不要跨过空白行，因为容易把函数定义也给对齐了
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+AlignTrailingComments:
+  Kind: Never
+  OverEmptyLines: 1
+AllowShortBlocksOnASingleLine: Never
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLambdasOnASingleLine: None
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+BraceWrapping:
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: false
+  BeforeElse: false
+BreakBeforeBraces : Attach
+BreakBeforeTernaryOperators : false
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList : AfterColon
+Cpp11BracedListStyle : true
+DerivePointerAlignment: false  # Make sure the * or & align on the left
+EmptyLineBeforeAccessModifier: Always
+IndentAccessModifiers : true
+PointerAlignment : Left
+ReferenceAlignment : Left
+AlwaysBreakTemplateDeclarations: Yes
