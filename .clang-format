@@ -46,3 +46,11 @@ IndentAccessModifiers : true
 PointerAlignment : Left
 ReferenceAlignment : Left
 AlwaysBreakTemplateDeclarations: Yes
+IndentWrappedFunctionNames: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: true
+ExperimentalAutoDetectBinPacking: false
+BinPackParameters: false
+PenaltyReturnTypeOnItsOwnLine:    600000
+AlwaysBreakAfterReturnType:     None
+AlwaysBreakAfterDefinitionReturnType:     None

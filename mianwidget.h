@@ -12,14 +12,19 @@ class MianWidget;
 QT_END_NAMESPACE
 
 class MianWidget : public QWidget {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  MianWidget(QWidget *parent = nullptr);
-  ~MianWidget();
+  public:
+    MianWidget(QWidget* parent = nullptr);
+    ~MianWidget();
 
-private:
-  Ui::MianWidget *ui;
-  //Schedulecontroller scheduler;
+  private slots:
+    void on_pushButton_clicked();
+
+    void on_scheduleButton_clicked();
+
+  private:
+    Ui::MianWidget* ui;
+    // Schedulecontroller scheduler;
 };
 #endif // MIANWIDGET_H
