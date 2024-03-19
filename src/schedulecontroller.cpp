@@ -4,12 +4,17 @@
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QString>
+#include <qdebug.h>
+#include <qjsonarray.h>
+#include <qjsondocument.h>
+#include <qjsonobject.h>
+#include <qlist.h>
 #include <qlogging.h>
 #include <qnamespace.h>
 
 Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
-  ScheduleModel* model = new ScheduleModel(target);
-  target->setModel(model);
+  lessonModel = new ScheduleModel(target);
+  target->setModel(lessonModel);
 
   QStringList test = {"111", "222"};
   // TEST
@@ -92,41 +97,80 @@ void Schedulecontroller::setVerticalHead(const QStringList& labels) {
   header->setModel(model);
   target->setVerticalHeader(header);
 }
-void Schedulecontroller::openLessonjson() {
+QString Schedulecontroller::openLessonjsonPath() {
   // 定义文件对话框类
   QFileDialog* fileDialog = new QFileDialog(nullptr);
-
   // 定义文件对话框标题
   fileDialog->setWindowTitle(QStringLiteral("选择课表json文件"));
-
   // 设置打开的文件路径
   fileDialog->setDirectory("");
-
   // 设置文件过滤器,只显示.ui .cpp 文件,多个过滤文件使用空格隔开
   fileDialog->setNameFilter("*.json");
-
   // 设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
   fileDialog->setFileMode(QFileDialog::ExistingFiles);
-
   // 设置视图模式
   fileDialog->setViewMode(QFileDialog::Detail);
-
   // 获取选择的文件的路径
   QStringList fileNames;
-
   if (fileDialog->exec()) {
     fileNames = fileDialog->selectedFiles();
-    qDebug() << fileNames;
+  }
+  return fileNames.at(0);
+}
+
+void Schedulecontroller::analysisjson(QString path) {
+  QFile file(path);
+  file.open(QIODevice::ReadOnly);
+  QByteArray data = file.readAll();
+  file.close();
+
+  // 解析
+  QJsonParseError parseError;
+  QJsonDocument   doc = QJsonDocument::fromJson(data, &parseError);
+  if (parseError.error != QJsonParseError::NoError) {
+    qDebug() << "配置错误";
+    return;
+  }
+  QJsonObject obj = doc.object();
+  if (obj.contains("kbList")) {
+    QJsonValue arrayTemp = obj.value("kbList");
+    QJsonArray array     = arrayTemp.toArray();
+    for (int i = 0; i < array.size(); i++) {
+      QJsonValue  sub          = array.at(i);
+      // 因为里面就一个元素，如果有多个元素，可以通过array.size()遍历
+      QJsonObject subObj       = sub.toObject();
+      //--------------
+      QJsonValue  loactionT    = subObj.value("cdmc");
+      QString     loaction     = loactionT.toString();
+      // int         id         = idTemp.toInt();
+      QJsonValue  classnameT   = subObj.value("kcmc");
+      QString     classname    = classnameT.toString();
+      QJsonValue  teachernameT = subObj.value("xm");
+      QString     teachername  = teachernameT.toString();
+
+      QJsonValue  dayofweekT   = subObj.value("xqjmc");
+      QString     dayofweek    = dayofweekT.toString();
+      QJsonValue  weeksT       = subObj.value("1-17周");
+      QString     weeks        = weeksT.toString();
+      // QJsonValue genderTemp    = subObj.value("gender");
+      // QString    gender        = genderTemp.toString();
+      lessonlItem e = {loaction, classname, teachername, dayofweek, weeks};
+      lessonModel->modelData.append(e);
+    }
+  } else {
+    qDebug() << "课表为空";
   }
 }
 
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
   // TEST
-  modelData = QList<lessonlItem>{
-      {"aa", 1, 20, 90},
-      {"bb", 1, 23, 91},
-      {"cc", 0, 21, 95},
-  };
+  /*modelData = QList<lessonlItem>{
+      {"aa", 1, 20, 90, 2},
+      {"bb", 1, 23, 91, 2},
+      {"cc", 0, 21, 95, 2},
+  };*/
+  lessonlItem test = {"11111", "1", "1", "1", "1"};
+  modelData.append(test);
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
   return modelData.count();
@@ -140,13 +184,13 @@ QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
     const int row = index.row();
     switch (index.column()) {
     case 0:
-      return modelData.at(row).name;
+      return modelData.at(row).classname;
     case 1:
-      return (modelData.at(row).sex == 0) ? "woman" : "man";
+      return (modelData.at(row).teachername);
     case 2:
-      return modelData.at(row).age;
+      return modelData.at(row).dayofweek;
     case 3:
-      return modelData.at(row).score;
+      return modelData.at(row).weeks;
     }
   }
   return QVariant();

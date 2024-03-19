@@ -3,16 +3,18 @@
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QTableView>
+struct lessonlItem {
+    QString loaction;
+    QString classname;
+    QString teachername;
+    QString dayofweek;
+    QString weeks;
+};
 class ScheduleModel : public QAbstractTableModel {
     Q_OBJECT
-    struct lessonlItem {
-        QString name;
-        int     sex;
-        int     age;
-        int     score;
-    };
 
-    QList<lessonlItem> modelData;
+  public:
+    QList<lessonlItem> modelData; // 数据存放处
 
   public:
     explicit ScheduleModel(QObject* parent = nullptr);
@@ -27,14 +29,16 @@ class ScheduleModel : public QAbstractTableModel {
 class Schedulecontroller {
   public:
     Schedulecontroller(QTableView*);
-    void setHorizontalHead(const QStringList&);
-    void setVerticalHead(const QStringList&);
-    void setModel(ScheduleModel*);
-    void openCalendar(QDate);
-    void openLessonjson();
+    void    setHorizontalHead(const QStringList&);
+    void    setVerticalHead(const QStringList&);
+    void    setModel(ScheduleModel*);
+    void    openCalendar(QDate);
+    QString openLessonjsonPath();
+    void    analysisjson(QString);
 
   private:
-    QTableView* target;
+    QTableView*    target;
+    ScheduleModel* lessonModel;
 };
 
 #endif // SCHEDULECONTROLLER_H

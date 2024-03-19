@@ -23,5 +23,5 @@ void MianWidget::on_scheduleButton_clicked() {
 }
 
 void MianWidget::on_importButton_clicked() {
-  scheduler->openLessonjson();
+  scheduler->analysisjson(scheduler->openLessonjsonPath());
 }
