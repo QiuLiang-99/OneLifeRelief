@@ -30,6 +30,8 @@ class Schedulecontroller {
     void setHorizontalHead(const QStringList&);
     void setVerticalHead(const QStringList&);
     void setModel(ScheduleModel*);
+    void openCalendar(QDate);
+    void openLessonjson();
 
   private:
     QTableView* target;

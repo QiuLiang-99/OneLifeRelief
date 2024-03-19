@@ -23,8 +23,10 @@ class MianWidget : public QWidget {
 
     void on_scheduleButton_clicked();
 
+    void on_importButton_clicked();
+
   private:
-    Ui::MianWidget* ui;
-    // Schedulecontroller scheduler;
+    Ui::MianWidget*     ui;
+    Schedulecontroller* scheduler;
 };
 #endif // MIANWIDGET_H
