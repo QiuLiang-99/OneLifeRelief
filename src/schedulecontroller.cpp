@@ -1,9 +1,12 @@
 #include "schedulecontroller.h"
 #include <QDatetime>
+#include <QFileDialog>
 #include <QHeaderView>
 #include <QStandardItemModel>
+#include <QString>
 #include <qlogging.h>
 #include <qnamespace.h>
+
 Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
   ScheduleModel* model = new ScheduleModel(target);
   target->setModel(model);
@@ -90,7 +93,31 @@ void Schedulecontroller::setVerticalHead(const QStringList& labels) {
   target->setVerticalHeader(header);
 }
 void Schedulecontroller::openLessonjson() {
-  // TODO
+  // 定义文件对话框类
+  QFileDialog* fileDialog = new QFileDialog(nullptr);
+
+  // 定义文件对话框标题
+  fileDialog->setWindowTitle(QStringLiteral("选择课表json文件"));
+
+  // 设置打开的文件路径
+  fileDialog->setDirectory("");
+
+  // 设置文件过滤器,只显示.ui .cpp 文件,多个过滤文件使用空格隔开
+  fileDialog->setNameFilter("*.json");
+
+  // 设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
+  fileDialog->setFileMode(QFileDialog::ExistingFiles);
+
+  // 设置视图模式
+  fileDialog->setViewMode(QFileDialog::Detail);
+
+  // 获取选择的文件的路径
+  QStringList fileNames;
+
+  if (fileDialog->exec()) {
+    fileNames = fileDialog->selectedFiles();
+    qDebug() << fileNames;
+  }
 }
 
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
