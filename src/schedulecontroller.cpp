@@ -4,6 +4,8 @@
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QString>
+#include <array>
+#include <qdatetime.h>
 #include <qdebug.h>
 #include <qjsonarray.h>
 #include <qjsondocument.h>
@@ -16,11 +18,33 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
   lessonModel = new ScheduleModel(target);
   target->setModel(lessonModel);
 
-  QStringList test = {"111", "222"};
+  QStringList weeksName;
+  weeksName << "星期一"
+            << "星期二"
+            << "星期三"
+            << "星期四"
+            << "星期五"
+            << "星期六"
+            << "星期天";
   // TEST
-  setHorizontalHead(test);
+  setHorizontalHead(weeksName);
+  target->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::Stretch); // 自动设置列宽
 
-  setVerticalHead(test);
+  QStringList timingofClass;
+  QTime C1(8, 0), C2(8, 55), C3(9, 55), C4(10, 50), C5(11, 45), C6(14, 30),
+      C7(15, 25), C8(16, 25), C9(17, 20), C10(19, 00), C11(19, 50), C12(20, 40);
+  timingofClass << "1\n" + C1.toString("hh:mm") << "2\n" + C2.toString("hh:mm")
+                << "3\n" + C3.toString("hh:mm") << "4\n" + C4.toString("hh:mm")
+                << "5\n" + C5.toString("hh:mm") << "6\n" + C6.toString("hh:mm")
+                << "7\n" + C7.toString("hh:mm") << "8\n" + C8.toString("hh:mm")
+                << "9\n" + C9.toString("hh:mm")
+                << "10\n" + C10.toString("hh:mm")
+                << "11\n" + C11.toString("hh:mm")
+                << "12\n" + C12.toString("hh:mm");
+  setVerticalHead(timingofClass);
+  target->verticalHeader()->setDefaultSectionSize(50);
+  // target->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 /*void Schedulecontroller::openCalendar(QDate date) { //初始化日历 int year,
    week; week = date.weekNumber(&year); // 获取年份和周数 QString dateString =
@@ -136,22 +160,27 @@ void Schedulecontroller::analysisjson(QString path) {
     QJsonValue arrayTemp = obj.value("kbList");
     QJsonArray array     = arrayTemp.toArray();
     for (int i = 0; i < array.size(); i++) {
-      QJsonValue  sub          = array.at(i);
+      QJsonValue         sub            = array.at(i);
       // 因为里面就一个元素，如果有多个元素，可以通过array.size()遍历
-      QJsonObject subObj       = sub.toObject();
+      QJsonObject        subObj         = sub.toObject();
       //--------------
-      QJsonValue  loactionT    = subObj.value("cdmc");
-      QString     loaction     = loactionT.toString();
-      // int         id         = idTemp.toInt();
-      QJsonValue  classnameT   = subObj.value("kcmc");
-      QString     classname    = classnameT.toString();
-      QJsonValue  teachernameT = subObj.value("xm");
-      QString     teachername  = teachernameT.toString();
+      QJsonValue         loactionT      = subObj.value("cdmc"); //"实A-206"
+      QString            loaction       = loactionT.toString();
+      QJsonValue         timeoflessonT  = subObj.value("jcor"); //"3-5"
+      QString            timeoflessonS  = timeoflessonT.toString();
+      QStringList        timeoflessonSL = timeoflessonS.split('-');
+      std::array<int, 2> timeoflesson{timeoflessonSL.at(0).toInt(),
+                                      timeoflessonSL.at(1).toInt()};
+      qDebug() << timeoflesson.at(0) << timeoflesson.at(1);
+      QJsonValue classnameT = subObj.value("kcmc"); // Excel数据处理与应用
+      QString    classname    = classnameT.toString();
+      QJsonValue teachernameT = subObj.value("xm"); //"原冠秀"
+      QString    teachername  = teachernameT.toString();
 
-      QJsonValue  dayofweekT   = subObj.value("xqjmc");
-      QString     dayofweek    = dayofweekT.toString();
-      QJsonValue  weeksT       = subObj.value("1-17周");
-      QString     weeks        = weeksT.toString();
+      QJsonValue  dayofweekT  = subObj.value("xqjmc"); //"星期四"
+      QString     dayofweek   = dayofweekT.toString();
+      QJsonValue  weeksT      = subObj.value("zcd"); //"1-17周(单)"
+      QString     weeks       = weeksT.toString();
       // QJsonValue genderTemp    = subObj.value("gender");
       // QString    gender        = genderTemp.toString();
       lessonlItem e = {loaction, classname, teachername, dayofweek, weeks};
@@ -169,8 +198,8 @@ ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
       {"bb", 1, 23, 91, 2},
       {"cc", 0, 21, 95, 2},
   };*/
-  lessonlItem test = {"11111", "1", "1", "1", "1"};
-  modelData.append(test);
+  // lessonlItem test = {"11111", "1", "1", "1", "1"};
+  // modelData.append(test);
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
   return modelData.count();
@@ -180,7 +209,7 @@ int ScheduleModel::columnCount(const QModelIndex&) const {
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid()) return QVariant();
-  if (role == Qt::DisplayRole || role == Qt::EditRole) {
+  /*if (role == Qt::DisplayRole || role == Qt::EditRole) {
     const int row = index.row();
     switch (index.column()) {
     case 0:
@@ -192,6 +221,11 @@ QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
     case 3:
       return modelData.at(row).weeks;
     }
+  }*/
+  if (role == Qt::DisplayRole || role == Qt::EditRole) {
+    qDebug() << modelData.at(0).classname;
+    return modelData.at(0).classname;
   }
+
   return QVariant();
 }
