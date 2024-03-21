@@ -54,4 +54,6 @@ BinPackParameters: false
 PenaltyReturnTypeOnItsOwnLine:    600000
 AlwaysBreakAfterReturnType:     None
 AlwaysBreakAfterDefinitionReturnType:     None
-
+CommentPragmas: '^ IWYU pragma:'
+PenaltyBreakComment: 300
+QualifierAlignment: Leave

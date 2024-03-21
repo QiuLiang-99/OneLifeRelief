@@ -23,7 +23,9 @@ class ScheduleModel : public QAbstractTableModel {
 
   public:
     std::array<std::array<lessonlItem, 12>, 7> ScheduleData;
-    void                                       analysislessonlItem(lessonlItem);
+
+  public:
+    void analysislessonlItem(lessonlItem);
 
   public:
     explicit ScheduleModel(QObject* parent = nullptr);
@@ -43,6 +45,7 @@ class Schedulecontroller {
     void    openCalendar(QDate);
     QString openLessonjsonPath();
     void    analysisjson(QString);
+    void    setSpan(int, int, int, int);
 
   private:
     QTableView*    target;

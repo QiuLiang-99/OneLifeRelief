@@ -46,54 +46,20 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
   };
   setVerticalHead(timingofClass);
 }
-/*void Schedulecontroller::openCalendar(QDate date) { //初始化日历 int year,
-   week; week = date.weekNumber(&year); // 获取年份和周数 QString dateString =
-   QString("%1年%2月 第%3周").arg(year).arg(date.month()).arg(week);
-    //ui->datenow->setText(dateString);
-
-    QStandardItemModel *model = new QStandardItemModel(2, 7, this); // 6 rows, 7
-   columns
-    //ui->taskCalendar->setModel(model);
-
-    QStringList headers = {"星期一", "星期二", "星期三", "星期四", "星期五",
-   "星期六", "星期日"}; QFont font; font.setBold(true); QBrush brush(Qt::red);
-
-    for (int i = 0; i < headers.size(); ++i) {
-    //QStandardItem *item = new QStandardItem(headers[i]);
-    if (i >= 5) { // 周末
-            item->setFont(font);
-            item->setForeground(brush);
-    }
-    model->setHorizontalHeaderItem(i, item);
-    }
-    int dayOfWeek = date.dayOfWeek();
-    // 计算当前日期是本周的第几天
-    // 填充本周的日期
-    for (int i = 0; i < 7; ++i) {
-    QDate currentDate = date.addDays(i - dayOfWeek + 1);
-    //QStandardItem *item;
-    // 检查日期是否超过当前月份的天数
-    QString inputdate(QString::number(currentDate.day()));
-    if (currentDate == QDate::currentDate())//如果是今天就标注一下
-    {
-        inputdate += "（今天）";
-    }
-    item = new QStandardItem(inputdate);
-    model->setItem(0, i, item);
-    // 检查每个Data对象
-    int row = 1;
-    for (QVector<taskdata>::iterator it = taskqlist.begin(); it !=
-   taskqlist.end(); ++it) { const taskdata &n = *it; if
-   (isDateInRange(n.startdate, n.enddate, currentDate)) { QStandardItem
-   *valueItem = new QStandardItem(n.taskname);
-            //QTextDocument *doc = new QTextDocument();
-
-            //doc->setHtml(QString::fromStdString(text));
-            model->setItem(row, i,
-   valueItem);//->setToolTip(QString(doc->toPlainText())); //
-   在匹配的Data对象的下一行添加一个新项目 row++;
-            }
-    }*/
+/**
+ * @description:
+ * @param {int} a row: 代表要合并的单元格行索引。如：要合并
+ * 1-10行，则此处为行的索引。
+ * @param {int} b col:  代表要合并的单元格列索引。如：要合并第 1 列(列数从
+ * 0开始)，则此处为列的索引。
+ * @param {int} c rowSpanCount： 要合并多少行。如： 要合并 6-10 行，共
+ * 5行。则此处为： 5。
+ * @param {int} d columnSpanCount： 要合并多少列。如： 要合并为 2
+ * 列，则此处为：2
+ */
+void Schedulecontroller::setSpan(int a, int b, int c, int d = 1) {
+  target->setSpan(a, b, c, d);
+}
 
 void Schedulecontroller::setHorizontalHead(
     const QStringList& labels) { // 水平表头与
@@ -178,6 +144,23 @@ void Schedulecontroller::analysisjson(QString path) {
       lessonlItem e     = {loaction,  classname, teachername,
                            dayofweek, weeks,     timeoflesson};
       lessonModel->analysislessonlItem(e);
+      // 设置单元格合并
+      QStringList        timeoflessonSL = timeoflesson.split('-');
+      std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt() - 1,
+                                       timeoflessonSL.at(1).toInt()};
+      auto               StoI = [=](QString s) {
+        if (s == "星期一") return 0;
+        if (s == "星期二") return 1;
+        if (s == "星期三") return 2;
+        if (s == "星期四") return 3;
+        if (s == "星期五") return 4;
+        if (s == "星期六") return 5;
+        if (s == "星期天") return 6;
+        return -1;
+      };
+      qDebug() << timeoflessonA.at(0) << timeoflessonA.at(1);
+      setSpan(timeoflessonA.at(0), StoI(dayofweek),
+              timeoflessonA.at(1) - timeoflessonA.at(0));
     }
   } else {
     qDebug() << "课表为空";
@@ -187,26 +170,24 @@ void Schedulecontroller::analysisjson(QString path) {
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
-  qDebug() << "rowCount" << ScheduleData.size();
   return ScheduleData.size();
 }
 int ScheduleModel::columnCount(const QModelIndex&) const {
-  qDebug() << "columnCount";
   return ScheduleData.at(0).size();
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
-  QDebug a = qDebug();
   if (!index.isValid()) return QVariant();
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
     if (ScheduleData.at(index.column()).empty()) {
       return QVariant();
     }
     auto subData = ScheduleData.at(index.column());
-    a << "ok!";
     // todo need if
-    auto obj = subData.at(index.row());
-    a << "well?";
-    QString content;
+    if (subData.at(index.row())) {
+      return QVariant();
+    }
+    auto    obj = subData.at(index.row());
+    QString content; // todo
     content += obj.classname;
     content += obj.loaction;
     content += obj.teachername;
@@ -227,14 +208,12 @@ void ScheduleModel::analysislessonlItem(lessonlItem item) {
     if (s == "星期天") return 6;
     return -1;
   };
-  qDebug() << "ok";
   int                column         = StoI(item.dayofweek);
   QStringList        timeoflessonSL = item.timeoflesson.split('-');
-  std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt(),
-                                   timeoflessonSL.at(1).toInt()};
-  qDebug() << timeoflessonA.at(0) << timeoflessonA.at(1);
-  int row = timeoflessonA.at(0);
-  qDebug() << "ok2";
+  std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt() - 1,
+                                   timeoflessonSL.at(1).toInt() - 1};
+  int                row    = timeoflessonA.at(0);
   ScheduleData[column][row] = item;
-  qDebug() << "ok3";
+  // todo
+  // 没找到合适的方法，想法中应该是课表变更之后，设置一次合并单元格，现在用分析json结束之后就合并，耦合性提高了
 }
