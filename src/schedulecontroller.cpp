@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 #include <QString>
 #include <array>
+#include <qcontainerfwd.h>
 #include <qdatetime.h>
 #include <qdebug.h>
 #include <qjsonarray.h>
@@ -157,32 +158,31 @@ void Schedulecontroller::analysisjson(QString path) {
   }
   QJsonObject obj = doc.object();
   if (obj.contains("kbList")) {
-    QJsonValue arrayTemp = obj.value("kbList");
-    QJsonArray array     = arrayTemp.toArray();
-    for (int i = 0; i < array.size(); i++) {
+    QJsonValue  arrayTemp = obj.value("kbList");
+    QJsonArray  array     = arrayTemp.toArray();
+    QStringList targetValue;
+    targetValue << "cdmc" //"实A-206"
+                << "jcor" //"3-5"
+                << "kcmc" // Excel数据处理与应用
+                << "xm" //"原冠秀"
+                << "xqjmc" //"星期四"
+                << "zcd"; //"1-17周(单)"
+    auto OtoS = [&](const QJsonObject subObj, const QString& s) {
+      return subObj.value(s).toString();
+    };
+    for (int i = 0, V = 0; i < array.size(); i++, V = 0) {
       QJsonValue         sub            = array.at(i);
-      // 因为里面就一个元素，如果有多个元素，可以通过array.size()遍历
       QJsonObject        subObj         = sub.toObject();
-      //--------------
-      QJsonValue         loactionT      = subObj.value("cdmc"); //"实A-206"
-      QString            loaction       = loactionT.toString();
-      QJsonValue         timeoflessonT  = subObj.value("jcor"); //"3-5"
-      QString            timeoflessonS  = timeoflessonT.toString();
+      QString            loaction       = OtoS(subObj, targetValue.at(V++));
+      QString            timeoflessonS  = OtoS(subObj, targetValue.at(V++));
+      QString            classname      = OtoS(subObj, targetValue.at(V++));
+      QString            teachername    = OtoS(subObj, targetValue.at(V++));
+      QString            dayofweek      = OtoS(subObj, targetValue.at(V++));
+      QString            weeks          = OtoS(subObj, targetValue.at(V++));
       QStringList        timeoflessonSL = timeoflessonS.split('-');
       std::array<int, 2> timeoflesson{timeoflessonSL.at(0).toInt(),
                                       timeoflessonSL.at(1).toInt()};
       qDebug() << timeoflesson.at(0) << timeoflesson.at(1);
-      QJsonValue classnameT = subObj.value("kcmc"); // Excel数据处理与应用
-      QString    classname    = classnameT.toString();
-      QJsonValue teachernameT = subObj.value("xm"); //"原冠秀"
-      QString    teachername  = teachernameT.toString();
-
-      QJsonValue  dayofweekT  = subObj.value("xqjmc"); //"星期四"
-      QString     dayofweek   = dayofweekT.toString();
-      QJsonValue  weeksT      = subObj.value("zcd"); //"1-17周(单)"
-      QString     weeks       = weeksT.toString();
-      // QJsonValue genderTemp    = subObj.value("gender");
-      // QString    gender        = genderTemp.toString();
       lessonlItem e = {loaction, classname, teachername, dayofweek, weeks};
       lessonModel->modelData.append(e);
     }
