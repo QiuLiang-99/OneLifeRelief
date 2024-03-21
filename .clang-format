@@ -19,7 +19,7 @@ AlignConsecutiveDeclarations:
   AcrossEmptyLines: false
   AcrossComments: true
 AlignTrailingComments:
-  Kind: Never
+  Kind: Always
   OverEmptyLines: 1
 AllowShortBlocksOnASingleLine: Never
 AllowShortEnumsOnASingleLine: false
@@ -54,3 +54,4 @@ BinPackParameters: false
 PenaltyReturnTypeOnItsOwnLine:    600000
 AlwaysBreakAfterReturnType:     None
 AlwaysBreakAfterDefinitionReturnType:     None
+

@@ -3,18 +3,21 @@
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QTableView>
+#include <qlist.h>
 struct lessonlItem {
-    QString loaction;
-    QString classname;
-    QString teachername;
-    QString dayofweek;
-    QString weeks;
+    QString loaction     = "";
+    QString classname    = "";
+    QString teachername  = "";
+    QString dayofweek    = "";
+    QString weeks        = "";
+    QString timeoflesson = "";
 };
 class ScheduleModel : public QAbstractTableModel {
     Q_OBJECT
 
   public:
-    QList<lessonlItem> modelData; // 数据存放处
+    QList<QList<lessonlItem>> ScheduleData;
+    void                      analysislessonlItem(lessonlItem);
 
   public:
     explicit ScheduleModel(QObject* parent = nullptr);
@@ -22,7 +25,6 @@ class ScheduleModel : public QAbstractTableModel {
         const QModelIndex& = QModelIndex()) const override; // 目标行数
     virtual int columnCount(
         const QModelIndex& = QModelIndex()) const override; // 目标列数
-
     virtual QVariant data(const QModelIndex& index,
                           int role = Qt::DisplayRole) const override;
 };
