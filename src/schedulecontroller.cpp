@@ -62,13 +62,14 @@ void Schedulecontroller::setSpan(int a, int b, int c, int d = 1) {
 }
 
 void Schedulecontroller::setHorizontalHead(
-    const QStringList& labels) { // 水平表头与
+    const QStringList& labels) { // 水平表头
   QHeaderView*        header = new QHeaderView(Qt::Horizontal);
   QStandardItemModel* model  = new QStandardItemModel;
   header->setSectionResizeMode(
       QHeaderView::Stretch); // 自动设置列宽,自动占满框体
   model->setHorizontalHeaderLabels(labels);
   header->setModel(model);
+  header->setDefaultAlignment(Qt::AlignCenter); // 设置水平表头文本居中显示
   target->setHorizontalHeader(header);
   // target->setHorizontalHeaderLabels
 }
@@ -80,7 +81,7 @@ void Schedulecontroller::setVerticalHead(
   header->setDefaultSectionSize(50);
   model->setVerticalHeaderLabels(labels);
   header->setModel(model);
-
+  header->setDefaultAlignment(Qt::AlignCenter); // 设置竖直表头文本居中显示
   target->setVerticalHeader(header);
 }
 QString Schedulecontroller::openLessonjsonPath() {
@@ -158,7 +159,6 @@ void Schedulecontroller::analysisjson(QString path) {
         if (s == "星期天") return 6;
         return -1;
       };
-      qDebug() << timeoflessonA.at(0) << timeoflessonA.at(1);
       setSpan(timeoflessonA.at(0), StoI(dayofweek),
               timeoflessonA.at(1) - timeoflessonA.at(0));
     }
