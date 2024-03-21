@@ -14,6 +14,7 @@
 #include <qlist.h>
 #include <qlogging.h>
 #include <qnamespace.h>
+#include <qwindowdefs_win.h>
 
 Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
   lessonModel = new ScheduleModel(target);
@@ -29,20 +30,20 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
             << "星期天";
   // TEST
   setHorizontalHead(weeksName);
-  target->horizontalHeader()->setSectionResizeMode(
-      QHeaderView::Stretch); // 自动设置列宽
-
-  QStringList timingofClass;
-  QTime C1(8, 0), C2(8, 55), C3(9, 55), C4(10, 50), C5(11, 45), C6(14, 30),
-      C7(15, 25), C8(16, 25), C9(17, 20), C10(19, 00), C11(19, 50), C12(20, 40);
-  timingofClass << "1\n" + C1.toString("hh:mm") << "2\n" + C2.toString("hh:mm")
-                << "3\n" + C3.toString("hh:mm") << "4\n" + C4.toString("hh:mm")
-                << "5\n" + C5.toString("hh:mm") << "6\n" + C6.toString("hh:mm")
-                << "7\n" + C7.toString("hh:mm") << "8\n" + C8.toString("hh:mm")
-                << "9\n" + C9.toString("hh:mm")
-                << "10\n" + C10.toString("hh:mm")
-                << "11\n" + C11.toString("hh:mm")
-                << "12\n" + C12.toString("hh:mm");
+  QStringList           timingofClass;
+  std::array<QTime, 12> timeofLesson = {
+      QTime(8, 0),   QTime(8, 55),  QTime(9, 55),  QTime(10, 50),
+      QTime(11, 45), QTime(14, 30), QTime(15, 25), QTime(16, 25),
+      QTime(17, 20), QTime(19, 00), QTime(19, 50), QTime(20, 40)};
+  auto DtoS = [&](QTime t, QTime e = QTime(0, 45)) {
+    QTime N(0, 0);
+    QTime i = t.addSecs(N.secsTo(e));
+    return t.toString("hh:mm") + "~" + i.toString("hh:mm");
+  };
+  for (int i = 0; i < timeofLesson.size();) {
+    int t = i + 1;
+    timingofClass << QString::number(t) + "\n" + DtoS(timeofLesson.at(i++));
+  };
   setVerticalHead(timingofClass);
   target->verticalHeader()->setDefaultSectionSize(50);
   // target->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -97,15 +98,8 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
     }*/
 
 void Schedulecontroller::setHorizontalHead(const QStringList& labels) {
-  // qDebug() << labels;
-  //  target->setColumnCount(7);
-  //  target->setHorizontalHeaderLabels(labels);
-
   QHeaderView*        header = new QHeaderView(Qt::Horizontal);
   QStandardItemModel* model  = new QStandardItemModel;
-
-  // labels << QStringLiteral("姓名") << QStringLiteral("年级")<<
-  // QStringLiteral("学号");
   model->setHorizontalHeaderLabels(labels);
   header->setModel(model);
   target->setHorizontalHeader(header);
@@ -113,13 +107,12 @@ void Schedulecontroller::setHorizontalHead(const QStringList& labels) {
 }
 
 void Schedulecontroller::setVerticalHead(const QStringList& labels) {
-  // target->setVerticalHeaderLabels(labels);
   QHeaderView*        header = new QHeaderView(Qt::Vertical);
   QStandardItemModel* model  = new QStandardItemModel;
-  // labels << QStringLiteral("姓名") << QStringLiteral("年级")<<
-  // QStringLiteral("学号");
   model->setVerticalHeaderLabels(labels);
   header->setModel(model);
+  header->setSectionResizeMode(
+      QHeaderView::Stretch); // 自动设置列宽,自动占满框体
   target->setVerticalHeader(header);
 }
 QString Schedulecontroller::openLessonjsonPath() {
@@ -192,19 +185,13 @@ void Schedulecontroller::analysisjson(QString path) {
 }
 
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
-  // TEST
-  /*modelData = QList<lessonlItem>{
-      {"aa", 1, 20, 90, 2},
-      {"bb", 1, 23, 91, 2},
-      {"cc", 0, 21, 95, 2},
-  };*/
-  // lessonlItem test = {"11111", "1", "1", "1", "1"};
-  // modelData.append(test);
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
+  qDebug() << "rowCount" << modelData.count();
   return modelData.count();
 }
 int ScheduleModel::columnCount(const QModelIndex&) const {
+  qDebug() << "columnCount";
   return 5;
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
@@ -222,7 +209,23 @@ QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
       return modelData.at(row).weeks;
     }
   }*/
+  auto dayofweek = [&](QString str) {
+    auto StoI = [=](QString s) {
+      if (s == "星期一") return 0;
+      if (s == "星期二") return 1;
+      if (s == "星期三") return 2;
+      if (s == "星期四") return 3;
+      if (s == "星期五") return 4;
+      if (s == "星期六") return 5;
+      if (s == "星期天") return 6;
+      return -1;
+    };
+    return StoI(str) == index.column();
+  };
+
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
+    if (dayofweek(modelData.at(0).dayofweek)) {
+    }
     qDebug() << modelData.at(0).classname;
     return modelData.at(0).classname;
   }
