@@ -107,7 +107,8 @@ void Schedulecontroller::setHorizontalHead(
   // target->setHorizontalHeaderLabels
 }
 
-void Schedulecontroller::setVerticalHead(const QStringList& labels) { // 竖直表头
+void Schedulecontroller::setVerticalHead(
+    const QStringList& labels) { // 竖直表头
   QHeaderView*        header = new QHeaderView(Qt::Vertical);
   QStandardItemModel* model  = new QStandardItemModel;
   header->setDefaultSectionSize(50);
@@ -186,18 +187,18 @@ void Schedulecontroller::analysisjson(QString path) {
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
-  qDebug() << "rowCount" << ScheduleData.count();
-  return ScheduleData.count();
+  qDebug() << "rowCount" << ScheduleData.size();
+  return ScheduleData.size();
 }
 int ScheduleModel::columnCount(const QModelIndex&) const {
   qDebug() << "columnCount";
-  return 5;
+  return ScheduleData.at(0).size();
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
   QDebug a = qDebug();
   if (!index.isValid()) return QVariant();
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
-    if (ScheduleData[index.column()].isEmpty()) {
+    if (ScheduleData.at(index.column()).empty()) {
       return QVariant();
     }
     auto subData = ScheduleData.at(index.column());
@@ -234,10 +235,6 @@ void ScheduleModel::analysislessonlItem(lessonlItem item) {
   qDebug() << timeoflessonA.at(0) << timeoflessonA.at(1);
   int row = timeoflessonA.at(0);
   qDebug() << "ok2";
-  ScheduleData.resize(12);
-  for (auto& i : ScheduleData) {
-    i.resize(12); // todo need 优化
-  }
   ScheduleData[column][row] = item;
   qDebug() << "ok3";
 }

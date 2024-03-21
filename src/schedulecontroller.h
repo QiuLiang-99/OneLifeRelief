@@ -3,6 +3,7 @@
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QTableView>
+#include <array>
 #include <qlist.h>
 struct lessonlItem {
     QString loaction     = "";
@@ -11,13 +12,18 @@ struct lessonlItem {
     QString dayofweek    = "";
     QString weeks        = "";
     QString timeoflesson = "";
+    operator bool() const {
+      return loaction.isEmpty() || classname.isEmpty() ||
+             teachername.isEmpty() || dayofweek.isEmpty() || weeks.isEmpty() ||
+             timeoflesson.isEmpty();
+    }
 };
 class ScheduleModel : public QAbstractTableModel {
     Q_OBJECT
 
   public:
-    QList<QList<lessonlItem>> ScheduleData;
-    void                      analysislessonlItem(lessonlItem);
+    std::array<std::array<lessonlItem, 12>, 7> ScheduleData;
+    void                                       analysislessonlItem(lessonlItem);
 
   public:
     explicit ScheduleModel(QObject* parent = nullptr);
