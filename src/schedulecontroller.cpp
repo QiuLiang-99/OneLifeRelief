@@ -141,9 +141,9 @@ void Schedulecontroller::analysisjson(QString path) {
       // Excel数据处理与应用
       QString     teachername = OtoS(subObj, targetValue.at(V++)); //"原冠秀"
       QString     dayofweek   = OtoS(subObj, targetValue.at(V++)); //"星期四"
-      QString     weeks = OtoS(subObj, targetValue.at(V++)); //"1-17周(单)"
-      lessonlItem e     = {loaction,  classname, teachername,
-                           dayofweek, weeks,     timeoflesson};
+      QString weeks = OtoS(subObj, targetValue.at(V++)); // todo "1-17周(单)"
+      lessonlItem e = {loaction,  classname, teachername,
+                       dayofweek, weeks,     timeoflesson};
       lessonModel->analysislessonlItem(e);
       // 设置单元格合并
       QStringList        timeoflessonSL = timeoflesson.split('-');
@@ -170,10 +170,10 @@ void Schedulecontroller::analysisjson(QString path) {
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
 }
 int ScheduleModel::rowCount(const QModelIndex&) const {
-  return ScheduleData.size();
+  return ScheduleData.at(0).size();
 }
 int ScheduleModel::columnCount(const QModelIndex&) const {
-  return ScheduleData.at(0).size();
+  return ScheduleData.size();
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid()) return QVariant();
