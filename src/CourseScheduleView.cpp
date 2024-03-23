@@ -1,13 +1,3 @@
-/*
- * @Author: QiuLiang-99 1297829693@qq.com
- * @Date: 2024-03-19 12:15:55
- * @LastEditors: QiuLiang-99 1297829693@qq.com
- * @LastEditTime: 2024-03-23 11:26:06
- * @FilePath: \OneLifeRelief\src\CourseScheduleView.cpp
- * @Description:
- *
- * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved.
- */
 #include "CourseScheduleView.h"
 #include <QDatetime>
 #include <QFileDialog>
@@ -29,10 +19,59 @@
 #include <qwidget.h>
 #include <qwindowdefs_win.h>
 
+ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
+}
+int ScheduleModel::rowCount(const QModelIndex&) const {
+  return ScheduleData.at(0).size();
+}
+int ScheduleModel::columnCount(const QModelIndex&) const {
+  return ScheduleData.size();
+}
+QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid()) return QVariant();
+  if (role == Qt::DisplayRole || role == Qt::EditRole) {
+    if (ScheduleData.at(index.column()).empty()) {
+      return QVariant();
+    }
+    auto subData = ScheduleData.at(index.column());
+    if (subData.at(index.row())) { // 如果目标数据为空则提前返回
+      return QVariant();
+    }
+    auto    obj = subData.at(index.row());
+    QString content; // todo
+    content += obj.classname + "\n";
+    content += obj.loaction;
+    content += obj.teachername;
+    return content;
+  }
+
+  return QVariant();
+}
+
+void ScheduleModel::analysislessonlItem(lessonlItem item) {
+  auto StoI = [=](QString s) {
+    if (s == "星期一") return 0;
+    if (s == "星期二") return 1;
+    if (s == "星期三") return 2;
+    if (s == "星期四") return 3;
+    if (s == "星期五") return 4;
+    if (s == "星期六") return 5;
+    if (s == "星期天") return 6;
+    return -1;
+  };
+  int                column         = StoI(item.dayofweek);
+  QStringList        timeoflessonSL = item.timeoflesson.split('-');
+  std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt() - 1,
+                                   timeoflessonSL.at(1).toInt() - 1};
+  int                row    = timeoflessonA.at(0);
+  ScheduleData[column][row] = item;
+  // todo
+  // 没找到合适的方法，想法中应该是课表变更之后，设置一次合并单元格，现在用分析json结束之后就合并，耦合性提高了
+}
+//---------------------------------------------------------------------------------------
 CourseScheduleView::CourseScheduleView(QWidget* parent) : QTableView(parent) {
   lessonModel = new ScheduleModel(this);
-  //this->setModel(lessonModel);
-
+  this->setModel(lessonModel);
   QStringList weeksName;
   weeksName << "星期一"
             << "星期二"
@@ -58,40 +97,7 @@ CourseScheduleView::CourseScheduleView(QWidget* parent) : QTableView(parent) {
     timingofClass << QString::number(t) + "\n" + DtoS(timeofLesson.at(i++));
   };
   setVerticalHead(timingofClass);
-  // test
-  QAbstractButton* btn = this->findChild<QAbstractButton*>();
-  qDebug() << btn;
-  btn->setText(QStringLiteral("序号"));
-  // btn->installEventFilter(this); /*注册事件 CPersonMng::eventFilter*/
-  // QStyleOptionHeader opt;
-  // btn->setText("const QString &text");
-  btn->setVisible(true);
-  qDebug() << this->children();
-  // auto e = new QPushButton("????", this);
-  //  QHBoxLayout *hbox = new QHBoxLayout(ww); //创建一个水平布局器，并绑定到ww
-  //  hbox->setMargin(0); //设置布局器边界为0，否则会影响后面组件的显示
-  //  QLabel* lab = new QLabel("sky"); // 创建一个文本标签，打上想要显示的文本
-  //  lab->setAlignment(Qt::AlignCenter); // 设置文本为居中显示
-  //  hbox->addWidget(lab);               // 把文本标签添加到布局器
-  /**QWidget* widget = new QWidget();
-  widget->setWindowIconText("what can i say?");
-  this->setCornerWidget(widget);*/
 }
-/**
- * @description:
- * @param {int} a row: 代表要合并的单元格行索引。如：要合并
- * 1-10行，则此处为行的索引。
- * @param {int} b col:  代表要合并的单元格列索引。如：要合并第 1 列(列数从
- * 0开始)，则此处为列的索引。
- * @param {int} c rowSpanCount： 要合并多少行。如： 要合并 6-10 行，共
- * 5行。则此处为： 5。
- * @param {int} d columnSpanCount： 要合并多少列。如： 要合并为 2
- * 列，则此处为：2
- */
-void CourseScheduleView::setSpan(int a, int b, int c, int d = 1) {
-  this->setSpan(a, b, c, d);
-}
-
 void CourseScheduleView::setHorizontalHead(
     const QStringList& labels) { // 水平表头
   QHeaderView*        header = new QHeaderView(Qt::Horizontal);
@@ -136,6 +142,7 @@ QString CourseScheduleView::openLessonjsonPath() {
 }
 
 void CourseScheduleView::analysisjson(QString path) {
+
   QFile file(path);
   file.open(QIODevice::ReadOnly);
   QByteArray data = file.readAll();
@@ -188,62 +195,11 @@ void CourseScheduleView::analysisjson(QString path) {
         if (s == "星期六") return 5;
         if (s == "星期天") return 6;
         return -1;
-      };
-      setSpan(timeoflessonA.at(0), StoI(dayofweek),
-              timeoflessonA.at(1) - timeoflessonA.at(0));
+      }; // todo 提前就可以解析一下json，不用解析两次
+      this->setSpan(timeoflessonA.at(0), StoI(dayofweek),
+                    timeoflessonA.at(1) - timeoflessonA.at(0), 1);
     }
   } else {
     qDebug() << "课表为空";
   }
-}
-
-ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
-}
-int ScheduleModel::rowCount(const QModelIndex&) const {
-  return ScheduleData.at(0).size();
-}
-int ScheduleModel::columnCount(const QModelIndex&) const {
-  return ScheduleData.size();
-}
-QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
-  if (!index.isValid()) return QVariant();
-  if (role == Qt::DisplayRole || role == Qt::EditRole) {
-    if (ScheduleData.at(index.column()).empty()) {
-      return QVariant();
-    }
-    auto subData = ScheduleData.at(index.column());
-    // todo need if
-    if (subData.at(index.row())) { // 如果目标数据为空则提前返回
-      return QVariant();
-    }
-    auto    obj = subData.at(index.row());
-    QString content; // todo
-    content += obj.classname;
-    content += obj.loaction;
-    content += obj.teachername;
-    return content;
-  }
-
-  return QVariant();
-}
-
-void ScheduleModel::analysislessonlItem(lessonlItem item) {
-  auto StoI = [=](QString s) {
-    if (s == "星期一") return 0;
-    if (s == "星期二") return 1;
-    if (s == "星期三") return 2;
-    if (s == "星期四") return 3;
-    if (s == "星期五") return 4;
-    if (s == "星期六") return 5;
-    if (s == "星期天") return 6;
-    return -1;
-  };
-  int                column         = StoI(item.dayofweek);
-  QStringList        timeoflessonSL = item.timeoflesson.split('-');
-  std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt() - 1,
-                                   timeoflessonSL.at(1).toInt() - 1};
-  int                row    = timeoflessonA.at(0);
-  ScheduleData[column][row] = item;
-  // todo
-  // 没找到合适的方法，想法中应该是课表变更之后，设置一次合并单元格，现在用分析json结束之后就合并，耦合性提高了
 }

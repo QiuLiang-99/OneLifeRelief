@@ -43,11 +43,9 @@ class CourseScheduleView : public QTableView {
     explicit CourseScheduleView(QWidget* parent = nullptr);
     void    setHorizontalHead(const QStringList&);
     void    setVerticalHead(const QStringList&);
-    void    setModel(ScheduleModel*);
     void    openCalendar(QDate);
     QString openLessonjsonPath();
     void    analysisjson(QString);
-    void    setSpan(int, int, int, int);
 
   private:
     ScheduleModel* lessonModel;

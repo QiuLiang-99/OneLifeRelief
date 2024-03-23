@@ -183,6 +183,9 @@
        <height>0</height>
       </size>
      </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
        <property name="leftMargin">
@@ -200,9 +203,6 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QTableView" name="tableView"/>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">

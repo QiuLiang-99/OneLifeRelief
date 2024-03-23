@@ -1,13 +1,13 @@
 #include "mianwidget.h"
 #include "./ui_mianwidget.h"
-#include "src/CourseScheduleView.h"
-#include <QFileDialog>
 
 MianWidget::MianWidget(QWidget* parent) :
     QWidget(parent), ui(new Ui::MianWidget) {
   ui->setupUi(this);
   ScheduleView = new CourseScheduleView(ui->page_2);
   ui->gridLayout_2->addWidget(ScheduleView);
+  CalenderView = new calendarView(ui->page);
+  ui->gridLayout->addWidget(CalenderView);
   setWindowTitle("一身轻");
 }
 

@@ -2,9 +2,10 @@
 #define MIANWIDGET_H
 
 #include "src/CourseScheduleView.h"
-// #include <QTableWidget>
 #include <QWidget>
-
+#include "src/CourseScheduleView.h"
+#include <QFileDialog>
+#include "src/calendarview.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MianWidget;
@@ -28,5 +29,6 @@ class MianWidget : public QWidget {
   private:
     Ui::MianWidget*     ui;
     CourseScheduleView* ScheduleView;
+    calendarView* CalenderView;
 };
 #endif // MIANWIDGET_H

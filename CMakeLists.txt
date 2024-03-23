@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         src/CommonHelper.h
         src/CourseScheduleView.h src/CourseScheduleView.cpp
+        src/calendarview.h src/calendarview.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
