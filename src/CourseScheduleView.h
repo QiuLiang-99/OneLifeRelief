@@ -1,10 +1,12 @@
-#ifndef SCHEDULECONTROLLER_H
-#define SCHEDULECONTROLLER_H
+#ifndef CourseScheduleView_H
+#define CourseScheduleView_H
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QTableView>
 #include <array>
 #include <qlist.h>
+#include <qtableview.h>
+#include <qwidget.h>
 struct lessonlItem {
     QString loaction     = "";
     QString classname    = "";
@@ -36,9 +38,9 @@ class ScheduleModel : public QAbstractTableModel {
     virtual QVariant data(const QModelIndex& index,
                           int role = Qt::DisplayRole) const override;
 };
-class Schedulecontroller {
+class CourseScheduleView : public QTableView {
   public:
-    Schedulecontroller(QTableView*);
+    explicit CourseScheduleView(QWidget* parent = nullptr);
     void    setHorizontalHead(const QStringList&);
     void    setVerticalHead(const QStringList&);
     void    setModel(ScheduleModel*);
@@ -48,8 +50,7 @@ class Schedulecontroller {
     void    setSpan(int, int, int, int);
 
   private:
-    QTableView*    target;
     ScheduleModel* lessonModel;
 };
 
-#endif // SCHEDULECONTROLLER_H
+#endif // CourseScheduleView_H

@@ -1,7 +1,7 @@
 #ifndef MIANWIDGET_H
 #define MIANWIDGET_H
 
-#include "src/schedulecontroller.h"
+#include "src/CourseScheduleView.h"
 // #include <QTableWidget>
 #include <QWidget>
 
@@ -27,6 +27,6 @@ class MianWidget : public QWidget {
 
   private:
     Ui::MianWidget*     ui;
-    Schedulecontroller* scheduler;
+    CourseScheduleView* ScheduleView;
 };
 #endif // MIANWIDGET_H

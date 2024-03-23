@@ -1,12 +1,13 @@
 #include "mianwidget.h"
 #include "./ui_mianwidget.h"
-#include "src/schedulecontroller.h"
+#include "src/CourseScheduleView.h"
 #include <QFileDialog>
 
 MianWidget::MianWidget(QWidget* parent) :
     QWidget(parent), ui(new Ui::MianWidget) {
   ui->setupUi(this);
-  scheduler = new Schedulecontroller(ui->tableView_2);
+  ScheduleView = new CourseScheduleView(ui->page_2);
+  ui->gridLayout_2->addWidget(ScheduleView);
   setWindowTitle("一身轻");
 }
 
@@ -23,5 +24,5 @@ void MianWidget::on_scheduleButton_clicked() {
 }
 
 void MianWidget::on_importButton_clicked() {
-  scheduler->analysisjson(scheduler->openLessonjsonPath());
+  ScheduleView->analysisjson(ScheduleView->openLessonjsonPath());
 }

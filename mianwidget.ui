@@ -222,9 +222,6 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="1" column="0">
-        <widget class="QTableView" name="tableView_2"/>
-       </item>
        <item row="0" column="0">
         <widget class="QFrame" name="frame_2">
          <property name="minimumSize">

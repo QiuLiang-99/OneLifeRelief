@@ -1,10 +1,21 @@
-#include "schedulecontroller.h"
+/*
+ * @Author: QiuLiang-99 1297829693@qq.com
+ * @Date: 2024-03-19 12:15:55
+ * @LastEditors: QiuLiang-99 1297829693@qq.com
+ * @LastEditTime: 2024-03-23 11:26:06
+ * @FilePath: \OneLifeRelief\src\CourseScheduleView.cpp
+ * @Description:
+ *
+ * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved.
+ */
+#include "CourseScheduleView.h"
 #include <QDatetime>
 #include <QFileDialog>
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QString>
 #include <array>
+#include <qabstractbutton.h>
 #include <qcontainerfwd.h>
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -14,11 +25,13 @@
 #include <qlist.h>
 #include <qlogging.h>
 #include <qnamespace.h>
+#include <qpushbutton.h>
+#include <qwidget.h>
 #include <qwindowdefs_win.h>
 
-Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
-  lessonModel = new ScheduleModel(target);
-  target->setModel(lessonModel);
+CourseScheduleView::CourseScheduleView(QWidget* parent) : QTableView(parent) {
+  lessonModel = new ScheduleModel(this);
+  //this->setModel(lessonModel);
 
   QStringList weeksName;
   weeksName << "星期一"
@@ -28,8 +41,8 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
             << "星期五"
             << "星期六"
             << "星期天";
-  // TEST
   setHorizontalHead(weeksName);
+
   QStringList           timingofClass;
   std::array<QTime, 12> timeofLesson = {
       QTime(8, 0),   QTime(8, 55),  QTime(9, 55),  QTime(10, 50),
@@ -45,6 +58,24 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
     timingofClass << QString::number(t) + "\n" + DtoS(timeofLesson.at(i++));
   };
   setVerticalHead(timingofClass);
+  // test
+  QAbstractButton* btn = this->findChild<QAbstractButton*>();
+  qDebug() << btn;
+  btn->setText(QStringLiteral("序号"));
+  // btn->installEventFilter(this); /*注册事件 CPersonMng::eventFilter*/
+  // QStyleOptionHeader opt;
+  // btn->setText("const QString &text");
+  btn->setVisible(true);
+  qDebug() << this->children();
+  // auto e = new QPushButton("????", this);
+  //  QHBoxLayout *hbox = new QHBoxLayout(ww); //创建一个水平布局器，并绑定到ww
+  //  hbox->setMargin(0); //设置布局器边界为0，否则会影响后面组件的显示
+  //  QLabel* lab = new QLabel("sky"); // 创建一个文本标签，打上想要显示的文本
+  //  lab->setAlignment(Qt::AlignCenter); // 设置文本为居中显示
+  //  hbox->addWidget(lab);               // 把文本标签添加到布局器
+  /**QWidget* widget = new QWidget();
+  widget->setWindowIconText("what can i say?");
+  this->setCornerWidget(widget);*/
 }
 /**
  * @description:
@@ -57,11 +88,11 @@ Schedulecontroller::Schedulecontroller(QTableView* object) : target(object) {
  * @param {int} d columnSpanCount： 要合并多少列。如： 要合并为 2
  * 列，则此处为：2
  */
-void Schedulecontroller::setSpan(int a, int b, int c, int d = 1) {
-  target->setSpan(a, b, c, d);
+void CourseScheduleView::setSpan(int a, int b, int c, int d = 1) {
+  this->setSpan(a, b, c, d);
 }
 
-void Schedulecontroller::setHorizontalHead(
+void CourseScheduleView::setHorizontalHead(
     const QStringList& labels) { // 水平表头
   QHeaderView*        header = new QHeaderView(Qt::Horizontal);
   QStandardItemModel* model  = new QStandardItemModel;
@@ -70,11 +101,10 @@ void Schedulecontroller::setHorizontalHead(
   model->setHorizontalHeaderLabels(labels);
   header->setModel(model);
   header->setDefaultAlignment(Qt::AlignCenter); // 设置水平表头文本居中显示
-  target->setHorizontalHeader(header);
-  // target->setHorizontalHeaderLabels
+  this->setHorizontalHeader(header);
 }
 
-void Schedulecontroller::setVerticalHead(
+void CourseScheduleView::setVerticalHead(
     const QStringList& labels) { // 竖直表头
   QHeaderView*        header = new QHeaderView(Qt::Vertical);
   QStandardItemModel* model  = new QStandardItemModel;
@@ -82,9 +112,9 @@ void Schedulecontroller::setVerticalHead(
   model->setVerticalHeaderLabels(labels);
   header->setModel(model);
   header->setDefaultAlignment(Qt::AlignCenter); // 设置竖直表头文本居中显示
-  target->setVerticalHeader(header);
+  this->setVerticalHeader(header);
 }
-QString Schedulecontroller::openLessonjsonPath() {
+QString CourseScheduleView::openLessonjsonPath() {
   // 定义文件对话框类
   QFileDialog* fileDialog = new QFileDialog(nullptr);
   // 定义文件对话框标题
@@ -105,7 +135,7 @@ QString Schedulecontroller::openLessonjsonPath() {
   return fileNames.at(0);
 }
 
-void Schedulecontroller::analysisjson(QString path) {
+void CourseScheduleView::analysisjson(QString path) {
   QFile file(path);
   file.open(QIODevice::ReadOnly);
   QByteArray data = file.readAll();
@@ -122,26 +152,26 @@ void Schedulecontroller::analysisjson(QString path) {
   if (obj.contains("kbList")) {
     QJsonValue  arrayTemp = obj.value("kbList");
     QJsonArray  array     = arrayTemp.toArray();
-    QStringList targetValue;
-    targetValue << "cdmc"  //"实A-206"
-                << "jcor"  //"3-5"
-                << "kcmc"  // Excel数据处理与应用
-                << "xm"    //"原冠秀"
-                << "xqjmc" //"星期四"
-                << "zcd";  //"1-17周(单)"
+    QStringList jsonValue;
+    jsonValue << "cdmc"  //"实A-206"
+              << "jcor"  //"3-5"
+              << "kcmc"  // Excel数据处理与应用
+              << "xm"    //"原冠秀"
+              << "xqjmc" //"星期四"
+              << "zcd";  //"1-17周(单)"
     auto OtoS = [&](const QJsonObject subObj, const QString& s) {
       return subObj.value(s).toString();
     };
     for (int i = 0, V = 0; i < array.size(); i++, V = 0) {
       QJsonValue  sub          = array.at(i);
       QJsonObject subObj       = sub.toObject();
-      QString     loaction     = OtoS(subObj, targetValue.at(V++)); //"实A-206"
-      QString     timeoflesson = OtoS(subObj, targetValue.at(V++)); //"3-5"
-      QString     classname    = OtoS(subObj, targetValue.at(V++));
+      QString     loaction     = OtoS(subObj, jsonValue.at(V++)); //"实A-206"
+      QString     timeoflesson = OtoS(subObj, jsonValue.at(V++)); //"3-5"
+      QString     classname    = OtoS(subObj, jsonValue.at(V++));
       // Excel数据处理与应用
-      QString     teachername = OtoS(subObj, targetValue.at(V++)); //"原冠秀"
-      QString     dayofweek   = OtoS(subObj, targetValue.at(V++)); //"星期四"
-      QString weeks = OtoS(subObj, targetValue.at(V++)); // todo "1-17周(单)"
+      QString     teachername  = OtoS(subObj, jsonValue.at(V++)); //"原冠秀"
+      QString     dayofweek    = OtoS(subObj, jsonValue.at(V++)); //"星期四"
+      QString weeks = OtoS(subObj, jsonValue.at(V++)); // todo "1-17周(单)"
       lessonlItem e = {loaction,  classname, teachername,
                        dayofweek, weeks,     timeoflesson};
       lessonModel->analysislessonlItem(e);
@@ -183,7 +213,7 @@ QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
     }
     auto subData = ScheduleData.at(index.column());
     // todo need if
-    if (subData.at(index.row())) {
+    if (subData.at(index.row())) { // 如果目标数据为空则提前返回
       return QVariant();
     }
     auto    obj = subData.at(index.row());
