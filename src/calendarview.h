@@ -2,28 +2,11 @@
 #define CALENDARVIEW_H
 
 #include <QTreeView>
-#include <memory>
-// person信息
-typedef struct Person_t {
-    QString name;  // 姓名
-    QString sex;   // 性别
-    int     age;   // 年龄
-    QString phone; // 电话号码
-    Person_t() {
-      age = 0;
-    }
-} Person;
-
-// 省份信息
-typedef struct Province_t {
-    QString          name;
-    QVector<Person*> people;
-} Province;
 class TreeItem {
   public:
-    explicit TreeItem(QVariantList data, TreeItem* parentItem = nullptr);
+    explicit TreeItem(QList<QVariant> data, TreeItem* parentItem = nullptr);
 
-    void appendChild(std::unique_ptr<TreeItem>&& child);
+    void appendChild(TreeItem* child);
 
     TreeItem* child(int row);
     int       childCount() const;
@@ -33,9 +16,9 @@ class TreeItem {
     TreeItem* parentItem();
 
   private:
-    std::vector<std::unique_ptr<TreeItem>> m_childItems;
-    QVariantList                           m_itemData;
-    TreeItem*                              m_parentItem;
+    std::vector<TreeItem*> m_childItems;
+    QList<QVariant>        m_itemData;
+    TreeItem*              m_parentItem;
 };
 class TreeModel : public QAbstractItemModel {
     Q_OBJECT
@@ -59,19 +42,7 @@ class TreeModel : public QAbstractItemModel {
     int           columnCount(const QModelIndex& parent = {}) const override;
 
   private:
-    static void setupModelData(const QList<QStringView>& lines,
-                               TreeItem*                 parent) {
-      QVariantList list;
-      for (const auto& part : lines) {
-        QString temp(part.data(), static_cast<int>(part.size()));
-        list.append(temp);
-      }
-
-      auto n = std::make_unique<TreeItem>(list, nullptr); // test
-      parent->appendChild(std::move(n));
-    };
-
-    std::unique_ptr<TreeItem> rootItem;
+    TreeItem* rootItem;
 };
 class calendarView : public QTreeView {
   public:

@@ -1,25 +1,28 @@
 #include "calendarview.h"
+#include <qdatetime.h>
+#include <qlist.h>
 #include <qtreeview.h>
+#include <qvariant.h>
 
-TreeItem::TreeItem(QVariantList data, TreeItem* parent) :
-    m_itemData(std::move(data)), m_parentItem(parent) {
+TreeItem::TreeItem(QList<QVariant> data, TreeItem* parent) :
+    m_itemData(data), m_parentItem(parent) {
 }
-void TreeItem::appendChild(std::unique_ptr<TreeItem>&& child) {
-  m_childItems.push_back(std::move(child));
+void TreeItem::appendChild(TreeItem* child) {
+  m_childItems.push_back(child);
 }
 TreeItem* TreeItem::child(int row) {
-  return row >= 0 && row < childCount() ? m_childItems.at(row).get() : nullptr;
+  return row >= 0 && row < childCount() ? m_childItems.at(row) : nullptr;
 }
 int TreeItem::childCount() const {
   return int(m_childItems.size());
 }
 int TreeItem::row() const {
   if (m_parentItem == nullptr) return 0;
-  const auto it = std::find_if(
-      m_parentItem->m_childItems.cbegin(), m_parentItem->m_childItems.cend(),
-      [this](const std::unique_ptr<TreeItem>& treeItem) {
-        return treeItem.get() == this;
-      });
+  const auto it = std::find_if(m_parentItem->m_childItems.cbegin(),
+                               m_parentItem->m_childItems.cend(),
+                               [this](const TreeItem* treeItem) {
+                                 return treeItem == this;
+                               });
 
   if (it != m_parentItem->m_childItems.cend())
     return std::distance(m_parentItem->m_childItems.cbegin(), it);
@@ -38,9 +41,16 @@ TreeItem* TreeItem::parentItem() {
 //---------------------------------------------------------------------------------------
 
 TreeModel::TreeModel(const QString& data, QObject* parent) :
-    QAbstractItemModel(parent), rootItem(std::make_unique<TreeItem>(
-                                    QVariantList{tr("Title"), tr("Summary")})) {
-  setupModelData(QStringView{data}.split(u'\n'), rootItem.get());
+    QAbstractItemModel(parent) {
+  QList<QVariant> e = {"名称", "状态", "类型", "截止日期", ""};
+  rootItem          = new TreeItem(e);
+  auto            n = QStringView{data}.split('-');
+  QList<QVariant> t;
+  for (auto& index : n) {
+    t.append(index.toString());
+  }
+  auto i = new TreeItem(t, rootItem); // test
+  rootItem->appendChild(i);
 }
 TreeModel::~TreeModel() = default;
 QModelIndex TreeModel::index(int                row,
@@ -50,7 +60,7 @@ QModelIndex TreeModel::index(int                row,
 
   TreeItem* parentItem = parent.isValid() ?
                              static_cast<TreeItem*>(parent.internalPointer()) :
-                             rootItem.get();
+                             rootItem;
 
   if (auto* childItem = parentItem->child(row))
     return createIndex(row, column, childItem);
@@ -62,7 +72,7 @@ QModelIndex TreeModel::parent(const QModelIndex& index) const {
   auto*     childItem  = static_cast<TreeItem*>(index.internalPointer());
   TreeItem* parentItem = childItem->parentItem();
 
-  return parentItem != rootItem.get() ?
+  return parentItem != rootItem ?
              createIndex(parentItem->row(), 0, parentItem) :
              QModelIndex{};
 }
@@ -72,7 +82,7 @@ int TreeModel::rowCount(const QModelIndex& parent) const {
   const TreeItem* parentItem =
       parent.isValid() ?
           static_cast<const TreeItem*>(parent.internalPointer()) :
-          rootItem.get();
+          rootItem;
 
   return parentItem->childCount();
 }
@@ -101,4 +111,5 @@ QVariant TreeModel::headerData(int             section,
 //---------------------------------------------------------------------------------------
 calendarView::calendarView(QWidget* parent) : QTreeView(parent) {
   taskandGoalModel = new TreeModel("任务");
+  setModel(taskandGoalModel);
 }
