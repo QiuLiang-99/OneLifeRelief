@@ -8,15 +8,16 @@ TreeItem::TreeItem(QList<QVariant> data, TreeItem* parent) :
     m_itemData(data), m_parentItem(parent) {
 }
 void TreeItem::appendChild(TreeItem* child) {
-  m_childItems.push_back(child);
+  m_childItems.push_back(child); // 向节点添加一个子节点
 }
-TreeItem* TreeItem::child(int row) {
+TreeItem* TreeItem::child(
+    int row) { // 检查目标是否合法然后返回此节点的目标子节点
   return row >= 0 && row < childCount() ? m_childItems.at(row) : nullptr;
 }
-int TreeItem::childCount() const {
+int TreeItem::childCount() const { // 获取当前节点的子节点数量
   return int(m_childItems.size());
 }
-int TreeItem::row() const {
+int TreeItem::row() const { // 如果父节点中的子节点等于当前节点就返回迭代器值
   if (m_parentItem == nullptr) return 0;
   const auto it = std::find_if(m_parentItem->m_childItems.cbegin(),
                                m_parentItem->m_childItems.cend(),
@@ -24,9 +25,9 @@ int TreeItem::row() const {
                                  return treeItem == this;
                                });
 
-  if (it != m_parentItem->m_childItems.cend())
+  if (it != m_parentItem->m_childItems.cend()) // 计算it到first的距离
     return std::distance(m_parentItem->m_childItems.cbegin(), it);
-  Q_ASSERT(false); // should not happen
+  Q_ASSERT(false);                             // should not happen
   return -1;
 }
 int TreeItem::columnCount() const {
@@ -42,14 +43,19 @@ TreeItem* TreeItem::parentItem() {
 
 TreeModel::TreeModel(const QString& data, QObject* parent) :
     QAbstractItemModel(parent) {
-  QList<QVariant> e = {"名称", "状态", "类型", "截止日期", ""};
-  rootItem          = new TreeItem(e);
-  auto            n = QStringView{data}.split('-');
-  QList<QVariant> t;
+  QList<QVariant> rootItemText;
+  rootItemText << "名称"
+               << "状态"
+               << "类型"
+               << "截止日期"
+               << "紧要程度";
+  rootItem          = new TreeItem(rootItemText);
+  auto            n = data.split('-');
+  QList<QVariant> modelData;
   for (auto& index : n) {
-    t.append(index.toString());
+    modelData.append(index);
   }
-  auto i = new TreeItem(t, rootItem); // test
+  auto i = new TreeItem(modelData, rootItem); // todo
   rootItem->appendChild(i);
 }
 TreeModel::~TreeModel() = default;
@@ -110,6 +116,6 @@ QVariant TreeModel::headerData(int             section,
 }
 //---------------------------------------------------------------------------------------
 calendarView::calendarView(QWidget* parent) : QTreeView(parent) {
-  taskandGoalModel = new TreeModel("任务");
+  taskandGoalModel = new TreeModel("任务"); // todo
   setModel(taskandGoalModel);
 }
