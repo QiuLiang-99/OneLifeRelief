@@ -17,9 +17,6 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mianwidget.cpp
-        mianwidget.h
-        mianwidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -29,6 +26,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/CommonHelper.h
         src/CourseScheduleView.h src/CourseScheduleView.cpp
         src/calendarview.h src/calendarview.cpp
+        src/mainwindow.h src/mainwindow.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:
