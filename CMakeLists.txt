@@ -25,7 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         src/CommonHelper.h
         src/CourseScheduleView.h src/CourseScheduleView.cpp
-        src/calendarview.h src/calendarview.cpp
+        src/taskandGoalView.h src/taskandGoalView.cpp
         src/mainwindow.h src/mainwindow.cpp
 
 

@@ -1,24 +1,53 @@
-#ifndef CALENDARVIEW_H
-#define CALENDARVIEW_H
+#ifndef taskandGoalView_H
+#define taskandGoalView_H
 
 #include <QTreeView>
+#include <qdatetime.h>
+enum Priority {
+  TOP,
+  HIGH,
+  LOWER,
+  WAIT
+};
+enum TaskType {
+  STUDY,  // 学习
+  WORK,   // 工作
+  EXAM,   // 考试
+  HABIT,  // 习惯
+  CINEMA, // 电影
+  TRIP,   // 旅游
+};
 class TreeItem {
+    // AS a treeitem
+
   public:
-    explicit TreeItem(QList<QVariant> data, TreeItem* parentItem = nullptr);
-
-    void appendChild(TreeItem* child);
-
+    explicit TreeItem(QVector<QVariant> data, TreeItem* parentItem = nullptr);
+    void      appendChild(TreeItem* child);
     TreeItem* child(int row);
     int       childCount() const;
     int       columnCount() const;
     QVariant  data(int column) const;
     int       row() const;
-    TreeItem* parentItem();
+    TreeItem* parent();
 
   private:
-    std::vector<TreeItem*> m_childItems;
-    QList<QVariant>        m_itemData;
-    TreeItem*              m_parentItem;
+    QVector<TreeItem*> childItems;
+    QVector<QVariant>  itemData;
+    TreeItem*          parentItem;
+
+    // As data storage
+
+  private:
+    QString   name;
+    QString   description;
+    QDate     createdTime;
+    QDate     startTime;
+    QDate     endTime;
+    bool      isCompleted;
+    Priority  priority;
+    TaskType  taskType;
+    // todo 标签功能
+    QDateTime reminders;
 };
 class TreeModel : public QAbstractItemModel {
     Q_OBJECT
@@ -44,12 +73,12 @@ class TreeModel : public QAbstractItemModel {
   private:
     TreeItem* rootItem;
 };
-class calendarView : public QTreeView {
+class taskandGoalView : public QTreeView {
   public:
-    explicit calendarView(QWidget* parent = nullptr);
+    explicit taskandGoalView(QWidget* parent = nullptr);
 
   private:
     TreeModel* taskandGoalModel;
 };
 
-#endif // CALENDARVIEW_H
+#endif // taskandGoalView_H
