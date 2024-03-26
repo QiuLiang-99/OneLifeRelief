@@ -1,8 +1,11 @@
 #include "mainwindow.h"
+#include "src/CourseScheduleView.h"
 #include "src/taskandGoalView.h"
+#include "src/timeline.h"
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
+
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
   setupUI();
@@ -14,6 +17,7 @@ MainWindow::~MainWindow() {
 void MainWindow::setupUI() {
   this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
   gridLayout = new QGridLayout(this); // 主要布局
+
   gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
   gridLayout->setContentsMargins(0, 0, 0, 0);
 #if defined(Q_OS_WIN)
@@ -58,16 +62,32 @@ void MainWindow::setupUI() {
   CourseScheduleView* ScheduleView = new CourseScheduleView(page_1);
   page_1H->addWidget(ScheduleView);
   mainWidget->addWidget(page_1);
+
   QWidget*         page_2   = new QWidget;
   QHBoxLayout*     page_2H  = new QHBoxLayout(page_2);
   taskandGoalView* taskView = new taskandGoalView;
-  // CourseScheduleView* ScheduleView = new CourseScheduleView(page_2);
   page_2H->setSpacing(0); // 表示各个控件之间的上下间距
   page_2H->setContentsMargins(0, 0, 0, 0);
   page_2H->addWidget(taskView);
   mainWidget->addWidget(page_2);
 
+  QWidget*     page_3  = new QWidget;
+  QHBoxLayout* page_3H = new QHBoxLayout(page_3);
+  // taskandGoalView* taskView = new taskandGoalView;
+  QPushButton* test    = new QPushButton(page_3);
+  page_3H->setSpacing(0); // 表示各个控件之间的上下间距
+  page_3H->setContentsMargins(0, 0, 0, 0);
+  page_3H->addWidget(test);
+  mainWidget->addWidget(page_3);
+  Timeline* timeLine = new Timeline(this);
+  page_3H->addWidget(timeLine);
+  connect(test, &QPushButton::clicked, this, &MainWindow::on_test_clicked);
+
 #elif defined(Q_OS_ANDROID)
   QLabel* l = new QLabel("Hello Android");
 #endif
+}
+
+void MainWindow::on_test_clicked() {
+  qDebug() << "yes";
 }

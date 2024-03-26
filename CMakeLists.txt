@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/CourseScheduleView.h src/CourseScheduleView.cpp
         src/taskandGoalView.h src/taskandGoalView.cpp
         src/mainwindow.h src/mainwindow.cpp
+        src/timeline.h src/timeline.cpp
 
 
     )

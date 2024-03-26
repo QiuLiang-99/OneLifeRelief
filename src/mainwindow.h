@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "src/CourseScheduleView.h"
 #include <QLabel>
 #include <QStackedWidget>
 #include <QWidget>
@@ -9,6 +8,7 @@
 #include <qframe.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+#include <qtmetamacros.h>
 #include <qwidget.h>
 
 #include <QButtonGroup>
@@ -25,6 +25,8 @@ class MainWindow : public QWidget {
     QGridLayout*    gridLayout;
     QVBoxLayout*    buttonlayout;
     QStackedWidget* mainWidget;
+  private slots:
+    void on_test_clicked();
 };
 
 #endif // MAINWINDOW_H
