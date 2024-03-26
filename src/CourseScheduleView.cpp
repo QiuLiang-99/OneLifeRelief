@@ -17,7 +17,7 @@
 #include <qnamespace.h>
 #include <qpushbutton.h>
 #include <qwidget.h>
-#include <qwindowdefs_win.h>
+//#include <qwindowdefs_win.h>
 
 ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
 }

@@ -32,4 +32,28 @@ void Timeline::paintEvent(QPaintEvent* event) {
         x - 10, startY + 20,
         QString::number((x - startX) / interval)); // 在刻度位置绘制刻度值
   }
+  // 设置中间矩形的大小和位置
+  int rectWidth  = 100;
+  int rectHeight = 50;
+  int rectX      = (width() - rectWidth) / 2; // 计算矩形的起始 x 坐标
+  int rectY = (height() - rectHeight) / 2;    // 计算矩形的起始 y 坐标
+
+  // 设置裁剪区域，仅在矩形内部绘制
+  painter.setClipRect(rectX, rectY, rectWidth, rectHeight);
+
+  // 绘制中间矩形
+  painter.drawRect(rectX, rectY, rectWidth, rectHeight);
+
+  /*auto rect = event->rect();
+    painter.setRenderHint(QPainter::Antialiasing,true);
+    painter.setBrush(Qt::cyan);
+    QPainterPath path;
+    path.addRoundRect(rect.adjusted(20,20,-20,-20),60,60);
+    painter.setClipPath(path);
+    painter.drawRect(rect);*/
+
+  /*QRect rect;
+QPainterPath path;
+path.addRoundedRect(rect , 40, 40);
+painter->setClipPath(path);*/
 }
