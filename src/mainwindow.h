@@ -28,6 +28,7 @@ class MainWindow : public QWidget {
     QGridLayout*    gridLayout;
     QGridLayout*    buttonlayout;
     QStackedWidget* mainWidget;
+    QButtonGroup*   tablebtnGroup;
   private slots:
     void on_test_clicked();
 };

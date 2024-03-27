@@ -73,7 +73,7 @@ void MainWindow::setupUI() {
   // gridLayout->addLayout(buttonlayout, 0, 1);
   gridLayout->addWidget(mainWidget, 1, 1);
   // 创建table按钮，切换界面
-  QButtonGroup* tablebtnGroup = new QButtonGroup(this);
+  tablebtnGroup = new QButtonGroup(this);
   tablebtnGroup->setExclusive(true);
   QList<QPushButton*> tablebtn = {
       new QPushButton("课表"), new QPushButton("日程"), new QPushButton("今天"),
@@ -130,12 +130,19 @@ void MainWindow::setupUI() {
 }
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
+    int index = 0;
     if (this->geometry().width() < 500) {
       gridLayout->removeItem(buttonlayout);
       gridLayout->addLayout(buttonlayout, 1, 0);
+      for (auto i : tablebtnGroup->buttons()) {
+        buttonlayout->addWidget(i, index++, 0);
+      }
     } else if (this->geometry().width() > 500) {
       gridLayout->removeItem(buttonlayout);
       gridLayout->addLayout(buttonlayout, 2, 1);
+      for (auto i : tablebtnGroup->buttons()) {
+        buttonlayout->addWidget(i, 0, index++);
+      }
     }
   }
 }
