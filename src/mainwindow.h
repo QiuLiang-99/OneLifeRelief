@@ -20,10 +20,13 @@ class MainWindow : public QWidget {
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
+  protected:
+    virtual void resizeEvent(QResizeEvent* event) override;
+
   public:
     void            setupUI();
     QGridLayout*    gridLayout;
-    QVBoxLayout*    buttonlayout;
+    QGridLayout*    buttonlayout;
     QStackedWidget* mainWidget;
   private slots:
     void on_test_clicked();
