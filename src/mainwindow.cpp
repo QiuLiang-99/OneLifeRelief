@@ -2,6 +2,7 @@
 #include "src/CourseScheduleView.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
+#include <qcontainerfwd.h>
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
@@ -54,90 +55,72 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
 
 MainWindow::~MainWindow() {
 }
-
 void MainWindow::setupUI() {
-  this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
-  gridLayout = new QGridLayout(this); // 主要布局
+  newWidget();
+  QStringList pageName;
+  auto        e = pageName.cbegin();
+  pageName << "课表"
+           << "日程"
+           << "今天"
+           << "设置";
+  int index = 0;
+  newPage(new CourseScheduleWidget, "课表", index++);
+  newPage(new taskandGoalWidget, "日程", index++);
+  newPage(new TimeLineWidget, "今天", index++);
+  newPage(new CourseScheduleView, "课表", index++);
 
-  gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
-  gridLayout->setContentsMargins(0, 0, 0, 0);
-#if defined(Q_OS_WIN)
-  // 创建布局放按钮
-  buttonlayout = new QGridLayout(); // 左侧一个垂直布局放按钮组
-  buttonlayout->setContentsMargins(0, 0, 0, 0);
-  buttonlayout->setSizeConstraint(QLayout::SetFixedSize);
-  buttonlayout->setSpacing(0);
-
-  mainWidget = new QStackedWidget(this); // 右侧一个stacked显示不同的界面
-
-  // gridLayout->addLayout(buttonlayout, 0, 1);
-  gridLayout->addWidget(mainWidget, 1, 1);
-  // 创建table按钮，切换界面
-  QButtonGroup* tablebtnGroup = new QButtonGroup(this);
-  tablebtnGroup->setExclusive(true);
-  QList<QPushButton*> tablebtn = {
-      new QPushButton("课表"), new QPushButton("日程"), new QPushButton("今天"),
-      new QPushButton("设置")};
-  QSize buttonSize(100, 25);
-  int   index = 0;
-  // todo 改循环模式
-  for (auto pushbutton : tablebtn) {
-    pushbutton->setMinimumSize(buttonSize);
-    pushbutton->setCheckable(true); // 设置按钮可以按下不抬起
-    buttonlayout->addWidget(pushbutton, 0, index);
-    tablebtnGroup->addButton(pushbutton, index++);
-    // pushbutton->setStyleSheet("pushbutton{margin:0}");
-  }
-  tablebtn.at(0)->setChecked(true);
+  tablebtnGroup->button(0)->setChecked(true);
   connect(tablebtnGroup, &QButtonGroup::idClicked, this, [&](int id) {
     mainWidget->setCurrentIndex(id); // 用按钮对应的id切换stackedwidget的页面
   });
-  // new一个高可以拉伸，宽度固定的弹簧在layout里直接additem(sparcer_item)即可
-  QSpacerItem* VerticalSparcer =
-      new QSpacerItem(0, 160, QSizePolicy::Fixed, QSizePolicy::Expanding);
-  // buttonlayout->addItem(VerticalSparcer);
-  //  todo 把每一个page写成一个函数
-  QWidget*     page_1  = new QWidget;
-  QHBoxLayout* page_1H = new QHBoxLayout(page_1);
-  page_1H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_1H->setContentsMargins(0, 0, 0, 0);
-  CourseScheduleView* ScheduleView = new CourseScheduleView(page_1);
-  page_1H->addWidget(ScheduleView);
-  mainWidget->addWidget(page_1);
-
-  QWidget*         page_2   = new QWidget;
-  QHBoxLayout*     page_2H  = new QHBoxLayout(page_2);
-  taskandGoalView* taskView = new taskandGoalView;
-  page_2H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_2H->setContentsMargins(0, 0, 0, 0);
-  page_2H->addWidget(taskView);
-  mainWidget->addWidget(page_2);
-
-  QWidget*     page_3  = new QWidget;
-  QHBoxLayout* page_3H = new QHBoxLayout(page_3);
-  // taskandGoalView* taskView = new taskandGoalView;
-  QPushButton* test    = new QPushButton(page_3);
-  page_3H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_3H->setContentsMargins(0, 0, 0, 0);
-  page_3H->addWidget(test);
-  mainWidget->addWidget(page_3);
-  Timeline* timeLine = new Timeline(this);
-  page_3H->addWidget(timeLine);
-  connect(test, &QPushButton::clicked, this, &MainWindow::on_test_clicked);
-
+#if defined(Q_OS_WIN)
 #elif defined(Q_OS_ANDROID)
 #endif
 }
+void MainWindow::newPage(QWidget* page, const QString& name, const int& id) {
+  QPushButton* btn = new QPushButton(name);
+  QSize        buttonSize(100, 25);
+  btn->setMinimumSize(buttonSize);
+  btn->setCheckable(true); // 设置按钮可以按下不抬起
+  tablebtnGroup->addButton(btn, id);
+  mainWidget->addWidget(page);
+}
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
+    int index = 0;
     if (this->geometry().width() < 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 1, 0);
+      gridLayout->addLayout(buttonlayout, 1, 0); // 放到左侧，竖着
+      for (auto i : tablebtnGroup->buttons()) {
+        buttonlayout->addWidget(i, index++, 0);
+      }
+      QSpacerItem* Vsparcer = // 添加弹簧防止太多空隙
+          new QSpacerItem(160, 0, QSizePolicy::Fixed, QSizePolicy::Expanding);
+      buttonlayout->addItem(Vsparcer, 10, 0);
     } else if (this->geometry().width() > 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 2, 1);
+      gridLayout->addLayout(buttonlayout, 2, 1); // 放到下方，横着
+      for (auto i : tablebtnGroup->buttons()) {
+        buttonlayout->addWidget(i, 0, index++);
+      }
+      // bug 窗口不贴合底部
     }
   }
+}
+
+void MainWindow::newWidget() {
+  this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
+  gridLayout = new QGridLayout(this); // 主要布局
+  gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
+  gridLayout->setContentsMargins(0, 0, 0, 0);
+  buttonlayout = new QGridLayout();   // 左侧一个垂直布局放按钮组
+  buttonlayout->setContentsMargins(0, 0, 0, 0);
+  buttonlayout->setSizeConstraint(QLayout::SetFixedSize);
+  buttonlayout->setSpacing(0);
+  mainWidget = new QStackedWidget(this); // 用stacked显示不同的界面
+  gridLayout->addWidget(mainWidget, 1, 1);
+  tablebtnGroup = new QButtonGroup(this);
+  tablebtnGroup->setExclusive(true);
 }
 void MainWindow::on_test_clicked() {
   qDebug() << "yes";
