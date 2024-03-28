@@ -2,7 +2,6 @@
 #include "src/CourseScheduleView.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
-#include <qcontainerfwd.h>
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
@@ -56,20 +55,10 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
 
 MainWindow::~MainWindow() {
 }
-void MainWindow::setupUI() {
-  newWidget();
-  QStringList pageName;
-  auto        e = pageName.cbegin();
-  pageName << "课表"
-           << "日程"
-           << "今天"
-           << "设置";
-  int index = 0;
-  newPage(new CourseScheduleWidget, "课表", index++);
-  newPage(new taskandGoalWidget, "日程", index++);
-  newPage(new TimeLineWidget, "今天", index++);
-  newPage(new CourseScheduleView, "课表", index++);
 
+void MainWindow::setupUI() {
+  this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
+  gridLayout = new QGridLayout(this); // 主要布局
 
   gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
   gridLayout->setContentsMargins(0, 0, 0, 0);
@@ -100,25 +89,15 @@ void MainWindow::setupUI() {
   mainWidget->addWidget(new CourseScheduleWidget);
   mainWidget->addWidget(new taskandGoalWidget);
   mainWidget->addWidget(new TimeLineWidget);
-
 #if defined(Q_OS_WIN)
 #elif defined(Q_OS_ANDROID)
 #endif
-}
-void MainWindow::newPage(QWidget* page, const QString& name, const int& id) {
-  QPushButton* btn = new QPushButton(name);
-  QSize        buttonSize(100, 25);
-  btn->setMinimumSize(buttonSize);
-  btn->setCheckable(true); // 设置按钮可以按下不抬起
-  tablebtnGroup->addButton(btn, id);
-  mainWidget->addWidget(page);
 }
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
     int index = 0;
     if (this->geometry().width() < 500) {
       gridLayout->removeItem(buttonlayout);
-
       gridLayout->addLayout(buttonlayout, 2, 1); // 下方
       for (auto i : tablebtnGroup->buttons()) {
         buttonlayout->addWidget(i, 0, index++);  // 横着
@@ -140,7 +119,6 @@ void MainWindow::newPage(const QString& name) {
   pushbutton->setCheckable(true); // 设置按钮可以按下不抬起
   buttonlayout->addWidget(pushbutton, 0, index);
   tablebtnGroup->addButton(pushbutton, index++);
-
 }
 void MainWindow::on_test_clicked() {
   qDebug() << "yes";

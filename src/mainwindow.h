@@ -26,18 +26,15 @@ class MainWindow : public QWidget {
   public:
     void newPage(const QString&);
 
-
   protected:
     virtual void resizeEvent(QResizeEvent* event) override;
 
-  private:
-    void            newWidget();
+  public:
+    void            setupUI();
     QGridLayout*    gridLayout;
     QGridLayout*    buttonlayout;
-    QButtonGroup*   tablebtnGroup;
     QStackedWidget* mainWidget;
-
-
+    QButtonGroup*   tablebtnGroup;
   private slots:
     void on_test_clicked();
 };
@@ -56,7 +53,6 @@ class CourseScheduleWidget : public QWidget {
 };
 class taskandGoalWidget : public QWidget {
     Q_OBJECT
-
 
   public:
     explicit taskandGoalWidget(QWidget* parent = nullptr) : QWidget(parent) {
