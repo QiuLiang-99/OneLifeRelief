@@ -12,7 +12,7 @@
 // todo 收入支出前后 钱包
 // todo 技能学习 md写法
 // todo 信用卡还款 资金
-// todo 书签 pdf
+// todo 书签 pdf 专注模式
 // todo 所有的map都可以随意改名字ortheyaretemplatejustchose one tocreate
 // todo 生存map之后管理，可以看到进度条，每个project有哪些完成和没完成
 // todo treehead Title Prioritized backlog 表头动item不动
@@ -48,6 +48,7 @@ Done #FFF1E5 #BC4C00
 12
 13
 14*/
+
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
   setupUI();
 }
@@ -61,7 +62,7 @@ void MainWindow::setupUI() {
 
   gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
   gridLayout->setContentsMargins(0, 0, 0, 0);
-#if defined(Q_OS_WIN)
+
   // 创建布局放按钮
   buttonlayout = new QGridLayout(); // 左侧一个垂直布局放按钮组
   buttonlayout->setContentsMargins(0, 0, 0, 0);
@@ -78,6 +79,7 @@ void MainWindow::setupUI() {
   QList<QPushButton*> tablebtn = {
       new QPushButton("课表"), new QPushButton("日程"), new QPushButton("今天"),
       new QPushButton("设置")};
+
   QSize buttonSize(100, 25);
   int   index = 0;
   // todo 改循环模式
@@ -97,34 +99,11 @@ void MainWindow::setupUI() {
       new QSpacerItem(0, 160, QSizePolicy::Fixed, QSizePolicy::Expanding);
   // buttonlayout->addItem(VerticalSparcer);
   //  todo 把每一个page写成一个函数
-  QWidget*     page_1  = new QWidget;
-  QHBoxLayout* page_1H = new QHBoxLayout(page_1);
-  page_1H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_1H->setContentsMargins(0, 0, 0, 0);
-  CourseScheduleView* ScheduleView = new CourseScheduleView(page_1);
-  page_1H->addWidget(ScheduleView);
-  mainWidget->addWidget(page_1);
 
-  QWidget*         page_2   = new QWidget;
-  QHBoxLayout*     page_2H  = new QHBoxLayout(page_2);
-  taskandGoalView* taskView = new taskandGoalView;
-  page_2H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_2H->setContentsMargins(0, 0, 0, 0);
-  page_2H->addWidget(taskView);
-  mainWidget->addWidget(page_2);
-
-  QWidget*     page_3  = new QWidget;
-  QHBoxLayout* page_3H = new QHBoxLayout(page_3);
-  // taskandGoalView* taskView = new taskandGoalView;
-  QPushButton* test    = new QPushButton(page_3);
-  page_3H->setSpacing(0); // 表示各个控件之间的上下间距
-  page_3H->setContentsMargins(0, 0, 0, 0);
-  page_3H->addWidget(test);
-  mainWidget->addWidget(page_3);
-  Timeline* timeLine = new Timeline(this);
-  page_3H->addWidget(timeLine);
-  connect(test, &QPushButton::clicked, this, &MainWindow::on_test_clicked);
-
+  mainWidget->addWidget(new CourseScheduleWidget);
+  mainWidget->addWidget(new taskandGoalWidget);
+  mainWidget->addWidget(new TimeLineWidget);
+#if defined(Q_OS_WIN)
 #elif defined(Q_OS_ANDROID)
 #endif
 }
