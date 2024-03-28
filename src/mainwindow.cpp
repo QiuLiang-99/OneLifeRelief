@@ -2,6 +2,7 @@
 #include "src/CourseScheduleView.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
+#include <qcontainerfwd.h>
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
@@ -28,12 +29,10 @@
 // todo Status board 拖拽选项卡
 /*name inside outside*/
 /*Backlog #DAFBE1 #1F883D
-
 Estimate:0
  Ready #DDF4FF #0969DA
 Estimate:0
 In progress #FFF8C5 #9A6700
-
 Estimate:0
 In review #FBEFFF #8250DF
 Estimate:0
@@ -52,10 +51,8 @@ Done #FFF1E5 #BC4C00
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
   setupUI();
 }
-
 MainWindow::~MainWindow() {
 }
-
 void MainWindow::setupUI() {
   this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
   gridLayout = new QGridLayout(this); // 主要布局
@@ -89,10 +86,10 @@ void MainWindow::setupUI() {
   mainWidget->addWidget(new CourseScheduleWidget);
   mainWidget->addWidget(new taskandGoalWidget);
   mainWidget->addWidget(new TimeLineWidget);
+}
 #if defined(Q_OS_WIN)
 #elif defined(Q_OS_ANDROID)
 #endif
-}
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
     int index = 0;

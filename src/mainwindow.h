@@ -10,6 +10,7 @@
 #include <qboxlayout.h>
 #include <qframe.h>
 #include <qpushbutton.h>
+#include <qscrollarea.h>
 #include <qsize.h>
 #include <qtmetamacros.h>
 #include <qwidget.h>
@@ -70,12 +71,19 @@ class TimeLineWidget : public QWidget {
   public:
     explicit TimeLineWidget(QWidget* parent = nullptr) : QWidget(parent) {
       QHBoxLayout* pageLayout = new QHBoxLayout(this);
-      QPushButton* test       = new QPushButton(this);
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
-      pageLayout->addWidget(test);
-      Timeline* timeLine = new Timeline(this);
-      pageLayout->addWidget(timeLine);
+      QScrollArea* scrollArea               = new QScrollArea;
+      QWidget*     scorllAreaWidgetContents = new QWidget;
+      scorllAreaWidgetContents->setGeometry(2000, 5000, 5000, 5000);
+      QHBoxLayout* scorllAreaLayout = new QHBoxLayout;
+      scorllAreaWidgetContents->setLayout(scorllAreaLayout);
+      Timeline* timeLine = new Timeline;
+      scorllAreaLayout->addWidget(timeLine);
+      scorllAreaLayout->addWidget(new QPushButton("??????????????????"));
+      pageLayout->addWidget(scrollArea);
+      timeLine->setVisible(true);
+      scrollArea->setWidget(scorllAreaWidgetContents);
       // connect(test, &QPushButton::clicked, this,
       // &MainWindow::on_test_clicked);
     };
