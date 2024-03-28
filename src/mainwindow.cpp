@@ -98,16 +98,16 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
     int index = 0;
     if (this->geometry().width() < 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 1, 0); // 横着
+      gridLayout->addLayout(buttonlayout, 2, 1); // 下方
       for (auto i : tablebtnGroup->buttons()) {
-        buttonlayout->addWidget(i, index++, 0);
+        buttonlayout->addWidget(i, 0, index++);  // 横着
       }
     } else if (this->geometry().width() > 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 2, 1); // 竖着
+      gridLayout->addLayout(buttonlayout, 1, 0); // 左侧
       for (auto i : tablebtnGroup->buttons()) {
-        buttonlayout->addWidget(i, 0, index++);
-      }
+        buttonlayout->addWidget(i, index++, 0);  // 竖着
+      }                                          // todo需要一个弹簧
     }
   }
 }
