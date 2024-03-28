@@ -23,6 +23,9 @@ class MainWindow : public QWidget {
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
+  public:
+    void newPage(const QString&);
+
   protected:
     virtual void resizeEvent(QResizeEvent* event) override;
 

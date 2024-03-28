@@ -76,29 +76,15 @@ void MainWindow::setupUI() {
   // 创建table按钮，切换界面
   tablebtnGroup = new QButtonGroup(this);
   tablebtnGroup->setExclusive(true);
-  QList<QPushButton*> tablebtn = {
-      new QPushButton("课表"), new QPushButton("日程"), new QPushButton("今天"),
-      new QPushButton("设置")};
+  newPage("课表");
+  newPage("日程");
+  newPage("今天");
+  newPage("设置");
 
-  QSize buttonSize(100, 25);
-  int   index = 0;
-  // todo 改循环模式
-  for (auto pushbutton : tablebtn) {
-    pushbutton->setMinimumSize(buttonSize);
-    pushbutton->setCheckable(true); // 设置按钮可以按下不抬起
-    buttonlayout->addWidget(pushbutton, 0, index);
-    tablebtnGroup->addButton(pushbutton, index++);
-    // pushbutton->setStyleSheet("pushbutton{margin:0}");
-  }
-  tablebtn.at(0)->setChecked(true);
+  tablebtnGroup->buttons().at(0)->setChecked(true);
   connect(tablebtnGroup, &QButtonGroup::idClicked, this, [&](int id) {
     mainWidget->setCurrentIndex(id); // 用按钮对应的id切换stackedwidget的页面
   });
-  // new一个高可以拉伸，宽度固定的弹簧在layout里直接additem(sparcer_item)即可
-  QSpacerItem* VerticalSparcer =
-      new QSpacerItem(0, 160, QSizePolicy::Fixed, QSizePolicy::Expanding);
-  // buttonlayout->addItem(VerticalSparcer);
-  //  todo 把每一个page写成一个函数
 
   mainWidget->addWidget(new CourseScheduleWidget);
   mainWidget->addWidget(new taskandGoalWidget);
@@ -112,18 +98,27 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
     int index = 0;
     if (this->geometry().width() < 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 1, 0);
+      gridLayout->addLayout(buttonlayout, 1, 0); // 横着
       for (auto i : tablebtnGroup->buttons()) {
         buttonlayout->addWidget(i, index++, 0);
       }
     } else if (this->geometry().width() > 500) {
       gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 2, 1);
+      gridLayout->addLayout(buttonlayout, 2, 1); // 竖着
       for (auto i : tablebtnGroup->buttons()) {
         buttonlayout->addWidget(i, 0, index++);
       }
     }
   }
+}
+void MainWindow::newPage(const QString& name) {
+  QSize        buttonSize(100, 25);
+  static int   index      = 0;
+  QPushButton* pushbutton = new QPushButton(name);
+  pushbutton->setMinimumSize(buttonSize);
+  pushbutton->setCheckable(true); // 设置按钮可以按下不抬起
+  buttonlayout->addWidget(pushbutton, 0, index);
+  tablebtnGroup->addButton(pushbutton, index++);
 }
 void MainWindow::on_test_clicked() {
   qDebug() << "yes";
