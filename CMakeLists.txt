@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/taskandGoalView.h src/taskandGoalView.cpp
         src/mainwindow.h src/mainwindow.cpp
         src/timeline.h src/timeline.cpp
+        src/newtaskwidget.h src/newtaskwidget.cpp
 
 
     )

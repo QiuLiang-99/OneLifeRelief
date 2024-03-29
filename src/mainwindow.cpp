@@ -17,27 +17,13 @@
 // todo 所有的map都可以随意改名字ortheyaretemplatejustchose one tocreate
 // todo 生存map之后管理，可以看到进度条，每个project有哪些完成和没完成
 // todo treehead Title Prioritized backlog 表头动item不动
-/*Status
-    Title
-    Assignees
-        Size
-            Estimate
-                Linked pull requests
-                    Iteration
-                        Start date
-                            End date*/
+
+// todo 自主添加表头，自动调换
+
 // todo Status board 拖拽选项卡
-/*name inside outside*/
-/*Backlog #DAFBE1 #1F883D
-Estimate:0
- Ready #DDF4FF #0969DA
-Estimate:0
-In progress #FFF8C5 #9A6700
-Estimate:0
-In review #FBEFFF #8250DF
-Estimate:0
-Done #FFF1E5 #BC4C00
-0 Estimate:0*/
+// todo通过创建的时间的标签查找
+/*
+
 // todo Roadmap
 /*March 2024
 8

@@ -44,18 +44,22 @@ TreeItem* TreeItem::parent() {
 TreeModel::TreeModel(const QString& data, QObject* parent) :
     QAbstractItemModel(parent) {
   QList<QVariant> rootItemText;
-  rootItemText << "名称"
+  rootItemText << "标题" // todo
                << "状态"
                << "类型"
+               << "标签"
+               << "重复次数"
                << "截止日期"
-               << "紧要程度";
+               << "紧要程度"
+               << "任务链接" // todo url 文件夹 exe
+               << "完成度";
   rootItem          = new TreeItem(rootItemText);
   auto            n = data.split('-');
   QList<QVariant> modelData;
   for (auto& index : n) {
     modelData.append(index);
   }
-  auto i = new TreeItem(modelData, rootItem); // todo
+  TreeItem* i = new TreeItem(modelData, rootItem); // test
   rootItem->appendChild(i);
 }
 TreeModel::~TreeModel() = default;

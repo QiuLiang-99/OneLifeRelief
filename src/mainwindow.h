@@ -75,7 +75,7 @@ class TimeLineWidget : public QWidget {
       pageLayout->setContentsMargins(0, 0, 0, 0);
       QScrollArea* scrollArea               = new QScrollArea;
       QWidget*     scorllAreaWidgetContents = new QWidget;
-      scorllAreaWidgetContents->setGeometry(2000, 5000, 5000, 5000);
+      scorllAreaWidgetContents->setGeometry(0, 0, 5000, 100);
       QHBoxLayout* scorllAreaLayout = new QHBoxLayout;
       scorllAreaWidgetContents->setLayout(scorllAreaLayout);
       Timeline* timeLine = new Timeline;

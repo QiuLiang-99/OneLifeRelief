@@ -3,20 +3,31 @@
 
 #include <QTreeView>
 #include <qdatetime.h>
-enum Priority {
+enum class Priority { // todo 紧急 重要
   TOP,
   HIGH,
   LOWER,
   WAIT
 };
 // book sport
-enum TaskType {
-  STUDY,  // 学习
-  WORK,   // 工作
-  EXAM,   // 考试
-  HABIT,  // 习惯
-  CINEMA, // 电影
-  TRIP,   // 旅游
+enum class TaskType {
+  Notype,
+  STUDY,            // 学习
+  WORK,             // 工作
+  EXAM,             // 考试
+  HABIT,            // 习惯
+  CINEMA,           // 电影
+  TRIP,             // 旅游
+};
+enum class Status { /*name inside outside*/
+  NoStatus,
+  Backlog,          // This item hasn't been started #DAFBE1 #1F883D
+  Ready,            // This is ready to be picked up #DDF4FF #0969DA
+  InProgress,       // This is actively being worked on #FFF8C5 #9A6700
+  Inreview,         // This item is in review  #FBEFFF #8250DF
+  Done,             // This has been completed #FFF1E5 #BC4C00
+  Todo,             // #DAFBE1 #1F883D
+  NotPlanned,       // This is not planned currently #FFEFF7 #BF3989
 };
 class TreeItem {
     // AS a treeitem
@@ -35,20 +46,6 @@ class TreeItem {
     QVector<TreeItem*> childItems;
     QVector<QVariant>  itemData;
     TreeItem*          parentItem;
-
-    // As data storage
-
-  private:
-    QString   name;
-    QString   description;
-    QDate     createdTime;
-    QDate     startTime;
-    QDate     endTime;
-    bool      isCompleted;
-    Priority  priority;
-    TaskType  taskType;
-    // todo 标签功能
-    QDateTime reminders;
 };
 class TreeModel : public QAbstractItemModel {
     Q_OBJECT
