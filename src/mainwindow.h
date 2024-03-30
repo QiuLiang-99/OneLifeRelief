@@ -44,7 +44,7 @@ class CourseScheduleWidget : public QWidget {
 
   public:
     explicit CourseScheduleWidget(QWidget* parent = nullptr) : QWidget(parent) {
-      QHBoxLayout* pageLayout = new QHBoxLayout(this);
+      QVBoxLayout* pageLayout = new QVBoxLayout(this);
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
       CourseScheduleView* ScheduleView = new CourseScheduleView(this);
@@ -57,7 +57,7 @@ class taskandGoalWidget : public QWidget {
 
   public:
     explicit taskandGoalWidget(QWidget* parent = nullptr) : QWidget(parent) {
-      QHBoxLayout*     pageLayout = new QHBoxLayout(this);
+      QVBoxLayout*     pageLayout = new QVBoxLayout(this);
       taskandGoalView* taskView   = new taskandGoalView;
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
@@ -70,17 +70,17 @@ class TimeLineWidget : public QWidget {
 
   public:
     explicit TimeLineWidget(QWidget* parent = nullptr) : QWidget(parent) {
-      QHBoxLayout* pageLayout = new QHBoxLayout(this);
+      QVBoxLayout* pageLayout = new QVBoxLayout(this);
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
       QScrollArea* scrollArea               = new QScrollArea;
       QWidget*     scorllAreaWidgetContents = new QWidget;
       scorllAreaWidgetContents->setGeometry(0, 0, 5000, 100);
-      QHBoxLayout* scorllAreaLayout = new QHBoxLayout;
+      QVBoxLayout* scorllAreaLayout = new QVBoxLayout;
       scorllAreaWidgetContents->setLayout(scorllAreaLayout);
       Timeline* timeLine = new Timeline;
       scorllAreaLayout->addWidget(timeLine);
-      scorllAreaLayout->addWidget(new QPushButton("??????????????????"));
+      pageLayout->addWidget(new QPushButton("新建任务"));
       pageLayout->addWidget(scrollArea);
       timeLine->setVisible(true);
       scrollArea->setWidget(scorllAreaWidgetContents);

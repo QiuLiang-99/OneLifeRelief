@@ -17,7 +17,7 @@
 // todo 所有的map都可以随意改名字ortheyaretemplatejustchose one tocreate
 // todo 生存map之后管理，可以看到进度条，每个project有哪些完成和没完成
 // todo treehead Title Prioritized backlog 表头动item不动
-
+// todo 还需要一个日历视图的页面
 // todo 自主添加表头，自动调换
 
 // todo Status board 拖拽选项卡
