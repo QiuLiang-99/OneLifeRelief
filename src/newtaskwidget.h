@@ -1,7 +1,14 @@
 #ifndef NEWTASKWIDGET_H
 #define NEWTASKWIDGET_H
+#include <QCoreApplication>
+#include <QFile>
+#include <QPainter>
 #include <QWidget>
+#include <qabstractbutton.h>
 #include <qdatetime.h>
+#include <qpushbutton.h>
+#include <qsize.h>
+
 enum class Priority { // todo 紧急 重要
   TOP,
   HIGH,
@@ -42,6 +49,19 @@ struct Task {
     TaskType  taskType;
     // todo 标签功能
     QDateTime reminders;
+};
+class AddTaskButton : public QPushButton {
+    Q_OBJECT
+
+  public:
+    explicit AddTaskButton(QWidget* parent = nullptr) : QPushButton(parent) {
+      QPixmap icon;
+      icon.load("../OneLifeRelief/resource/icon/addbutton.jpg");
+      this->setIcon(icon);
+      this->setMinimumSize(500, 500);
+    };
+
+    // void paintEvent(QPaintEvent* event) override {}
 };
 class NewTaskwidget : public QWidget {
     Q_OBJECT

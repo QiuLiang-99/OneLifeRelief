@@ -1,8 +1,8 @@
 #include "src/CommonHelper.h"
 
+#include "src/mainwindow.h"
 #include <QAbstractTableModel>
 #include <QApplication>
-#include "src/mainwindow.h"
 
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);

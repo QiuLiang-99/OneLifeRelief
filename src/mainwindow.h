@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "src/CourseScheduleView.h"
+#include "src/newtaskwidget.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
 #include <QLabel>
@@ -80,7 +81,8 @@ class TimeLineWidget : public QWidget {
       scorllAreaWidgetContents->setLayout(scorllAreaLayout);
       Timeline* timeLine = new Timeline;
       scorllAreaLayout->addWidget(timeLine);
-      pageLayout->addWidget(new QPushButton("新建任务"));
+      // pageLayout->addWidget(new QPushButton("新建任务"));
+      pageLayout->addWidget(new AddTaskButton);
       pageLayout->addWidget(scrollArea);
       timeLine->setVisible(true);
       scrollArea->setWidget(scorllAreaWidgetContents);

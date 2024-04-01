@@ -15,6 +15,7 @@ set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+
 set(PROJECT_SOURCES
         main.cpp
 )
@@ -29,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/mainwindow.h src/mainwindow.cpp
         src/timeline.h src/timeline.cpp
         src/newtaskwidget.h src/newtaskwidget.cpp
+
 
 
     )
