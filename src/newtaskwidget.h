@@ -1,11 +1,13 @@
 #ifndef NEWTASKWIDGET_H
 #define NEWTASKWIDGET_H
 #include <QCoreApplication>
+#include <QDialog>
 #include <QFile>
 #include <QPainter>
 #include <QWidget>
 #include <qabstractbutton.h>
 #include <qdatetime.h>
+#include <qicon.h>
 #include <qpushbutton.h>
 #include <qsize.h>
 
@@ -50,26 +52,33 @@ struct Task {
     // todo 标签功能
     QDateTime reminders;
 };
+class NewTaskWidget : public QDialog {
+    Q_OBJECT
+
+  public:
+    explicit NewTaskWidget(QWidget* parent = nullptr);
+
+  signals:
+};
 class AddTaskButton : public QPushButton {
     Q_OBJECT
 
   public:
     explicit AddTaskButton(QWidget* parent = nullptr) : QPushButton(parent) {
-      QPixmap icon;
-      icon.load("../OneLifeRelief/resource/icon/addbutton.jpg");
+      QPixmap iconmap;
+      iconmap.load("../OneLifeRelief/resource/icon/addbutton.jpg");
+      QIcon icon(iconmap);
       this->setIcon(icon);
-      this->setMinimumSize(500, 500);
+      this->setMinimumSize(50, 50);
+      connect(this, &QPushButton::clicked, this, [&] {
+        taskwidget.show();
+      });
     };
 
     // void paintEvent(QPaintEvent* event) override {}
-};
-class NewTaskwidget : public QWidget {
-    Q_OBJECT
 
-  public:
-    explicit NewTaskwidget(QWidget* parent = nullptr);
-
-  signals:
+  private:
+    NewTaskWidget taskwidget;
 };
 
 #endif // NEWTASKWIDGET_H

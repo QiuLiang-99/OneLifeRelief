@@ -4,8 +4,9 @@
 #include <qboxlayout.h>
 #include <qlineedit.h>
 
-NewTaskwidget::NewTaskwidget(QWidget* parent) : QWidget(parent) {
+NewTaskWidget::NewTaskWidget(QWidget* parent) : QDialog(parent) {
+  setWindowModality(Qt::WindowModal);
   QVBoxLayout* layout   = new QVBoxLayout(this);
-  QLineEdit*   nameline = new QLineEdit("test");
+  QLineEdit*   nameline = new QLineEdit("任务名称");
   layout->addWidget(nameline);
 }
