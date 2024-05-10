@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(OneLifeRelief
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-${srcs} ${headers}
+        ${srcs} ${headers}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET OneLifeRelief APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

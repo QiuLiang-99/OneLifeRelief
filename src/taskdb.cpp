@@ -10,16 +10,35 @@ TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
   } else {
     qDebug() << "无法打开数据库：" << DB.lastError().text();
   }
-  // 创建Task表
+  // 创建一个QSqlQuery对象，用于执行SQL命令
   QSqlQuery query;
+
   // 执行SQL命令来创建一个名为"Tasks"的表
-  bool      success = query.exec(
-      R"(CREATE TABLE IF NOT EXISTS Tasks (  // 如果"Tasks"表不存在，则创建它
-      id INTEGER PRIMARY KEY,                   // 创建一个名为"id"的字段，数据类型为整数（INTEGER），并将其设置为主键（PRIMARY KEY）
-      taskName TEXT NOT NULL,                   // 创建一个名为"taskName"的字段，数据类型为文本（TEXT），并规定该字段不能为空（NOT NULL）
-      taskDescription TEXT,                   // 创建一个名为"taskDescription"的字段，数据类型为文本（TEXT），该字段可以为空
-      dueDate DATE                            // 创建一个名为"dueDate"的字段，数据类型为日期（DATE），该字段可以为空
-    ))");
+  // 使用R"(
+  // )"来创建一个原始字符串，这样就可以在字符串中直接使用引号和反斜杠，而不需要转义它们
+  // 使用IF NOT EXISTS来确保如果"Tasks"表已经存在，那么CREATE
+  // TABLE命令不会做任何事情
+  bool success = query.exec(
+      R"(CREATE TABLE IF NOT EXISTS Tasks (
+    id INTEGER PRIMARY KEY, // 创建一个名为"id"的字段，数据类型为整数（INTEGER），并将其设置为主键（PRIMARY KEY）
+    name TEXT, // 创建一个名为"name"的字段，数据类型为文本（TEXT），该字段可以为空
+    description TEXT, // 创建一个名为"description"的字段，数据类型为文本（TEXT），该字段可以为空
+    assignee TEXT, // 创建一个名为"assignee"的字段，数据类型为文本（TEXT），该字段可以为空
+    progress INTEGER, // 创建一个名为"progress"的字段，数据类型为整数（INTEGER），该字段可以为空
+    status INTEGER, // 创建一个名为"status"的字段，数据类型为整数（INTEGER），该字段可以为空
+    priority INTEGER, // 创建一个名为"priority"的字段，数据类型为整数（INTEGER），该字段可以为空
+    taskType INTEGER, // 创建一个名为"taskType"的字段，数据类型为整数（INTEGER），该字段可以为空
+    createdDate TEXT, // 创建一个名为"createdDate"的字段，数据类型为文本（TEXT），该字段可以为空
+    startDate TEXT, // 创建一个名为"startDate"的字段，数据类型为文本（TEXT），该字段可以为空
+    endDate TEXT, // 创建一个名为"endDate"的字段，数据类型为文本（TEXT），该字段可以为空
+    reminders TEXT // 创建一个名为"reminders"的字段，数据类型为文本（TEXT），该字段可以为空
+    ))"); // 结束SQL命令的字符串
+
+  // 检查SQL命令是否执行成功
+  if (!success) {
+    // 如果SQL命令执行失败，打印错误信息
+    qDebug() << "Error creating Tasks table: " << query.lastError().text();
+  }
   if (success) {
     qDebug() << "Table created successfully!";
   } else {

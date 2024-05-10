@@ -1,4 +1,6 @@
 #include "newtaskwidget.h"
+#include "src/taskdb.h"
+
 #include <QLineEdit>
 #include <QPropertyAnimation>
 #include <qabstractspinbox.h>
@@ -23,6 +25,9 @@ NewTaskWidget::NewTaskWidget(QWidget* parent) : QDialog(parent) {
   QPushButton* cancelBtn  = new QPushButton("取消");
 
   QPushButton* confirmBtn = new QPushButton("添加任务");
+
+  TaskDB* taskdb          = new TaskDB;
+  qDebug() << "taskdb ok";
   /*QPropertyAnimation* propertyAnimation =
       new QPropertyAnimation(this, "geometry");
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
