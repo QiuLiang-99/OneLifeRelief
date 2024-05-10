@@ -22,6 +22,7 @@
 
 // todo Status board 拖拽选项卡
 // todo通过创建的时间的标签查找
+// todo 睡眠 助眠，听歌，更新
 /*
 
 // todo Roadmap
@@ -37,8 +38,7 @@
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
   setupUI();
 }
-MainWindow::~MainWindow() {
-}
+MainWindow::~MainWindow() {}
 void MainWindow::setupUI() {
   this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
   gridLayout = new QGridLayout(this); // 主要布局
@@ -78,14 +78,16 @@ void MainWindow::setupUI() {
 #endif
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
-    int index = 0;
-    if (this->geometry().width() < 500) {
+    int       index     = 0;
+    int       width     = this->geometry().width();
+    const int threshold = 500;
+    if (width < threshold) {
       gridLayout->removeItem(buttonlayout);
       gridLayout->addLayout(buttonlayout, 2, 1); // 下方
       for (auto i : tablebtnGroup->buttons()) {
         buttonlayout->addWidget(i, 0, index++);  // 横着
       }
-    } else if (this->geometry().width() > 500) {
+    } else {
       gridLayout->removeItem(buttonlayout);
       gridLayout->addLayout(buttonlayout, 1, 0); // 左侧
       for (auto i : tablebtnGroup->buttons()) {

@@ -14,25 +14,19 @@ set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
+#添加sql数据库头
+find_package(Qt6 REQUIRED COMPONENTS Sql)
 
 set(PROJECT_SOURCES
         main.cpp
 )
-
+file(GLOB_RECURSE srcs ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE headers ${PROJECT_SOURCE_DIR}/src/*.h)
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(OneLifeRelief
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        src/CommonHelper.h
-        src/CourseScheduleView.h src/CourseScheduleView.cpp
-        src/taskandGoalView.h src/taskandGoalView.cpp
-        src/mainwindow.h src/mainwindow.cpp
-        src/timeline.h src/timeline.cpp
-        src/newtaskwidget.h src/newtaskwidget.cpp
-
-
-
+${srcs} ${headers}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET OneLifeRelief APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -51,7 +45,7 @@ else()
         )
     endif()
 endif()
-
+target_link_libraries(OneLifeRelief  PRIVATE Qt6::Sql)#添加sql数据库头
 target_link_libraries(OneLifeRelief PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

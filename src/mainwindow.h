@@ -37,6 +37,9 @@ class MainWindow : public QWidget {
     QGridLayout*    buttonlayout;
     QStackedWidget* mainWidget;
     QButtonGroup*   tablebtnGroup;
+
+    QHBoxLayout* btnHLayout;
+    QVBoxLayout* btnVLayout;
   private slots:
     void on_test_clicked();
 };
@@ -75,17 +78,17 @@ class TimeLineWidget : public QWidget {
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
       QScrollArea* scrollArea               = new QScrollArea;
-      QWidget*     scorllAreaWidgetContents = new QWidget;
-      scorllAreaWidgetContents->setGeometry(0, 0, 5000, 100);
+      QWidget*     scrollAreaWidgetContents = new QWidget;
+      scrollAreaWidgetContents->setGeometry(0, 0, 5000, 100);
       QVBoxLayout* scorllAreaLayout = new QVBoxLayout;
-      scorllAreaWidgetContents->setLayout(scorllAreaLayout);
+      scrollAreaWidgetContents->setLayout(scorllAreaLayout);
       Timeline* timeLine = new Timeline;
       scorllAreaLayout->addWidget(timeLine);
       // pageLayout->addWidget(new QPushButton("新建任务"));
       pageLayout->addWidget(new AddTaskButton);
       pageLayout->addWidget(scrollArea);
       timeLine->setVisible(true);
-      scrollArea->setWidget(scorllAreaWidgetContents);
+      scrollArea->setWidget(scrollAreaWidgetContents);
       // connect(test, &QPushButton::clicked, this,
       // &MainWindow::on_test_clicked);
     };

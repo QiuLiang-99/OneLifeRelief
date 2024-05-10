@@ -23,7 +23,7 @@ AlignTrailingComments:
   OverEmptyLines: 1
 AllowShortBlocksOnASingleLine: Never
 AllowShortEnumsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: None
 SpaceBeforeParensOptions:

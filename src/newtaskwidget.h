@@ -58,6 +58,9 @@ class NewTaskWidget : public QDialog {
   public:
     explicit NewTaskWidget(QWidget* parent = nullptr);
 
+  protected:
+    void resizeEvent(QResizeEvent* event);
+
   signals:
 };
 class AddTaskButton : public QPushButton {
@@ -71,14 +74,15 @@ class AddTaskButton : public QPushButton {
       this->setIcon(icon);
       this->setMinimumSize(50, 50);
       connect(this, &QPushButton::clicked, this, [&] {
-        taskwidget.show();
+        taskwidget = new NewTaskWidget;
+        taskwidget->show();
       });
     };
 
     // void paintEvent(QPaintEvent* event) override {}
 
   private:
-    NewTaskWidget taskwidget;
+    NewTaskWidget* taskwidget;
 };
 
 #endif // NEWTASKWIDGET_H
