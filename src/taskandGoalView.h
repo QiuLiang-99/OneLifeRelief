@@ -9,6 +9,7 @@ class TreeItem {
 
   public:
     explicit TreeItem(QVector<QVariant> data, TreeItem* parentItem = nullptr);
+    ~TreeItem();
     void      appendChild(TreeItem* child);
     TreeItem* child(int row);
     int       childCount() const;

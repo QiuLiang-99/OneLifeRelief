@@ -57,3 +57,4 @@ AlwaysBreakAfterDefinitionReturnType:     None
 CommentPragmas: '^ IWYU pragma:'
 PenaltyBreakComment: 300
 QualifierAlignment: Leave
+NamespaceIndentation: All

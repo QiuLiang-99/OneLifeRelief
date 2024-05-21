@@ -3,37 +3,47 @@
 TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
 
   // 打开数据库
-  DB = QSqlDatabase::addDatabase("QSQLITE");
-  DB.setDatabaseName("./TaskDB.db"); // 设置数据库名称
-  if (DB.open()) {
+  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+  db.setDatabaseName("./TaskDB.db"); // 设置数据库名称
+
+  if (db.open()) {
     qDebug() << "Database opened successfully！";
   } else {
-    qDebug() << "无法打开数据库：" << DB.lastError().text();
+    qDebug() << "无法打开数据库：" << db.lastError().text();
   }
+
   // 创建一个QSqlQuery对象，用于执行SQL命令
   QSqlQuery query;
 
-  // 执行SQL命令来创建一个名为"Tasks"的表
-  // 使用R"(
-  // )"来创建一个原始字符串，这样就可以在字符串中直接使用引号和反斜杠，而不需要转义它们
-  // 使用IF NOT EXISTS来确保如果"Tasks"表已经存在，那么CREATE
-  // TABLE命令不会做任何事情
-  bool success = query.exec(
-      R"(CREATE TABLE IF NOT EXISTS Tasks (
-    id INTEGER PRIMARY KEY, // 创建一个名为"id"的字段，数据类型为整数（INTEGER），并将其设置为主键（PRIMARY KEY）
-    name TEXT, // 创建一个名为"name"的字段，数据类型为文本（TEXT），该字段可以为空
-    description TEXT, // 创建一个名为"description"的字段，数据类型为文本（TEXT），该字段可以为空
-    assignee TEXT, // 创建一个名为"assignee"的字段，数据类型为文本（TEXT），该字段可以为空
-    progress INTEGER, // 创建一个名为"progress"的字段，数据类型为整数（INTEGER），该字段可以为空
-    status INTEGER, // 创建一个名为"status"的字段，数据类型为整数（INTEGER），该字段可以为空
-    priority INTEGER, // 创建一个名为"priority"的字段，数据类型为整数（INTEGER），该字段可以为空
-    taskType INTEGER, // 创建一个名为"taskType"的字段，数据类型为整数（INTEGER），该字段可以为空
-    createdDate TEXT, // 创建一个名为"createdDate"的字段，数据类型为文本（TEXT），该字段可以为空
-    startDate TEXT, // 创建一个名为"startDate"的字段，数据类型为文本（TEXT），该字段可以为空
-    endDate TEXT, // 创建一个名为"endDate"的字段，数据类型为文本（TEXT），该字段可以为空
-    reminders TEXT // 创建一个名为"reminders"的字段，数据类型为文本（TEXT），该字段可以为空
-    ))"); // 结束SQL命令的字符串
+  // 使用原始字符串文字(R"()")来避免转义字符问题
+  QString createTableQuery = R"(
+        CREATE TABLE IF NOT EXISTS Tasks (
+            id INTEGER PRIMARY KEY, 
+            name TEXT, 
+            description TEXT, 
+            assignee TEXT, 
+            progress INTEGER, 
+            status INTEGER, 
+            priority INTEGER, 
+            taskType INTEGER, 
+            createdDate TEXT, 
+            startDate TEXT, 
+            endDate TEXT, 
+            reminders TEXT
+        )
+    )";
 
+  // 执行SQL命令来创建一个名为"Tasks"的表
+  bool success             = query.exec(createTableQuery);
+
+  if (success) {
+    qDebug() << "Table 'Tasks' created or already exists.";
+  } else {
+    qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
+  }
+
+  // 关闭数据库
+  db.close();
   // 检查SQL命令是否执行成功
   if (!success) {
     // 如果SQL命令执行失败，打印错误信息

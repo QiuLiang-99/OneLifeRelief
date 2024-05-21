@@ -74,19 +74,23 @@ class TimeLineWidget : public QWidget {
 
   public:
     explicit TimeLineWidget(QWidget* parent = nullptr) : QWidget(parent) {
-      QVBoxLayout* pageLayout = new QVBoxLayout(this);
-      pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
-      pageLayout->setContentsMargins(0, 0, 0, 0);
+      QVBoxLayout* pageLayout               = new QVBoxLayout(this);
       QScrollArea* scrollArea               = new QScrollArea;
       QWidget*     scrollAreaWidgetContents = new QWidget;
+      QVBoxLayout* scorllAreaLayout         = new QVBoxLayout;
+      Timeline*    timeLine                 = new Timeline;
+
+      pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
+      pageLayout->setContentsMargins(0, 0, 0, 0);
+
       scrollAreaWidgetContents->setGeometry(0, 0, 5000, 100);
-      QVBoxLayout* scorllAreaLayout = new QVBoxLayout;
       scrollAreaWidgetContents->setLayout(scorllAreaLayout);
-      Timeline* timeLine = new Timeline;
+
       scorllAreaLayout->addWidget(timeLine);
-      // pageLayout->addWidget(new QPushButton("新建任务"));
+
       pageLayout->addWidget(new AddTaskButton);
       pageLayout->addWidget(scrollArea);
+
       timeLine->setVisible(true);
       scrollArea->setWidget(scrollAreaWidgetContents);
       // connect(test, &QPushButton::clicked, this,

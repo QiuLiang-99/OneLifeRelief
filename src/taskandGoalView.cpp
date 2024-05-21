@@ -5,7 +5,10 @@
 #include <qvariant.h>
 
 TreeItem::TreeItem(QVector<QVariant> data, TreeItem* parent) :
-    itemData(data), parentItem(parent) {
+    itemData(data), parentItem(parent) {}
+
+TreeItem::~TreeItem() {
+  qDeleteAll(childItems); // 删除所有子节点
 }
 void TreeItem::appendChild(TreeItem* child) {
   childItems.push_back(child); // 向节点添加一个子节点
