@@ -19,7 +19,8 @@
 // todo treehead Title Prioritized backlog 表头动item不动
 // todo 还需要一个日历视图的页面
 // todo 自主添加表头，自动调换
-
+// todo 日历，每天睡觉时间，推算，定时，闹钟
+// todo 番茄钟，专注
 // todo Status board 拖拽选项卡
 // todo通过创建的时间的标签查找
 // todo 睡眠 助眠，听歌，更新
