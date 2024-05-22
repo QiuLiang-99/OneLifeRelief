@@ -2,10 +2,13 @@
 #include "src/CourseScheduleView.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
+#include <QGuiApplication>
+#include <QScreen>
 #include <qcontainerfwd.h>
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
+
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
 // todo任务提醒
@@ -41,17 +44,33 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
 }
 MainWindow::~MainWindow() {}
 void MainWindow::setupUI() {
-  this->setGeometry(0, 0, 800, 600);  // 规范窗体大小
+#if defined(Q_OS_WIN)
+  setGeometry(0, 0, 800, 600); // 规范窗体大小
+#elif defined(Q_OS_ANDROID)
+  QScreen* screen         = QGuiApplication::primaryScreen();
+  QRect    screenGeometry = screen->geometry();
+  int      height         = screenGeometry.height();
+  int      width          = screenGeometry.width();
+  setGeometry(0, 0, width, height);
+#endif
+
   gridLayout = new QGridLayout(this); // 主要布局
 
   gridLayout->setSpacing(0);          // 表示各个控件之间的上下间距
   gridLayout->setContentsMargins(0, 0, 0, 0);
 
   // 创建布局放按钮
-  buttonlayout = new QGridLayout(); // 左侧一个垂直布局放按钮组
-  buttonlayout->setContentsMargins(0, 0, 0, 0);
-  buttonlayout->setSizeConstraint(QLayout::SetFixedSize);
-  buttonlayout->setSpacing(0);
+
+  btnHLayout = new QHBoxLayout();
+  btnHLayout->setContentsMargins(0, 0, 0, 0);
+  btnHLayout->setSizeConstraint(QLayout::SetFixedSize);
+  btnHLayout->setSpacing(0);
+
+  btnVLayout = new QVBoxLayout();
+  btnVLayout->setContentsMargins(0, 0, 0, 0);
+  btnVLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+  btnVLayout->setSpacing(0);
 
   mainWidget = new QStackedWidget(this); // 右侧一个stacked显示不同的界面
 
@@ -74,26 +93,20 @@ void MainWindow::setupUI() {
   mainWidget->addWidget(new taskandGoalWidget);
   mainWidget->addWidget(new TimeLineWidget);
 }
-#if defined(Q_OS_WIN)
-#elif defined(Q_OS_ANDROID)
-#endif
+
 void MainWindow::resizeEvent(QResizeEvent* event) {
   if (nullptr != gridLayout) {
     int       index     = 0;
     int       width     = this->geometry().width();
     const int threshold = 500;
     if (width < threshold) {
-      gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 2, 1); // 下方
-      for (auto i : tablebtnGroup->buttons()) {
-        buttonlayout->addWidget(i, 0, index++);  // 横着
-      }
+      gridLayout->removeItem(btnVLayout);
+      gridLayout->addLayout(btnHLayout, 2, 1); // 下方横着
+
     } else {
-      gridLayout->removeItem(buttonlayout);
-      gridLayout->addLayout(buttonlayout, 1, 0); // 左侧
-      for (auto i : tablebtnGroup->buttons()) {
-        buttonlayout->addWidget(i, index++, 0);  // 竖着
-      }                                          // todo需要一个弹簧
+      gridLayout->removeItem(btnHLayout);
+      gridLayout->addLayout(btnVLayout, 1, 0); // 左侧竖着
+                                               // todo需要一个弹簧
     }
   }
 }
@@ -101,9 +114,15 @@ void MainWindow::newPage(const QString& name) {
   QSize        buttonSize(100, 25);
   static int   index      = 0;
   QPushButton* pushbutton = new QPushButton(name);
-  pushbutton->setMinimumSize(buttonSize);
-  pushbutton->setCheckable(true); // 设置按钮可以按下不抬起
-  buttonlayout->addWidget(pushbutton, 0, index);
+  pushbutton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  pushbutton->setMinimumSize(0, 0); // 设置最小尺寸可以无限缩小
+  // pushbutton->setFixedSize(100, 25);
+  pushbutton->setMaximumSize(buttonSize); // 设置最大尺寸为默认尺寸
+
+  pushbutton->setCheckable(true);         // 设置按钮可以按下不抬起
+  btnHLayout->addWidget(pushbutton);
+  btnVLayout->addWidget(pushbutton);
+
   tablebtnGroup->addButton(pushbutton, index++);
 }
 void MainWindow::on_test_clicked() {

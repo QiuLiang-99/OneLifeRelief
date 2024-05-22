@@ -34,7 +34,6 @@ class MainWindow : public QWidget {
   public:
     void            setupUI();
     QGridLayout*    gridLayout;
-    QGridLayout*    buttonlayout;
     QStackedWidget* mainWidget;
     QButtonGroup*   tablebtnGroup;
 

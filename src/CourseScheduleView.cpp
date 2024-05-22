@@ -17,10 +17,9 @@
 #include <qnamespace.h>
 #include <qpushbutton.h>
 #include <qwidget.h>
-//#include <qwindowdefs_win.h>
+// #include <qwindowdefs_win.h>
 
-ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {
-}
+ScheduleModel::ScheduleModel(QObject* parent) : QAbstractTableModel(parent) {}
 int ScheduleModel::rowCount(const QModelIndex&) const {
   return ScheduleData.at(0).size();
 }
@@ -115,6 +114,7 @@ void CourseScheduleView::setVerticalHead(
   QHeaderView*        header = new QHeaderView(Qt::Vertical);
   QStandardItemModel* model  = new QStandardItemModel;
   header->setDefaultSectionSize(50);
+  header->setSectionResizeMode(QHeaderView::Fixed);
   model->setVerticalHeaderLabels(labels);
   header->setModel(model);
   header->setDefaultAlignment(Qt::AlignCenter); // 设置竖直表头文本居中显示
