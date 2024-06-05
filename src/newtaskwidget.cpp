@@ -1,4 +1,4 @@
-#include "newtaskwidget.h"
+#include "newTaskWidget.h"
 #include "src/taskdb.h"
 
 #include <QLineEdit>
@@ -8,7 +8,7 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 
-NewTaskWidget::NewTaskWidget(QWidget* parent) : QDialog(parent) {
+newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   setWindowModality(Qt::WindowModal);
   QVBoxLayout* layout   = new QVBoxLayout(this);
   QLineEdit*   nameline = new QLineEdit;
@@ -33,7 +33,7 @@ NewTaskWidget::NewTaskWidget(QWidget* parent) : QDialog(parent) {
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
   propertyAnimation->setDuration(200);*/
 }
-void NewTaskWidget::resizeEvent(QResizeEvent* event) {
+void newTaskWidget::resizeEvent(QResizeEvent* event) {
   // auto width = this->parentWidget()->width();
   //  width和height都是主窗口类的私有变量
   // auto height = this->parentWidget()->height();

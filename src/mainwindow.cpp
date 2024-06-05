@@ -4,10 +4,12 @@
 #include "src/timeline.h"
 #include <QGuiApplication>
 #include <QScreen>
+#include <QStackedLayout> // Include the header file for QStackedLayout
 #include <qcontainerfwd.h>
 #include <qforeach.h>
 #include <qlist.h>
 #include <qpushbutton.h>
+#include <qwidget.h>
 
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
@@ -30,14 +32,16 @@
 /*
 
 // todo Roadmap
-/*March 2024
+/*
+March 2024
 8
 9
 10
 11
 12
 13
-14*/
+14
+*/
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
   setupUI();
@@ -69,20 +73,21 @@ void MainWindow::setupUI() {
   btnVLayout = new QVBoxLayout();
   btnVLayout->setContentsMargins(0, 0, 0, 0);
   btnVLayout->setSizeConstraint(QLayout::SetFixedSize);
-
   btnVLayout->setSpacing(0);
 
-  mainWidget = new QStackedWidget(this); // 右侧一个stacked显示不同的界面
+  mainWidget = new QStackedLayout; // 右侧一个stacked显示不同的界面
 
   // gridLayout->addLayout(buttonlayout, 0, 1);
-  gridLayout->addWidget(mainWidget, 1, 1);
+  gridLayout->addLayout(mainWidget, 1, 1);
   // 创建table按钮，切换界面
   tablebtnGroup = new QButtonGroup(this);
   tablebtnGroup->setExclusive(true);
-  newPage("课表");
-  newPage("日程");
-  newPage("今天");
-  newPage("设置");
+  appendNewButton("课表");
+  appendNewButton("日程");
+  appendNewButton("今天");
+  appendNewButton("设置");
+
+  btnVLayout->insertStretch(-1); // 相当于在底部添加了一个弹簧
 
   tablebtnGroup->buttons().at(0)->setChecked(true);
   connect(tablebtnGroup, &QButtonGroup::idClicked, this, [&](int id) {
@@ -110,7 +115,7 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
     }
   }
 }
-void MainWindow::newPage(const QString& name) {
+void MainWindow::appendNewButton(const QString& name) {
   QSize        buttonSize(100, 25);
   static int   index      = 0;
   QPushButton* pushbutton = new QPushButton(name);

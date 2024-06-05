@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include "src/CourseScheduleView.h"
-#include "src/newtaskwidget.h"
+#include "src/newTaskWidget.h"
 #include "src/taskandGoalView.h"
 #include "src/timeline.h"
 #include <QLabel>
@@ -13,6 +13,7 @@
 #include <qpushbutton.h>
 #include <qscrollarea.h>
 #include <qsize.h>
+#include <qstackedlayout.h>
 #include <qtmetamacros.h>
 #include <qwidget.h>
 
@@ -26,15 +27,17 @@ class MainWindow : public QWidget {
     ~MainWindow();
 
   public:
-    void newPage(const QString&);
+    void appendNewButton(const QString&);
 
   protected:
     virtual void resizeEvent(QResizeEvent* event) override;
 
   public:
-    void            setupUI();
+    void setupUI();
+
+  public:
     QGridLayout*    gridLayout;
-    QStackedWidget* mainWidget;
+    QStackedLayout* mainWidget;
     QButtonGroup*   tablebtnGroup;
 
     QHBoxLayout* btnHLayout;
@@ -50,6 +53,12 @@ class CourseScheduleWidget : public QWidget {
       QVBoxLayout* pageLayout = new QVBoxLayout(this);
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
+      QPushButton* importBtn = new QPushButton("导入");
+      pageLayout->addWidget(importBtn);
+      connect(importBtn, &QPushButton::clicked, this, [=]() {
+        newTaskWidget* newTask = new newTaskWidget;
+        newTask->show();
+      });
       CourseScheduleView* ScheduleView = new CourseScheduleView(this);
       pageLayout->addWidget(ScheduleView);
     };

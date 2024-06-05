@@ -11,11 +11,11 @@
 #include <qpushbutton.h>
 #include <qsize.h>
 
-class NewTaskWidget : public QDialog {
+class newTaskWidget : public QDialog {
     Q_OBJECT
 
   public:
-    explicit NewTaskWidget(QWidget* parent = nullptr);
+    explicit newTaskWidget(QWidget* parent = nullptr);
 
   protected:
     void resizeEvent(QResizeEvent* event);
@@ -33,7 +33,7 @@ class AddTaskButton : public QPushButton {
       this->setIcon(icon);
       this->setMinimumSize(50, 50);
       connect(this, &QPushButton::clicked, this, [&] {
-        taskwidget = new NewTaskWidget;
+        taskwidget = new newTaskWidget;
         taskwidget->show();
       });
     };
@@ -41,7 +41,7 @@ class AddTaskButton : public QPushButton {
     // void paintEvent(QPaintEvent* event) override {}
 
   private:
-    NewTaskWidget* taskwidget;
+    newTaskWidget* taskwidget;
 };
 
 #endif // NEWTASKWIDGET_H
