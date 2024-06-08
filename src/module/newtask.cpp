@@ -1,5 +1,5 @@
 #include "newTask.h"
-#include "src/taskdb.h"
+#include "src/module/sqlite/taskdb.h"
 
 #include <QLineEdit>
 #include <QPropertyAnimation>

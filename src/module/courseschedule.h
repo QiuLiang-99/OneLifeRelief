@@ -1,6 +1,6 @@
 #ifndef CourseScheduleView_H
 #define CourseScheduleView_H
-#include "src/task/newtask.h"
+#include "newtask.h"
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QString> // Add this line to import the QString type

@@ -1,6 +1,6 @@
 #ifndef TASK_H
 #define TASK_H
-#include "newTask.h"
+#include "src/module/newtask.h"
 #include <QDate>
 #include <QString>
 #include <qcontainerfwd.h>
@@ -39,12 +39,10 @@ struct Task {
   public:
     Task();
 
-  private:
-    // 基础类型
-    QString id;
-    QString projectId;
-    int     imgMode;
-    QString parentId;
+    unsigned id;
+    QString  projectId;
+    int      imgMode;
+    QString  parentId;
 
     QString             title;
     QString             content;
@@ -64,7 +62,6 @@ struct Task {
     QList<Task> subTasks; // 子任务列表
     QStringList tags;     // 标签列表
     QDateTime   reminderTime;
-
     QStringList childrenString;
 };
 #endif // TASK_H

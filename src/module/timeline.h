@@ -1,6 +1,6 @@
 #ifndef TIMELINE_H
 #define TIMELINE_H
-#include "src/task/newtask.h"
+#include "newtask.h"
 #include <QWidget>
 #include <qboxlayout.h>
 #include <qscrollarea.h>
