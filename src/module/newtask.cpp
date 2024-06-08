@@ -1,14 +1,7 @@
 #include "newtask.h"
 #include "src/module/sqlite/taskdb.h"
 
-#include "src/model/task/task.h"
-#include <QLineEdit>
-#include <QPropertyAnimation>
-#include <qabstractspinbox.h>
-#include <qboxlayout.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-
+#include "src/model/task/taskdata.h"
 newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   setWindowModality(Qt::WindowModal);
   setWindowTitle("新建任务");
@@ -64,7 +57,7 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
   propertyAnimation->setDuration(200);*/
 
-  // new Task;
+  // TaskData t;
 }
 
 // 在你的类的私有部分，添加一个 Task 类的实例

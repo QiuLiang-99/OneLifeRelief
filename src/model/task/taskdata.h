@@ -34,9 +34,9 @@ namespace TaskEnums {
     NotPlanned, // This is not planned currently #FFEFF7 #BF3989
   };
 } // namespace TaskEnums
-struct Task {
+struct TaskData {
   public:
-    Task();
+    TaskData();
 
     unsigned id;
     QString  projectId;
@@ -54,13 +54,13 @@ struct Task {
     TaskEnums::Priority priority;
     TaskEnums::TaskType taskType;
 
-    QDateTime   createdDateTime;
-    QDateTime   startDateTime;
-    QDateTime   modifiedTime;
-    QDateTime   completedTime;
-    QList<Task> subTasks; // 子任务列表
-    QStringList tags;     // 标签列表
-    QDateTime   reminderTime;
-    QStringList childrenString;
+    QDateTime       createdDateTime;
+    QDateTime       startDateTime;
+    QDateTime       modifiedTime;
+    QDateTime       completedTime;
+    QList<TaskData> subTasks; // 子任务列表
+    QStringList     tags;     // 标签列表
+    QDateTime       reminderTime;
+    QStringList     childrenString;
 };
 #endif // TASK_H

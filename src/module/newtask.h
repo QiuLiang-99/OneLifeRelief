@@ -11,13 +11,17 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPainter>
+#include <QPropertyAnimation>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <qabstractbutton.h>
+#include <qabstractspinbox.h>
+#include <qboxlayout.h>
 #include <qdatetime.h>
 #include <qicon.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qsize.h>
 
