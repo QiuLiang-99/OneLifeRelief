@@ -1,7 +1,5 @@
 #include "mainwindow.h"
-#include "src/CourseScheduleView.h"
-#include "src/taskandGoalView.h"
-#include "src/timeline.h"
+
 #include <QGuiApplication>
 #include <QScreen>
 #include <QStackedLayout> // Include the header file for QStackedLayout

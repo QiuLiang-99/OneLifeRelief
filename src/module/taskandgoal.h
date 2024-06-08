@@ -2,6 +2,7 @@
 #define taskandGoalView_H
 
 #include <QTreeView>
+#include <qboxlayout.h>
 #include <qdatetime.h>
 
 class TreeItem {
@@ -54,5 +55,17 @@ class taskandGoalView : public QTreeView {
   private:
     TreeModel* taskandGoalModel;
 };
+class taskandGoalWidget : public QWidget {
+    Q_OBJECT
 
+  public:
+    explicit taskandGoalWidget(QWidget* parent = nullptr) : QWidget(parent) {
+      QVBoxLayout*     pageLayout = new QVBoxLayout(this);
+      taskandGoalView* taskView   = new taskandGoalView;
+      pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
+      pageLayout->setContentsMargins(0, 0, 0, 0);
+      pageLayout->addWidget(taskView);
+    };
+    //~taskandGoalWidget();
+};
 #endif // taskandGoalView_H

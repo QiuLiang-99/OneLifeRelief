@@ -1,4 +1,4 @@
-#include "taskandGoalView.h"
+#include "taskandgoal.h"
 #include <qdatetime.h>
 #include <qlist.h>
 #include <qtreeview.h>

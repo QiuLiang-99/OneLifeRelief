@@ -1,4 +1,4 @@
-#include "CourseScheduleView.h"
+#include "courseschedule.h"
 #include <QDatetime>
 #include <QFileDialog>
 #include <QHeaderView>

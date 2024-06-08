@@ -1,10 +1,11 @@
 #ifndef TASK_H
 #define TASK_H
-#include <QString>
-
+#include "newTask.h"
 #include <QDate>
+#include <QString>
 #include <qcontainerfwd.h>
 #include <qdatetime.h>
+
 namespace TaskEnums {
   enum Priority { // todo 紧急 重要
     TOP,

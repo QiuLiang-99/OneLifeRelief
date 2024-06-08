@@ -1,4 +1,4 @@
-#include "newTaskWidget.h"
+#include "newTask.h"
 #include "src/taskdb.h"
 
 #include <QLineEdit>
