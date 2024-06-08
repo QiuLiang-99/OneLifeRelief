@@ -10,23 +10,53 @@
 
 newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   setWindowModality(Qt::WindowModal);
-  QVBoxLayout* layout   = new QVBoxLayout(this);
-  QLineEdit*   nameline = new QLineEdit;
-  nameline->setPlaceholderText("任务名称"); // 设置淡色提示字
-  QFont font;
-  font.setPointSize(12);                    // 字号大小
-  // font.setFamily(("wenquanyi"));            // 字体样式
-  font.setBold(false);
-  nameline->setFont(font);
-  layout->addWidget(nameline);
-  QLineEdit* describeline = new QLineEdit;
-  describeline->setPlaceholderText("描述"); // 设置淡色提示字
-  layout->addWidget(describeline);
-  QPushButton* cancelBtn  = new QPushButton("取消");
+  setWindowTitle("新建任务");
+  mainLayout   = new QVBoxLayout(this);
 
-  QPushButton* confirmBtn = new QPushButton("添加任务");
+  taskNameEdit = new QLineEdit(this);
+  taskNameEdit->setPlaceholderText("任务名称");
+  mainLayout->addWidget(taskNameEdit);
 
-  TaskDB* taskdb          = new TaskDB;
+  descriptionEdit = new QTextEdit(this);
+  descriptionEdit->setPlaceholderText("描述");
+  mainLayout->addWidget(descriptionEdit);
+
+  buttonLayout = new QHBoxLayout();
+
+  todayButton  = new QPushButton("今天", this);
+  buttonLayout->addWidget(todayButton);
+
+  priorityButton = new QPushButton("优先级", this);
+  buttonLayout->addWidget(priorityButton);
+
+  remindButton = new QPushButton("提醒", this);
+  buttonLayout->addWidget(remindButton);
+
+  upgradeButton = new QPushButton("升级", this);
+  buttonLayout->addWidget(upgradeButton);
+
+  moreButton = new QPushButton("...", this);
+  buttonLayout->addWidget(moreButton);
+
+  mainLayout->addLayout(buttonLayout);
+
+  inboxLayout   = new QHBoxLayout();
+  inboxLabel    = new QLabel("收件箱", this);
+  inboxComboBox = new QComboBox(this);
+  inboxComboBox->addItem("收件箱");
+  inboxLayout->addWidget(inboxLabel);
+  inboxLayout->addWidget(inboxComboBox);
+  mainLayout->addLayout(inboxLayout);
+
+  actionLayout = new QHBoxLayout();
+  cancelButton = new QPushButton("取消", this);
+  addButton    = new QPushButton("添加任务", this);
+  addButton->setStyleSheet("background-color: #FF6F61; color: white;");
+  actionLayout->addWidget(cancelButton);
+  actionLayout->addWidget(addButton);
+  mainLayout->addLayout(actionLayout);
+
+  TaskDB* taskdb = new TaskDB;
   qDebug() << "taskdb ok";
   /*QPropertyAnimation* propertyAnimation =
       new QPropertyAnimation(this, "geometry");

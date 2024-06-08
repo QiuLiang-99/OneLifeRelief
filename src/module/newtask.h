@@ -1,9 +1,19 @@
 #ifndef NEWTASKWIDGET_H
 #define NEWTASKWIDGET_H
+#include <QApplication>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QCoreApplication>
+#include <QDateEdit>
 #include <QDialog>
 #include <QFile>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <QPainter>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QVBoxLayout>
 #include <QWidget>
 #include <qabstractbutton.h>
 #include <qdatetime.h>
@@ -21,6 +31,23 @@ class newTaskWidget : public QDialog {
     void resizeEvent(QResizeEvent* event);
 
   signals:
+
+  private:
+    QVBoxLayout* mainLayout;
+    QLineEdit*   taskNameEdit;
+    QTextEdit*   descriptionEdit;
+    QHBoxLayout* buttonLayout;
+    QPushButton* todayButton;
+    QPushButton* priorityButton;
+    QPushButton* remindButton;
+    QPushButton* upgradeButton;
+    QPushButton* moreButton;
+    QHBoxLayout* inboxLayout;
+    QLabel*      inboxLabel;
+    QComboBox*   inboxComboBox;
+    QHBoxLayout* actionLayout;
+    QPushButton* cancelButton;
+    QPushButton* addButton;
 };
 class AddTaskButton : public QPushButton {
     Q_OBJECT
