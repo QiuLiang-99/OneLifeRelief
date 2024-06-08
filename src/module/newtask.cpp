@@ -1,6 +1,7 @@
-#include "newTask.h"
+#include "newtask.h"
 #include "src/module/sqlite/taskdb.h"
 
+#include "src/model/task/task.h"
 #include <QLineEdit>
 #include <QPropertyAnimation>
 #include <qabstractspinbox.h>
@@ -62,10 +63,11 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
       new QPropertyAnimation(this, "geometry");
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
   propertyAnimation->setDuration(200);*/
+
+  // new Task;
 }
 
 // 在你的类的私有部分，添加一个 Task 类的实例
-// Task task;
 
 // 在你的类的构造函数中，为 "添加任务" 按钮添加一个点击事件处理函数
 // connect(addButton, &QPushButton::clicked, this,

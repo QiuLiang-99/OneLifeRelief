@@ -1,6 +1,5 @@
 #ifndef TASK_H
 #define TASK_H
-#include "src/module/newtask.h"
 #include <QDate>
 #include <QString>
 #include <qcontainerfwd.h>
