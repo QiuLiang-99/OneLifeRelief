@@ -30,6 +30,8 @@ class newTaskWidget : public QDialog {
   protected:
     void resizeEvent(QResizeEvent* event);
 
+  public:
+    void onAddButtonClicked();
   signals:
 
   private:

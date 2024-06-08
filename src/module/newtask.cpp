@@ -63,6 +63,26 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
   propertyAnimation->setDuration(200);*/
 }
+
+// 在你的类的私有部分，添加一个 Task 类的实例
+// Task task;
+
+// 在你的类的构造函数中，为 "添加任务" 按钮添加一个点击事件处理函数
+// connect(addButton, &QPushButton::clicked, this,
+// &YourClassName::onAddButtonClicked);
+
+// 在你的类中，添加 onAddButtonClicked() 方法
+void newTaskWidget::onAddButtonClicked() {
+  // 获取控件的内容
+  QString taskName    = taskNameEdit->text();
+  QString description = descriptionEdit->toPlainText();
+  // ... 获取其他控件的内容 ...
+
+  // 将控件的内容保存到 task 中
+  // task.setName(taskName);
+  // task.setDescription(description);
+  // ... 保存其他控件的内容 ...
+}
 void newTaskWidget::resizeEvent(QResizeEvent* event) {
   // auto width = this->parentWidget()->width();
   //  width和height都是主窗口类的私有变量
