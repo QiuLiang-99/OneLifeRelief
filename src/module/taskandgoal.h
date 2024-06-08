@@ -1,5 +1,5 @@
-#ifndef taskandGoalView_H
-#define taskandGoalView_H
+#ifndef TASKANDGOAL_H
+#define TASKANDGOAL_H
 
 #include <QTreeView>
 #include <qboxlayout.h>
@@ -68,4 +68,4 @@ class taskandGoalWidget : public QWidget {
     };
     //~taskandGoalWidget();
 };
-#endif // taskandGoalView_H
+#endif // TASKANDGOAL_H

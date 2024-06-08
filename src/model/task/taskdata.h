@@ -1,5 +1,5 @@
-#ifndef TASK_H
-#define TASK_H
+#ifndef TASKDATA_H
+#define TASKDATA_H
 #include <QDate>
 #include <QString>
 #include <qcontainerfwd.h>
@@ -63,4 +63,4 @@ struct TaskData {
     QDateTime       reminderTime;
     QStringList     childrenString;
 };
-#endif // TASK_H
+#endif // TASKDATA_H

@@ -1,5 +1,5 @@
-#ifndef TASK_H
-#define TASK_H
+#ifndef TASKDB_H
+#define TASKDB_H
 #include <QWidget>
 
 #include <QDebug>
@@ -29,4 +29,4 @@ class TaskDB : public QWidget {
   private:
     QSqlDatabase DB; // 定义数据库名称
 };
-#endif               // TASK_H
+#endif               // TASKDB_H

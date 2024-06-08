@@ -1,5 +1,5 @@
-#ifndef NEWTASKWIDGET_H
-#define NEWTASKWIDGET_H
+#ifndef NEWTASK_H
+#define NEWTASK_H
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -93,4 +93,4 @@ class CalendarWindow : public QWidget {
     CalendarWindow(QWidget* parent = nullptr);
 };
 
-#endif // NEWTASKWIDGET_H
+#endif // NEWTASK_H

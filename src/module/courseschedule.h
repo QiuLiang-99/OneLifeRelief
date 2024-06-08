@@ -1,5 +1,5 @@
-#ifndef CourseScheduleView_H
-#define CourseScheduleView_H
+#ifndef COURSESCHEDULE_H
+#define COURSESCHEDULE_H
 #include "newtask.h"
 #include <QAbstractTableModel>
 #include <QDateTime>
@@ -73,4 +73,4 @@ class CourseScheduleWidget : public QWidget {
     };
     //~CourseScheduleWidget();
 };
-#endif // CourseScheduleView_H
+#endif // COURSESCHEDULE_H
