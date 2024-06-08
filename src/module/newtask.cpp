@@ -84,3 +84,49 @@ void newTaskWidget::resizeEvent(QResizeEvent* event) {
           return false;
       }*/
 }
+CalendarWindow::CalendarWindow(QWidget* parent) : QWidget(parent) {
+  // 主布局
+  QVBoxLayout* mainLayout = new QVBoxLayout(this);
+
+  // 顶部按钮和标签布局
+  QHBoxLayout* topLayout  = new QHBoxLayout();
+  QPushButton* dateButton = new QPushButton("6月8日", this);
+  topLayout->addWidget(dateButton);
+  mainLayout->addLayout(topLayout);
+
+  // 快捷日期选择按钮布局
+  QVBoxLayout* quickSelectLayout = new QVBoxLayout();
+
+  QPushButton* tomorrowButton =
+      new QPushButton(QIcon(":/icons/sun.png"), "明天", this);
+  quickSelectLayout->addWidget(tomorrowButton);
+
+  QPushButton* nextWeekendButton =
+      new QPushButton(QIcon(":/icons/weekend.png"), "下周末", this);
+  quickSelectLayout->addWidget(nextWeekendButton);
+
+  QPushButton* nextWeekButton =
+      new QPushButton(QIcon(":/icons/nextweek.png"), "下周", this);
+  quickSelectLayout->addWidget(nextWeekButton);
+
+  QPushButton* noDateButton =
+      new QPushButton(QIcon(":/icons/nodate.png"), "没有日期", this);
+  quickSelectLayout->addWidget(noDateButton);
+
+  mainLayout->addLayout(quickSelectLayout);
+
+  // 日历控件
+  QCalendarWidget* calendar = new QCalendarWidget(this);
+  calendar->setGridVisible(true);
+  mainLayout->addWidget(calendar);
+
+  // 时间按钮布局
+  QHBoxLayout* timeLayout = new QHBoxLayout();
+  QPushButton* timeButton =
+      new QPushButton(QIcon(":/icons/time.png"), "时间", this);
+  timeLayout->addWidget(timeButton);
+  mainLayout->addLayout(timeLayout);
+
+  setLayout(mainLayout);
+  setWindowTitle("Calendar Widget");
+}

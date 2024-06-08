@@ -70,5 +70,21 @@ class AddTaskButton : public QPushButton {
   private:
     newTaskWidget* taskwidget;
 };
+#include <QApplication>
+#include <QCalendarWidget>
+#include <QCheckBox>
+#include <QDate>
+#include <QDateEdit>
+#include <QHBoxLayout>
+#include <QIcon>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
+
+class CalendarWindow : public QWidget {
+  public:
+    CalendarWindow(QWidget* parent = nullptr);
+};
 
 #endif // NEWTASKWIDGET_H
