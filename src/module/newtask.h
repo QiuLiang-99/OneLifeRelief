@@ -1,30 +1,6 @@
 #ifndef NEWTASK_H
 #define NEWTASK_H
-#include <QApplication>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QCoreApplication>
-#include <QDateEdit>
-#include <QDialog>
-#include <QFile>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPainter>
-#include <QPropertyAnimation>
-#include <QPushButton>
-#include <QTextEdit>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <qabstractbutton.h>
-#include <qabstractspinbox.h>
-#include <qboxlayout.h>
-#include <qdatetime.h>
-#include <qicon.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qsize.h>
-
+#include "src/include/QTUI.h"
 class newTaskWidget : public QDialog {
     Q_OBJECT
 
@@ -76,17 +52,6 @@ class AddTaskButton : public QPushButton {
   private:
     newTaskWidget* taskwidget;
 };
-#include <QApplication>
-#include <QCalendarWidget>
-#include <QCheckBox>
-#include <QDate>
-#include <QDateEdit>
-#include <QHBoxLayout>
-#include <QIcon>
-#include <QLabel>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QWidget>
 
 class CalendarWindow : public QWidget {
   public:

@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "src/module/courseschedule.h"
+#include "src/module/courseschedule/courseschedulewidget.h"
 #include "src/module/taskandgoal.h"
 #include "src/module/timeline.h"
 #include <QLabel>
