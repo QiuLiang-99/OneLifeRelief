@@ -57,20 +57,22 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   propertyAnimation->setEasingCurve(QEasingCurve::InOutQuint)
   propertyAnimation->setDuration(200);*/
 
-  // TaskData t;
+  TaskData t;
+  connect(addButton, &QPushButton::clicked, this,
+          &newTaskWidget::onAddButtonClicked);
 }
 
 // 在你的类的私有部分，添加一个 Task 类的实例
 
 // 在你的类的构造函数中，为 "添加任务" 按钮添加一个点击事件处理函数
-// connect(addButton, &QPushButton::clicked, this,
-// &YourClassName::onAddButtonClicked);
 
 // 在你的类中，添加 onAddButtonClicked() 方法
 void newTaskWidget::onAddButtonClicked() {
   // 获取控件的内容
-  QString taskName    = taskNameEdit->text();
-  QString description = descriptionEdit->toPlainText();
+  QString         taskName       = taskNameEdit->text();
+  QString         description    = descriptionEdit->toPlainText();
+  CalendarWindow* calendarWindow = new CalendarWindow;
+  calendarWindow->show();
   // ... 获取其他控件的内容 ...
 
   // 将控件的内容保存到 task 中
@@ -99,46 +101,32 @@ void newTaskWidget::resizeEvent(QResizeEvent* event) {
           return false;
       }*/
 }
-CalendarWindow::CalendarWindow(QWidget* parent) : QWidget(parent) {
-  // 主布局
-  QVBoxLayout* mainLayout = new QVBoxLayout(this);
 
-  // 顶部按钮和标签布局
-  QHBoxLayout* topLayout  = new QHBoxLayout();
-  QPushButton* dateButton = new QPushButton("6月8日", this);
+CalendarWindow::CalendarWindow(QWidget* parent) : QWidget(parent) {
+  mainLayout = new QVBoxLayout(this); // 主布局
+  topLayout  = new QHBoxLayout();     // 顶部按钮和标签布局
+  dateButton = new QPushButton("6月8日", this);
   topLayout->addWidget(dateButton);
   mainLayout->addLayout(topLayout);
 
-  // 快捷日期选择按钮布局
-  QVBoxLayout* quickSelectLayout = new QVBoxLayout();
-
-  QPushButton* tomorrowButton =
-      new QPushButton(QIcon(":/icons/sun.png"), "明天", this);
+  quickSelectLayout = new QVBoxLayout(); // 快捷日期选择按钮布局
+  tomorrowButton    = new QPushButton(QIcon(":/icons/sun.png"), "明天", this);
   quickSelectLayout->addWidget(tomorrowButton);
-
-  QPushButton* nextWeekendButton =
+  nextWeekendButton =
       new QPushButton(QIcon(":/icons/weekend.png"), "下周末", this);
   quickSelectLayout->addWidget(nextWeekendButton);
-
-  QPushButton* nextWeekButton =
-      new QPushButton(QIcon(":/icons/nextweek.png"), "下周", this);
+  nextWeekButton = new QPushButton(QIcon(":/icons/nextweek.png"), "下周", this);
   quickSelectLayout->addWidget(nextWeekButton);
-
-  QPushButton* noDateButton =
-      new QPushButton(QIcon(":/icons/nodate.png"), "没有日期", this);
+  noDateButton = new QPushButton(QIcon(":/icons/nodate.png"), "没有日期", this);
   quickSelectLayout->addWidget(noDateButton);
-
   mainLayout->addLayout(quickSelectLayout);
 
-  // 日历控件
-  QCalendarWidget* calendar = new QCalendarWidget(this);
+  calendar = new QCalendarWidget(this);
   calendar->setGridVisible(true);
   mainLayout->addWidget(calendar);
 
-  // 时间按钮布局
-  QHBoxLayout* timeLayout = new QHBoxLayout();
-  QPushButton* timeButton =
-      new QPushButton(QIcon(":/icons/time.png"), "时间", this);
+  timeLayout = new QHBoxLayout();
+  timeButton = new QPushButton(QIcon(":/icons/time.png"), "时间", this);
   timeLayout->addWidget(timeButton);
   mainLayout->addLayout(timeLayout);
 

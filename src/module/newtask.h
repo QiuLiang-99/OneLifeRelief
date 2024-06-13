@@ -91,6 +91,19 @@ class AddTaskButton : public QPushButton {
 class CalendarWindow : public QWidget {
   public:
     CalendarWindow(QWidget* parent = nullptr);
+
+  private:
+    QVBoxLayout*     mainLayout;
+    QHBoxLayout*     topLayout;
+    QPushButton*     dateButton;
+    QVBoxLayout*     quickSelectLayout;
+    QPushButton*     tomorrowButton;
+    QPushButton*     nextWeekendButton;
+    QPushButton*     nextWeekButton;
+    QPushButton*     noDateButton;
+    QCalendarWidget* calendar;
+    QHBoxLayout*     timeLayout;
+    QPushButton*     timeButton;
 };
 
 #endif // NEWTASK_H
