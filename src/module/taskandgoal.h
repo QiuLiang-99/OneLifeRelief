@@ -1,9 +1,6 @@
 #ifndef TASKANDGOAL_H
 #define TASKANDGOAL_H
-
-#include <QTreeView>
-#include <qboxlayout.h>
-#include <qdatetime.h>
+#include "src/include/QTUI.h"
 
 class TreeItem {
     // AS a treeitem

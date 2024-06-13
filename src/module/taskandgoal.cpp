@@ -1,8 +1,4 @@
 #include "taskandgoal.h"
-#include <qdatetime.h>
-#include <qlist.h>
-#include <qtreeview.h>
-#include <qvariant.h>
 
 TreeItem::TreeItem(QVector<QVariant> data, TreeItem* parent) :
     itemData(data), parentItem(parent) {}

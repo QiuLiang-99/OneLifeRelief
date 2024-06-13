@@ -1,10 +1,7 @@
 #ifndef TIMELINE_H
 #define TIMELINE_H
 #include "newtask.h"
-#include <QWidget>
-#include <qboxlayout.h>
-#include <qscrollarea.h>
-
+#include "src/include/QTUI.h"
 class Timeline : public QWidget {
     Q_OBJECT
 

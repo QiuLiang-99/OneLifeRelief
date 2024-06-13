@@ -2,21 +2,9 @@
 #define MAINWINDOW_H
 
 #include "src/module/courseschedule/courseschedulewidget.h"
+#include "src/module/newtask.h"
 #include "src/module/taskandgoal.h"
 #include "src/module/timeline.h"
-#include <QLabel>
-#include <QStackedWidget>
-#include <QWidget>
-#include <qboxlayout.h>
-#include <qframe.h>
-#include <qpushbutton.h>
-#include <qscrollarea.h>
-#include <qsize.h>
-#include <qstackedlayout.h>
-#include <qtmetamacros.h>
-#include <qwidget.h>
-
-#include <QButtonGroup>
 
 class MainWindow : public QWidget {
     Q_OBJECT

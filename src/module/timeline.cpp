@@ -1,8 +1,6 @@
 #include "timeline.h"
-#include <QPainter>
-#include <QPen>
-Timeline::Timeline(QWidget* parent) : QWidget(parent) {
-}
+
+Timeline::Timeline(QWidget* parent) : QWidget(parent) {}
 
 void Timeline::paintEvent(QPaintEvent* event) {
   Q_UNUSED(event);        // 忽略未使用的参数警告
