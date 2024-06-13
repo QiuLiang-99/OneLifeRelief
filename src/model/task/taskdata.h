@@ -18,7 +18,7 @@ namespace TaskEnums {
     Notype,
     STUDY,  // 学习
     WORK,   // 工作
-    EXAM,   // 考试
+    EXAM,   // 考试 游戏
     HABIT,  // 习惯
     CINEMA, // 电影
     TRIP,   // 旅游
@@ -35,8 +35,6 @@ namespace TaskEnums {
   };
 } // namespace TaskEnums
 struct TaskData {
-  public:
-    TaskData();
 
     unsigned id;
     QString  projectId;
@@ -54,13 +52,21 @@ struct TaskData {
     TaskEnums::Priority priority;
     TaskEnums::TaskType taskType;
 
-    QDateTime       createdDateTime;
-    QDateTime       startDateTime;
-    QDateTime       modifiedTime;
-    QDateTime       completedTime;
-    QList<TaskData> subTasks; // 子任务列表
-    QStringList     tags;     // 标签列表
-    QDateTime       reminderTime;
-    QStringList     childrenString;
+    QDateTime   createdDateTime;
+    QDateTime   startDateTime;
+    QDateTime   modifiedTime;
+    QDateTime   completedTime;
+    // QList<TaskData> subTasks; // 子任务列表
+    QStringList tags; // 标签列表
+    QDateTime   reminderTime;
+    QStringList childrenString;
+
+  public:
+    inline QString QDateTimetoQString(const QDateTime& time) const {
+      return time.toString("yyyy-MM-dd hh:mm:ss");
+    }
+    inline QDateTime QStringtoQDateTime(const QString& str) const {
+      return QDateTime::fromString(str, "yyyy-MM-dd hh:mm:ss");
+    }
 };
 #endif // TASKDATA_H

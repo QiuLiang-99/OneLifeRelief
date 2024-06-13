@@ -1,57 +1,6 @@
 #ifndef NEWTASK_H
 #define NEWTASK_H
 #include "src/include/QTUI.h"
-class newTaskWidget : public QDialog {
-    Q_OBJECT
-
-  public:
-    explicit newTaskWidget(QWidget* parent = nullptr);
-
-  protected:
-    void resizeEvent(QResizeEvent* event);
-
-  public:
-    void onAddButtonClicked();
-  signals:
-
-  private:
-    QVBoxLayout* mainLayout;
-    QLineEdit*   taskNameEdit;
-    QTextEdit*   descriptionEdit;
-    QHBoxLayout* buttonLayout;
-    QPushButton* todayButton;
-    QPushButton* priorityButton;
-    QPushButton* remindButton;
-    QPushButton* upgradeButton;
-    QPushButton* moreButton;
-    QHBoxLayout* inboxLayout;
-    QLabel*      inboxLabel;
-    QComboBox*   inboxComboBox;
-    QHBoxLayout* actionLayout;
-    QPushButton* cancelButton;
-    QPushButton* addButton;
-};
-class AddTaskButton : public QPushButton {
-    Q_OBJECT
-
-  public:
-    explicit AddTaskButton(QWidget* parent = nullptr) : QPushButton(parent) {
-      QPixmap iconmap;
-      iconmap.load("../OneLifeRelief/resource/icon/addbutton.jpg");
-      QIcon icon(iconmap);
-      this->setIcon(icon);
-      this->setMinimumSize(50, 50);
-      connect(this, &QPushButton::clicked, this, [&] {
-        taskwidget = new newTaskWidget;
-        taskwidget->show();
-      });
-    };
-
-    // void paintEvent(QPaintEvent* event) override {}
-
-  private:
-    newTaskWidget* taskwidget;
-};
 
 class CalendarWindow : public QWidget {
   public:
@@ -71,4 +20,65 @@ class CalendarWindow : public QWidget {
     QPushButton*     timeButton;
 };
 
+class PriorityButton : public QPushButton {
+    Q_OBJECT
+
+  public:
+    PriorityButton(QWidget* parent = nullptr);
+
+  private:
+    void setupMenu();
+
+    QMenu*   priorityMenu;
+    QAction* priority1Action;
+    QAction* priority2Action;
+    QAction* priority3Action;
+    QAction* priority4Action;
+};
+class newTaskWidget : public QDialog {
+    Q_OBJECT
+
+  public:
+    explicit newTaskWidget(QWidget* parent = nullptr);
+
+  protected:
+    void resizeEvent(QResizeEvent* event);
+
+  private slots:
+    void onAddButtonClicked();
+    void onTodayButtonClicked();
+    void onPriorityButtonClicked();
+    void onRemindButtonClicked();
+    void onUpgradeButtonClicked();
+    void onMoreButtonClicked();
+    void onCancelButtonClicked();
+  signals:
+
+  private:
+    QVBoxLayout*    mainLayout;
+    QLineEdit*      taskNameEdit;
+    QTextEdit*      descriptionEdit;
+    QHBoxLayout*    buttonLayout;
+    QPushButton*    todayButton;
+    QPushButton*    priorityButton;
+    QPushButton*    remindButton;
+    QPushButton*    upgradeButton;
+    QPushButton*    moreButton;
+    QHBoxLayout*    inboxLayout;
+    QLabel*         inboxLabel;
+    QComboBox*      inboxComboBox;
+    QHBoxLayout*    actionLayout;
+    QPushButton*    cancelButton;
+    QPushButton*    addButton;
+    CalendarWindow* calendarWindow;
+};
+class AddTaskButton : public QPushButton {
+    Q_OBJECT
+
+  public:
+    explicit AddTaskButton(QWidget* parent = nullptr);
+
+  private:
+    newTaskWidget* taskwidget;
+};
 #endif // NEWTASK_H

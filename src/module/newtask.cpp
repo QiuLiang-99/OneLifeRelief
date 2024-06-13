@@ -2,8 +2,9 @@
 #include "src/module/sqlite/taskdb.h"
 
 #include "src/model/task/taskdata.h"
+#include <qdatetime.h>
 newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
-  setWindowModality(Qt::WindowModal);
+  setWindowModality(Qt::WindowModal); // 模态窗口 无法点击其他窗口
   setWindowTitle("新建任务");
   mainLayout   = new QVBoxLayout(this);
 
@@ -19,7 +20,7 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
 
   todayButton  = new QPushButton("今天", this);
   buttonLayout->addWidget(todayButton);
-
+  calendarWindow = new CalendarWindow(this);
   priorityButton = new QPushButton("优先级", this);
   buttonLayout->addWidget(priorityButton);
 
@@ -60,25 +61,53 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   TaskData t;
   connect(addButton, &QPushButton::clicked, this,
           &newTaskWidget::onAddButtonClicked);
+  connect(todayButton, &QPushButton::clicked, this,
+          &newTaskWidget::onTodayButtonClicked);
+  connect(priorityButton, &QPushButton::clicked, this,
+          &newTaskWidget::onPriorityButtonClicked);
+  connect(remindButton, &QPushButton::clicked, this,
+          &newTaskWidget::onRemindButtonClicked);
+  connect(upgradeButton, &QPushButton::clicked, this,
+          &newTaskWidget::onUpgradeButtonClicked);
+  connect(moreButton, &QPushButton::clicked, this,
+          &newTaskWidget::onMoreButtonClicked);
+  connect(cancelButton, &QPushButton::clicked, this,
+          &newTaskWidget::onCancelButtonClicked);
+
+  setAttribute(Qt::WA_DeleteOnClose); // 关闭widget后释放资源
 }
-
-// 在你的类的私有部分，添加一个 Task 类的实例
-
-// 在你的类的构造函数中，为 "添加任务" 按钮添加一个点击事件处理函数
-
-// 在你的类中，添加 onAddButtonClicked() 方法
 void newTaskWidget::onAddButtonClicked() {
+  // 在这里添加添加任务按钮被点击时的处理代码
   // 获取控件的内容
-  QString         taskName       = taskNameEdit->text();
-  QString         description    = descriptionEdit->toPlainText();
-  CalendarWindow* calendarWindow = new CalendarWindow;
-  calendarWindow->show();
+  QString   taskName    = taskNameEdit->text();
+  QString   description = descriptionEdit->toPlainText();
+  QDateTime timeNow     = QDateTime::currentDateTime();
+  TaskData  task        = TaskData{
+              .title = taskName, .content = description, .createdDateTime = timeNow};
   // ... 获取其他控件的内容 ...
-
-  // 将控件的内容保存到 task 中
-  // task.setName(taskName);
-  // task.setDescription(description);
   // ... 保存其他控件的内容 ...
+  // 将控件的内容保存到 task 中
+  TaskDB db;
+  db.addOrUpdateTask(task);
+  close();
+}
+void newTaskWidget::onTodayButtonClicked() {
+  calendarWindow->show();
+}
+void newTaskWidget::onPriorityButtonClicked() {
+  // 在这里添加优先级按钮被点击时的处理代码
+}
+void newTaskWidget::onRemindButtonClicked() {
+  // 在这里添加提醒按钮被点击时的处理代码
+}
+void newTaskWidget::onUpgradeButtonClicked() {
+  // 在这里添加升级按钮被点击时的处理代码
+}
+void newTaskWidget::onMoreButtonClicked() {
+  // 在这里添加更多按钮被点击时的处理代码
+}
+void newTaskWidget::onCancelButtonClicked() {
+  close();
 }
 void newTaskWidget::resizeEvent(QResizeEvent* event) {
   // auto width = this->parentWidget()->width();
@@ -101,7 +130,6 @@ void newTaskWidget::resizeEvent(QResizeEvent* event) {
           return false;
       }*/
 }
-
 CalendarWindow::CalendarWindow(QWidget* parent) : QWidget(parent) {
   mainLayout = new QVBoxLayout(this); // 主布局
   topLayout  = new QHBoxLayout();     // 顶部按钮和标签布局
@@ -133,3 +161,42 @@ CalendarWindow::CalendarWindow(QWidget* parent) : QWidget(parent) {
   setLayout(mainLayout);
   setWindowTitle("Calendar Widget");
 }
+
+PriorityButton::PriorityButton(QWidget* parent) : QPushButton(parent) {
+  setText("优先级");
+  setupMenu();
+}
+
+void PriorityButton::setupMenu() {
+  priorityMenu = new QMenu(this);
+
+  /*priority1Action = new QAction(QIcon(":/icons/red_flag.png"), "优先级1",
+  this); priority2Action = new QAction(QIcon(":/icons/orange_flag.png"),
+  "优先级2", this); priority3Action = new
+  QAction(QIcon(":/icons/blue_flag.png"), "优先级3", this); priority4Action =
+  new QAction(QIcon(":/icons/white_flag.png"), "优先级4", this);*/
+  priority1Action = new QAction(QIcon(":/icons/red_flag.png"), "优先级1", this);
+  priority2Action =
+      new QAction(QIcon(":/icons/orange_flag.png"), "优先级2", this);
+  priority3Action =
+      new QAction(QIcon(":/icons/blue_flag.png"), "优先级3", this);
+  priority4Action =
+      new QAction(QIcon(":/icons/white_flag.png"), "优先级4", this);
+  priorityMenu->addAction(priority1Action);
+  priorityMenu->addAction(priority2Action);
+  priorityMenu->addAction(priority3Action);
+  priorityMenu->addAction(priority4Action);
+
+  setMenu(priorityMenu);
+}
+AddTaskButton::AddTaskButton(QWidget* parent) : QPushButton(parent) {
+  QPixmap iconmap;
+  iconmap.load("../OneLifeRelief/resource/icon/addbutton.jpg");
+  QIcon icon(iconmap);
+  this->setIcon(icon);
+  this->setMinimumSize(50, 50);
+  connect(this, &QPushButton::clicked, [&] {
+    taskwidget = new newTaskWidget;
+    taskwidget->show();
+  });
+};

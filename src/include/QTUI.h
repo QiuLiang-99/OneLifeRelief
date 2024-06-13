@@ -3,6 +3,7 @@
 
 #include <QAbstractButton>
 #include <QAbstractSpinBox>
+#include <QAction>
 #include <QApplication>
 #include <QBoxLayout>
 #include <QButtonGroup>
@@ -16,21 +17,26 @@
 #include <QDialog>
 #include <QFile>
 #include <QFrame>
+#include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
 #include <QList>
+#include <QListWidget>
+#include <QMenu>
 #include <QPainter>
 #include <QPen>
 #include <QPropertyAnimation>
 #include <QPushButton>
+#include <QScreen>
 #include <QScrollArea>
 #include <QSize>
 #include <QStackedLayout>
 #include <QStackedWidget>
 #include <QTextEdit>
 #include <QTreeView>
+#include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QVariant>
 #include <QWidget>

@@ -1,4 +1,5 @@
 #include "taskdb.h"
+#include "src/model/task/taskdata.h"
 
 TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
   QSqlDatabase db;
@@ -14,12 +15,17 @@ TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
   } else {
     qDebug() << "无法打开数据库：" << db.lastError().text();
   }
+  createTable();
+  // 关闭数据库
+  db.close();
 
-  // 创建一个QSqlQuery对象，用于执行SQL命令
+  // addTask(); // 添加数据
+}
+
+void TaskDB::createTable() {
   QSqlQuery query;
-
   // 使用原始字符串文字(R"()")来避免转义字符问题
-  QString createTableQuery = R"(
+  QString   createTableQuery = R"(
         CREATE TABLE IF NOT EXISTS Task (
             id INTEGER PRIMARY KEY, 
             name TEXT, 
@@ -37,81 +43,54 @@ TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
     )";
 
   // 执行SQL命令来创建一个名为"Tasks"的表
-  bool success             = query.exec(createTableQuery);
+  bool success               = query.exec(createTableQuery);
 
   if (success) {
     qDebug() << "Table 'Tasks' created or already exists.";
   } else {
     qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
   }
-
-  // 关闭数据库
-  db.close();
-
-  addTask(); // 添加数据
 }
-void TaskDB::addOrUpdateTask(int            id,
-                             const QString& name,
-                             const QString& description
-                             /* 其他参数 */) {
+void TaskDB::addOrUpdateTask(const TaskData& task) {
   QSqlQuery query;
   query.prepare("SELECT * FROM Task WHERE id = :id");
-  query.bindValue(":id", id);
+  query.bindValue(":id", task.id);
   if (!query.exec()) {
     qDebug() << "查询任务失败：" << query.lastError().text();
     return;
   }
-
   if (query.next()) {
     // 如果存在具有相同主键的任务，执行更新操作
-    QString updateSql = QString("UPDATE Task SET name='%1', description='%2', "
-                                "/* 其他字段 */ WHERE id=%3")
-                            .arg(name)
-                            .arg(description)
-                            /* .arg(其他值) */
-                            .arg(id);
-    if (!query.exec(updateSql)) {
+    /*QString updateSql = QString("UPDATE Task SET name='%1', description='%2',
+       " " WHERE id=%3") .arg(name) .arg(description)//todo .arg(id);*/
+    /*if (!query.exec(updateSql)) {
       qDebug() << "更新任务失败：" << query.lastError().text();
-    }
+    }*/
   } else {
     // 如果不存在具有相同主键的任务，执行添加操作
-    QString insertSql =
-        QString("INSERT INTO Task (id, name, description, /* 其他字段 */) "
-                "VALUES (%1, '%2', '%3', /* 其他值 */)")
-            .arg(id)
-            .arg(name)
-            .arg(description)
-        /* .arg(其他值) */;
-    if (!query.exec(insertSql)) {
-      qDebug() << "添加任务失败：" << query.lastError().text();
-    }
+    addTask(task);
   }
 }
-void TaskDB::addTask() // 增
-{
-  /*
-   * 在班级表中添加数据,
-     添加的数据为
-     班级名称：一班
-     班主任：李主任
-     班级人数：25
-  */
+void TaskDB::addTask(const TaskData& task) {
+  // clang-format off
+// ^^^ 注意空格 vvv
   queryString =
-      QString(
-          "insert into Task (name, description, assignee, progress, status, "
+      QString("insert into Task (name, description, assignee, progress, status,"
           "priority, taskType, createdDate, startDate, endDate, reminders) "
           "VALUES('%1','%2','%3',%4,%5,%6,%7,'%8','%9','%10','%11')")
-          .arg("新任务")
-          .arg("这是一个新任务")
-          .arg("张三")
-          .arg(0)
-          .arg(1)
-          .arg(2)
-          .arg(1)
-          .arg("2022-01-01")
-          .arg("2022-01-02")
-          .arg("2022-01-03")
-          .arg("2022-01-02");
+          .arg(task.title)
+          .arg(task.content)
+          .arg("张三") // 任务指定人 （多人任务有用，目前留空）
+          .arg(-1)      // progress 任务进度 需要枚举定义？
+          .arg(-1)      // status 任务状态 需要枚举定义？
+          .arg(-1)      // priority 任务优先级 需要枚举定义？
+          .arg(-1)      // taskType 任务类型 需要枚举定义？
+          .arg(task.QDateTimetoQString(task.createdDateTime)) // createdDate 创建日期
+          .arg(task.QDateTimetoQString(task.startDateTime)) // startDate 开始日期
+          .arg(task.QDateTimetoQString(task.completedTime)) // endDate 结束日期
+          .arg(task.QDateTimetoQString(task.reminderTime)) // reminders 提醒日期/
+      ;
+  // clang-format on
   QSqlQuery query; // 执行sql语句
   if (query.exec(queryString)) {
     qDebug() << "insert data Successful!";

@@ -1,14 +1,5 @@
 #include "mainwindow.h"
 
-#include <QGuiApplication>
-#include <QScreen>
-#include <QStackedLayout> // Include the header file for QStackedLayout
-#include <qcontainerfwd.h>
-#include <qforeach.h>
-#include <qlist.h>
-#include <qpushbutton.h>
-#include <qwidget.h>
-
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
 // todo任务提醒
@@ -95,6 +86,7 @@ void MainWindow::setupUI() {
   mainWidget->addWidget(new CourseScheduleWidget);
   mainWidget->addWidget(new taskandGoalWidget);
   mainWidget->addWidget(new TimeLineWidget);
+  mainWidget->addWidget(new OLRMainWindow);
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
