@@ -3,6 +3,8 @@
 
 #include "src/model/task/taskdata.h"
 #include <qdatetime.h>
+// todo 几小时 几天 后
+// enter 快捷键
 newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   setWindowModality(Qt::WindowModal); // 模态窗口 无法点击其他窗口
   setWindowTitle("新建任务");
@@ -79,7 +81,8 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
 void newTaskWidget::onAddButtonClicked() {
   // 在这里添加添加任务按钮被点击时的处理代码
   // 获取控件的内容
-  QString   taskName    = taskNameEdit->text();
+  QString taskName =
+      taskNameEdit->text(); // todo 如果没写名字则无法添加 按钮是灰的
   QString   description = descriptionEdit->toPlainText();
   QDateTime timeNow     = QDateTime::currentDateTime();
   TaskData  task        = TaskData{

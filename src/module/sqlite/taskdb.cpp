@@ -2,26 +2,25 @@
 #include "src/model/task/taskdata.h"
 
 TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
-  QSqlDatabase db;
   if (QSqlDatabase::contains("qt_sql_default_connection")) {
-    db = QSqlDatabase::database("qt_sql_default_connection");
+    DB = QSqlDatabase::database("qt_sql_default_connection");
   } else {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("TaskDB.db");
+    DB = QSqlDatabase::addDatabase("QSQLITE");
+    DB.setDatabaseName("TaskDB.db");
   }
-
-  if (db.open()) {
+  if (DB.open()) {
     qDebug() << "Database opened successfully！";
   } else {
-    qDebug() << "无法打开数据库：" << db.lastError().text();
+    qDebug() << "无法打开数据库：" << DB.lastError().text();
   }
   createTable();
-  // 关闭数据库
-  db.close();
-
   // addTask(); // 添加数据
 }
-
+TaskDB::~TaskDB() {
+  if (DB.isOpen()) {
+    DB.close();
+  }
+}
 void TaskDB::createTable() {
   QSqlQuery query;
   // 使用原始字符串文字(R"()")来避免转义字符问题
@@ -44,9 +43,8 @@ void TaskDB::createTable() {
 
   // 执行SQL命令来创建一个名为"Tasks"的表
   bool success               = query.exec(createTableQuery);
-
   if (success) {
-    qDebug() << "Table 'Tasks' created or already exists.";
+    qDebug() << "Table 'Task' created or already exists.";
   } else {
     qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
   }
@@ -55,18 +53,16 @@ void TaskDB::addOrUpdateTask(const TaskData& task) {
   QSqlQuery query;
   query.prepare("SELECT * FROM Task WHERE id = :id");
   query.bindValue(":id", task.id);
-  if (!query.exec()) {
-    qDebug() << "查询任务失败：" << query.lastError().text();
-    return;
-  }
-  if (query.next()) {
+  if (query.exec()) {
     // 如果存在具有相同主键的任务，执行更新操作
-    /*QString updateSql = QString("UPDATE Task SET name='%1', description='%2',
-       " " WHERE id=%3") .arg(name) .arg(description)//todo .arg(id);*/
+    /*QString updateSql = QString("UPDATE Task SET name='%1',
+       description='%2', " " WHERE id=%3") .arg(name) .arg(description)//todo
+       .arg(id);*/
     /*if (!query.exec(updateSql)) {
       qDebug() << "更新任务失败：" << query.lastError().text();
     }*/
   } else {
+    qDebug() << "查询任务失败：" << query.lastError().text();
     // 如果不存在具有相同主键的任务，执行添加操作
     addTask(task);
   }
@@ -116,10 +112,10 @@ void TaskDB::Update() // 改
 {
   // 更新数据，将班级名称作为限制条件进行数据更新
   queryString =
-      QString(
-          "UPDATE Task SET name='%1', description='%2', assignee='%3', "
-          "progress=%4, status=%5, priority=%6, taskType=%7, createdDate='%8', "
-          "startDate='%9', endDate='%10', reminders='%11' WHERE id=%12")
+      QString("UPDATE Task SET name='%1', description='%2', assignee='%3', "
+              "progress=%4, status=%5, priority=%6, taskType=%7, "
+              "createdDate='%8', "
+              "startDate='%9', endDate='%10', reminders='%11' WHERE id=%12")
           .arg("新任务")
           .arg("这是一个新任务")
           .arg("张三")
@@ -145,13 +141,87 @@ void TaskDB::Select() // 查
   queryString = QString("SELECT * FROM Task WHERE id = %1").arg(1);
   QSqlQuery query(queryString);
   while (query.next()) {
+    QString id          = query.value("id").toString();
     QString name        = query.value("name").toString();
     QString description = query.value("description").toString();
-    // ... 获取其他字段的值 ...
+    QString assignee    = query.value("assignee").toString();
+    int     progress    = query.value("progress").toInt();
+    int     status      = query.value("status").toInt();
+    int     priority    = query.value("priority").toInt();
+    int     taskType    = query.value("taskType").toInt();
+    QString createdDate = query.value("createdDate").toString();
+    QString startDate   = query.value("startDate").toString();
+    QString endDate     = query.value("endDate").toString();
+    QString reminders   = query.value("reminders").toString();
+
+    qDebug() << "任务ID：" << id;
     qDebug() << "任务名称：" << name;
     qDebug() << "任务描述：" << description;
-    // ... 打印其他字段的值 ...
+    qDebug() << "任务分配给：" << assignee;
+    qDebug() << "任务进度：" << progress;
+    qDebug() << "任务状态：" << status;
+    qDebug() << "任务优先级：" << priority;
+    qDebug() << "任务类型：" << taskType;
+    qDebug() << "任务创建日期：" << createdDate;
+    qDebug() << "任务开始日期：" << startDate;
+    qDebug() << "任务结束日期：" << endDate;
+    qDebug() << "任务提醒：" << reminders;
   }
+}
+QList<TaskData> TaskDB::loadAllTask() // 查
+{
+  QList<TaskData> taskList;
+  queryString = QString("SELECT * FROM Task");
+  QSqlQuery query(queryString);
+  while (query.next()) {
+    QString           id          = query.value("id").toString();
+    QString           name        = query.value("name").toString();
+    QString           description = query.value("description").toString();
+    QString           assignee    = query.value("assignee").toString();
+    int               progress    = -1;
+    // TaskEnums::TaskType progress
+    // =static_cast<TaskEnums::TaskType>(query.value("progress").toInt());
+    TaskEnums::Status status =
+        static_cast<TaskEnums::Status>(query.value("status").toInt());
+    TaskEnums::Priority priority =
+        static_cast<TaskEnums::Priority>(query.value("priority").toInt());
+    TaskEnums::TaskType taskType =
+        static_cast<TaskEnums::TaskType>(query.value("taskType").toInt());
+
+    // 现在taskType变量包含了对应的枚举值，可以用于后续逻辑
+    QString createdDate = query.value("createdDate").toString();
+    QString startDate   = query.value("startDate").toString();
+    QString endDate     = query.value("endDate").toString();
+    QString reminders   = query.value("reminders").toString();
+
+    qDebug() << "任务ID：" << id;
+    qDebug() << "任务名称：" << name;
+    qDebug() << "任务描述：" << description;
+    qDebug() << "任务分配给：" << assignee;
+    qDebug() << "任务进度：" << progress;
+    qDebug() << "任务状态：" << status;
+    qDebug() << "任务优先级：" << priority;
+    qDebug() << "任务类型：" << taskType;
+    qDebug() << "任务创建日期：" << createdDate;
+    qDebug() << "任务开始日期：" << startDate;
+    qDebug() << "任务结束日期：" << endDate;
+    qDebug() << "任务提醒：" << reminders;
+    TaskData e = TaskData{
+        .id              = static_cast<unsigned int>(id.toInt()),
+        .title           = name,
+        .content         = description,
+        .assignee        = assignee,
+        .progress        = progress,
+        .status          = status,
+        .priority        = priority,
+        .taskType        = taskType,
+        .createdDateTime = TaskData::QStringtoQDateTime(createdDate),
+        .startDateTime   = TaskData::QStringtoQDateTime(startDate),
+        .completedTime   = TaskData::QStringtoQDateTime(endDate),
+        .reminderTime    = TaskData::QStringtoQDateTime(reminders),
+    };
+  }
+  return taskList;
 }
 // 对大量数据进行快速添加，尝试过添加几千条数据，不到一秒就添加完成
 void TaskDB::FastAdd() {

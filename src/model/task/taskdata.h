@@ -62,10 +62,10 @@ struct TaskData {
     QStringList childrenString;
 
   public:
-    inline QString QDateTimetoQString(const QDateTime& time) const {
+    inline static QString QDateTimetoQString(const QDateTime& time) {
       return time.toString("yyyy-MM-dd hh:mm:ss");
     }
-    inline QDateTime QStringtoQDateTime(const QString& str) const {
+    inline static QDateTime QStringtoQDateTime(const QString& str) {
       return QDateTime::fromString(str, "yyyy-MM-dd hh:mm:ss");
     }
 };

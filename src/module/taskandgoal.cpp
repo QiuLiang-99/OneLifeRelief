@@ -9,9 +9,10 @@ TreeItem::~TreeItem() {
 void TreeItem::appendChild(TreeItem* child) {
   childItems.push_back(child); // 向节点添加一个子节点
 }
-TreeItem* TreeItem::child(
-    int row) { // 检查目标是否合法然后返回此节点的目标子节点
-  return row >= 0 && row < childCount() ? childItems.at(row) : nullptr;
+TreeItem* TreeItem::child(int row) {
+  return row >= 0 && row < childCount() ?
+             childItems.at(row) :
+             nullptr; // 检查目标是否合法然后返回此节点的目标子节点
 }
 int TreeItem::childCount() const { // 获取当前节点的子节点数量
   return int(childItems.size());
@@ -122,3 +123,10 @@ taskandGoalView::taskandGoalView(QWidget* parent) : QTreeView(parent) {
   taskandGoalModel = new TreeModel("任务"); // todo
   setModel(taskandGoalModel);
 }
+taskandGoalWidget::taskandGoalWidget(QWidget* parent) : QWidget(parent) {
+  QVBoxLayout*     pageLayout = new QVBoxLayout(this);
+  taskandGoalView* taskView   = new taskandGoalView;
+  pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
+  pageLayout->setContentsMargins(0, 0, 0, 0);
+  pageLayout->addWidget(taskView);
+};

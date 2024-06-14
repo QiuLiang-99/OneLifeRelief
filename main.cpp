@@ -3,7 +3,7 @@
 #include "src/model/task/taskdata.h"
 #include <QApplication>
 #include <QTableWidget> // Add this line to import the QTableWidget class
-
+// todo 整个软件只能打开一次，不能多次打开
 int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
   // 加载QSS样式
