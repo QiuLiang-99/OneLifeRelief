@@ -1,7 +1,8 @@
 #ifndef TIMELINE_H
 #define TIMELINE_H
-#include "newtask.h"
 #include "src/include/QTUI.h"
+#include "src/module/newtask/newtask.h"
+
 class Timeline : public QWidget {
     Q_OBJECT
 

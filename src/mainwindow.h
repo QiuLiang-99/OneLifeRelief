@@ -2,10 +2,10 @@
 #define MAINWINDOW_H
 
 #include "src/module/courseschedule/courseschedulewidget.h"
-#include "src/module/newtask.h"
+#include "src/module/newtask/newtask.h"
 #include "src/module/olrmainwindow/olrmainwindow.h"
-#include "src/module/taskandgoal.h"
-#include "src/module/timeline.h"
+#include "src/module/taskandgoal/taskandgoal.h"
+#include "src/module/timeline/timeline.h"
 
 class MainWindow : public QWidget {
     Q_OBJECT
