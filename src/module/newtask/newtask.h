@@ -52,6 +52,7 @@ class newTaskWidget : public QDialog {
     void onUpgradeButtonClicked();
     void onMoreButtonClicked();
     void onCancelButtonClicked();
+    void checkTaskNameInput();
   signals:
 
   private:

@@ -26,7 +26,7 @@ void TaskDB::createTable() {
   // 使用原始字符串文字(R"()")来避免转义字符问题
   QString   createTableQuery = R"(
         CREATE TABLE IF NOT EXISTS Task (
-            id INTEGER PRIMARY KEY, 
+            id TEXT PRIMARY KEY, 
             name TEXT, 
             description TEXT, 
             assignee TEXT, 
@@ -49,27 +49,38 @@ void TaskDB::createTable() {
     qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
   }
 }
-void TaskDB::addOrUpdateTask(const TaskData& task) {
+void TaskDB::replaceTask(const TaskData& task) {
+  // clang-format off
+  // ^^^ 注意空格 vvv
   QSqlQuery query;
-  query.prepare("SELECT * FROM Task WHERE id = :id");
-  query.bindValue(":id", task.id);
+  query.prepare("REPLACE INTO Task (id, name, description, assignee, progress, status, "
+        "priority, taskType, createdDate, startDate, endDate, reminders) "
+        "VALUES (:id, :name, :description, :assignee, :progress, :status, "
+        ":priority, :taskType, :createdDate, :startDate, :endDate, :reminders)");
+  
+  query.bindValue(":id", task.id); // 假设task对象有一个id属性
+  query.bindValue(":name", task.title);
+  query.bindValue(":description", task.content);
+  query.bindValue(":assignee", "张三");
+  query.bindValue(":progress", -1);
+  query.bindValue(":status", -1);
+  query.bindValue(":priority", -1);
+  query.bindValue(":taskType", -1);
+  query.bindValue(":createdDate", task.QDateTimetoQString(task.createdDateTime));
+  query.bindValue(":startDate", task.QDateTimetoQString(task.startDateTime));
+  query.bindValue(":endDate", task.QDateTimetoQString(task.completedTime));
+  query.bindValue(":reminders", task.QDateTimetoQString(task.reminderTime));
+  // clang-format on
+  // 执行sql语句
   if (query.exec()) {
-    // 如果存在具有相同主键的任务，执行更新操作
-    /*QString updateSql = QString("UPDATE Task SET name='%1',
-       description='%2', " " WHERE id=%3") .arg(name) .arg(description)//todo
-       .arg(id);*/
-    /*if (!query.exec(updateSql)) {
-      qDebug() << "更新任务失败：" << query.lastError().text();
-    }*/
+    qDebug() << "REPLACE data Successful!";
   } else {
-    qDebug() << "查询任务失败：" << query.lastError().text();
-    // 如果不存在具有相同主键的任务，执行添加操作
-    addTask(task);
+    qDebug() << "REPLACE data Failed!";
   }
 }
 void TaskDB::addTask(const TaskData& task) {
   // clang-format off
-// ^^^ 注意空格 vvv
+  // ^^^ 注意空格 vvv
   queryString =
       QString("insert into Task (name, description, assignee, progress, status,"
           "priority, taskType, createdDate, startDate, endDate, reminders) "

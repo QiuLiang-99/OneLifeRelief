@@ -27,7 +27,7 @@ class TaskDB : public QWidget {
     void Update(); // 更新数据，若更新大量数据，可以先快速删除后在快速添加
     void            Select(); // 查询数据，支持大量数据快速查询
     QList<TaskData> loadAllTask();
-    void            addOrUpdateTask(const TaskData&);
+    void            replaceTask(const TaskData&);
     void            FastAdd(); // 在sqlite中快速添加大量数据
 
   private:

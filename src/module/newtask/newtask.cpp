@@ -49,11 +49,15 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   actionLayout = new QHBoxLayout();
   cancelButton = new QPushButton("取消", this);
   addButton    = new QPushButton("添加任务", this);
-  addButton->setStyleSheet("background-color: #FF6F61; color: white;");
+  addButton->setStyleSheet(
+      "QPushButton { background-color: #FF6F61; color: white; } "
+      "QPushButton:disabled { background-color: #CCCCCC; color: #757575; }");
   actionLayout->addWidget(cancelButton);
   actionLayout->addWidget(addButton);
   mainLayout->addLayout(actionLayout);
-
+  checkTaskNameInput(); // 任务必须有名字，否则禁用按钮
+  connect(taskNameEdit, &QLineEdit::textChanged, this,
+          &newTaskWidget::checkTaskNameInput);
   TaskDB* taskdb = new TaskDB;
   qDebug() << "taskdb ok";
   /*QPropertyAnimation* propertyAnimation =
@@ -95,7 +99,7 @@ void newTaskWidget::onAddButtonClicked() {
   // ... 保存其他控件的内容 ...
   // 将控件的内容保存到 task 中
   TaskDB    db;
-  db.addOrUpdateTask(task);
+  db.replaceTask(task);
   close();
 }
 void newTaskWidget::onTodayButtonClicked() {
@@ -115,6 +119,10 @@ void newTaskWidget::onMoreButtonClicked() {
 }
 void newTaskWidget::onCancelButtonClicked() {
   close();
+}
+void newTaskWidget::checkTaskNameInput() {
+  bool isInputEmpty = taskNameEdit->text().isEmpty();
+  addButton->setDisabled(isInputEmpty);
 }
 void newTaskWidget::resizeEvent(QResizeEvent* event) {
   // auto width = this->parentWidget()->width();
