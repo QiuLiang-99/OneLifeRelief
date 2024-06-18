@@ -36,7 +36,7 @@ namespace TaskEnums {
 } // namespace TaskEnums
 struct TaskData {
 
-    unsigned id;
+    uint64_t id = 0;
     QString  projectId;
     int      imgMode;
     QString  parentId;

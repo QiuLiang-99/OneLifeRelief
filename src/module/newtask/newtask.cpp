@@ -1,4 +1,5 @@
 #include "newtask.h"
+#include "src/module/sqlite/snowflake/snowflake.h"
 #include "src/module/sqlite/taskdb.h"
 
 #include "src/model/task/taskdata.h"
@@ -85,12 +86,15 @@ void newTaskWidget::onAddButtonClicked() {
       taskNameEdit->text(); // todo 如果没写名字则无法添加 按钮是灰的
   QString   description = descriptionEdit->toPlainText();
   QDateTime timeNow     = QDateTime::currentDateTime();
-  TaskData  task        = TaskData{
-              .title = taskName, .content = description, .createdDateTime = timeNow};
+  Snowflake snowflake(0);
+  TaskData  task = TaskData{.id              = snowflake.generateId(),
+                            .title           = taskName,
+                            .content         = description,
+                            .createdDateTime = timeNow};
   // ... 获取其他控件的内容 ...
   // ... 保存其他控件的内容 ...
   // 将控件的内容保存到 task 中
-  TaskDB db;
+  TaskDB    db;
   db.addOrUpdateTask(task);
   close();
 }
