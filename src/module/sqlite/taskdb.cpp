@@ -1,7 +1,7 @@
 #include "taskdb.h"
 #include "src/model/task/taskdata.h"
 
-TaskDB::TaskDB(QWidget* parent) : QWidget(parent) {
+TaskDB::TaskDB(QObject* parent) : QObject(parent) {
   if (QSqlDatabase::contains("qt_sql_default_connection")) {
     DB = QSqlDatabase::database("qt_sql_default_connection");
   } else {

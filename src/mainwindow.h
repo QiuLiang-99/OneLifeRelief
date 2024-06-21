@@ -3,7 +3,7 @@
 
 #include "src/module/courseschedule/courseschedulewidget.h"
 #include "src/module/newtask/newtask.h"
-#include "src/module/olrmainwindow/olrmainwindow.h"
+// #include "src/module/olrmainwindow/olrmainwindow.h"
 #include "src/module/taskandgoal/taskandgoal.h"
 #include "src/module/timeline/timeline.h"
 

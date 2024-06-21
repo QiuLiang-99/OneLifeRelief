@@ -1,6 +1,6 @@
 #ifndef TASKDB_H
 #define TASKDB_H
-#include <QWidget>
+#include <QObject>
 
 #include "src/model/task/taskdata.h"
 #include <QDebug>
@@ -10,11 +10,11 @@
 #include <QSqlRecord>
 #include <qlist.h>
 
-class TaskDB : public QWidget {
+class TaskDB : public QObject {
     Q_OBJECT
 
   public:
-    TaskDB(QWidget* parent = nullptr);
+    TaskDB(QObject* parent = nullptr);
     virtual ~TaskDB();
 
   public:

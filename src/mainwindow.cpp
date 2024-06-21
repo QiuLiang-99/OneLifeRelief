@@ -86,7 +86,7 @@ void MainWindow::setupUI() {
   mainWidget->addWidget(new CourseScheduleWidget);
   mainWidget->addWidget(new taskandGoalWidget);
   mainWidget->addWidget(new TimeLineWidget);
-  mainWidget->addWidget(new OLRMainWindow);
+  // mainWidget->addWidget(new OLRMainWindow);
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
