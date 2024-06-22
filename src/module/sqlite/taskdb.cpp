@@ -21,7 +21,7 @@ TaskDB::~TaskDB() {
     DB.close();
   }
 }
-void TaskDB::createTable() {
+bool TaskDB::createTable() {
   QSqlQuery query;
   // 使用原始字符串文字(R"()")来避免转义字符问题
   QString   createTableQuery = R"(
@@ -48,8 +48,9 @@ void TaskDB::createTable() {
   } else {
     qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
   }
+  return success;
 }
-void TaskDB::replaceTask(const TaskData& task) {
+bool TaskDB::replaceTask(const TaskData& task) {
   // clang-format off
   // ^^^ 注意空格 vvv
   QSqlQuery query;
@@ -72,13 +73,15 @@ void TaskDB::replaceTask(const TaskData& task) {
   query.bindValue(":reminders", task.QDateTimetoQString(task.reminderTime));
   // clang-format on
   // 执行sql语句
-  if (query.exec()) {
+  bool success = query.exec();
+  if (success) {
     qDebug() << "REPLACE data Successful!";
   } else {
     qDebug() << "REPLACE data Failed!";
   }
+  return success;
 }
-void TaskDB::addTask(const TaskData& task) {
+bool TaskDB::addTask(const TaskData& task) {
   // clang-format off
   // ^^^ 注意空格 vvv
   queryString =
@@ -99,27 +102,32 @@ void TaskDB::addTask(const TaskData& task) {
       ;
   // clang-format on
   QSqlQuery query; // 执行sql语句
-  if (query.exec(queryString)) {
+  bool      success = query.exec(queryString);
+
+  if (success) {
     qDebug() << "insert data Successful!";
   } else {
     qDebug() << "insert data Failed!";
   }
+  return success;
 }
 
-void TaskDB::Delete() // 删
+bool TaskDB::Delete() // 删
 {
   // 在这里有时候要判断限制条件是否为空，这时候可以用这个sql语句，当班级名称不为空时删除
   // queryString = QString("delete from class where class_name is not null");
   queryString = QString("DELETE FROM Task WHERE id = %1").arg(1);
   QSqlQuery query(queryString);
-  if (query.exec()) {
+  bool      success = query.exec();
+  if (success) {
     qDebug() << "Delete data Successful!";
   } else {
     qDebug() << "Delete data Failed!";
   }
+  return success;
 }
 
-void TaskDB::Update() // 改
+bool TaskDB::Update() // 改
 {
   // 更新数据，将班级名称作为限制条件进行数据更新
   queryString =
@@ -140,14 +148,16 @@ void TaskDB::Update() // 改
           .arg("2022-01-02")
           .arg(1);
   QSqlQuery query;
-  if (query.exec(queryString)) {
+  bool      success = query.exec(queryString);
+  if (success) {
     qDebug() << "updata data Successful!";
   } else {
     qDebug() << "updata data Failed!";
   }
+  return success;
 }
 
-void TaskDB::Select() // 查
+bool TaskDB::Select() // 查
 {
   queryString = QString("SELECT * FROM Task WHERE id = %1").arg(1);
   QSqlQuery query(queryString);
@@ -178,6 +188,7 @@ void TaskDB::Select() // 查
     qDebug() << "任务结束日期：" << endDate;
     qDebug() << "任务提醒：" << reminders;
   }
+  return true;
 }
 QList<TaskData> TaskDB::loadAllTask() // 查
 {
@@ -235,7 +246,7 @@ QList<TaskData> TaskDB::loadAllTask() // 查
   return taskList;
 }
 // 对大量数据进行快速添加，尝试过添加几千条数据，不到一秒就添加完成
-void TaskDB::FastAdd() {
+bool TaskDB::FastAdd() {
   // 使用事务
   DB.transaction(); // 开启事务
   QSqlQuery query;
@@ -248,4 +259,5 @@ void TaskDB::FastAdd() {
     query.exec();
   }
   DB.commit(); // 一次性提交，省去大量时间
+  return true;
 }

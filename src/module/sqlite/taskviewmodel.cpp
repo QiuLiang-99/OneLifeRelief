@@ -21,6 +21,6 @@ void TaskViewModel::updateTask(const TaskData& task) {
 }
 
 void TaskViewModel::deleteTask(const QString& taskId) {
-  bool success = taskDB->Delete(taskId); // 从数据库删除任务
-  emit taskDeleted(success); // 发射信号，通知View层任务删除结果
+  // bool success = taskDB->Delete(taskId); // 从数据库删除任务
+  // emit taskDeleted(success); // 发射信号，通知View层任务删除结果
 }

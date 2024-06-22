@@ -18,17 +18,17 @@ class TaskDB : public QObject {
     virtual ~TaskDB();
 
   public:
-    void    createTable(); // 创建表
+    bool    createTable(); // 创建表
     // 定义一个变量，用于增删改查
     QString queryString;
 
-    void addTask(const TaskData&); // 添加数据，不支持大量数据快速添加
-    void Delete(); // 删除数据，支持大量数据快速删除
-    void Update(); // 更新数据，若更新大量数据，可以先快速删除后在快速添加
-    void            Select(); // 查询数据，支持大量数据快速查询
+    bool addTask(const TaskData&); // 添加数据，不支持大量数据快速添加
+    bool Delete(); // 删除数据，支持大量数据快速删除
+    bool Update(); // 更新数据，若更新大量数据，可以先快速删除后在快速添加
+    bool            Select(); // 查询数据，支持大量数据快速查询
     QList<TaskData> loadAllTask();
-    void            replaceTask(const TaskData&);
-    void            FastAdd(); // 在sqlite中快速添加大量数据
+    bool            replaceTask(const TaskData&);
+    bool            FastAdd(); // 在sqlite中快速添加大量数据
 
   private:
     QSqlDatabase DB; // 定义数据库名称

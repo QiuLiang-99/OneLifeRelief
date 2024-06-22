@@ -17,6 +17,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 #添加sql数据库头
 find_package(Qt6 REQUIRED COMPONENTS Sql)
 
+include_directories(${CMAKE_SOURCE_DIR}/src)#添加头文件路径,搜索头文件时将会从此处作为顶格目录开始搜索
+
 set(PROJECT_SOURCES
         main.cpp
 )
