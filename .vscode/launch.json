@@ -7,6 +7,7 @@
             "program": "${command:cmake.launchTargetPath}",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
+            "externalConsole": false,
             //"visualizerFile": "${command:qt-official.natvis}",
             "windows": {
                 "environment": [

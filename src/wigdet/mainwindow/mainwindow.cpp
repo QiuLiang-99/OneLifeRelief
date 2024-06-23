@@ -90,6 +90,7 @@ void MainWindow::setupUI() {
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
+  Q_UNUSED(event);
   if (nullptr != gridLayout) {
     int       index     = 0;
     int       width     = this->geometry().width();

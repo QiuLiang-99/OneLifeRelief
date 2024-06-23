@@ -1,11 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "src/module/courseschedule/courseschedulewidget.h"
-#include "src/module/newtask/newtask.h"
+#include "src/wigdet/mainwindow/functionwindow/taskandgoal/taskandgoal.h"
+#include "src/wigdet/mainwindow/functionwindow/timeline/timeline.h"
 // #include "src/module/olrmainwindow/olrmainwindow.h"
-#include "src/module/taskandgoal/taskandgoal.h"
-#include "src/module/timeline/timeline.h"
+#include "src/wigdet/mainwindow/functionwindow/courseschedule/courseschedulewidget.h"
+// #include "src/wigdet/mainwindow/functionwindow/setting/setting.h"
+#include "src/wigdet/mainwindow//olrmainwindow.h"
 
 class MainWindow : public QWidget {
     Q_OBJECT

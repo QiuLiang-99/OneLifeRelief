@@ -1,9 +1,9 @@
 #include "newtask.h"
-#include "src/module/sqlite/snowflake/snowflake.h"
-#include "src/module/sqlite/taskdb.h"
-
 #include "src/model/task/taskdata.h"
+#include "src/sqlite/snowflake/snowflake.h"
+#include "src/sqlite/taskdb.h"
 #include <qdatetime.h>
+
 // todo 几小时 几天 后
 // enter 快捷键
 newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
