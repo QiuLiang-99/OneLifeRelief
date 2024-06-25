@@ -1,6 +1,6 @@
-#include "src/CommonHelper.h"
-#include "src/model/task/taskdata.h"
-#include "src/wigdet/mainwindow/mainwindow.h"
+#include "CommonHelper.h"
+#include "model/task/taskdata.h"
+#include "wigdet/mainwindow/mainwindow.h"
 #include <QApplication>
 #include <QTableWidget> // Add this line to import the QTableWidget class
 #include <cstdint>

@@ -10,12 +10,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")
+set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)#查找qt的widgets库
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-#添加sql数据库头
-find_package(Qt6 REQUIRED COMPONENTS Sql)
+
+find_package(Qt6 REQUIRED COMPONENTS Sql)#添加sql数据库头
 
 include_directories(${CMAKE_SOURCE_DIR}/src)#添加头文件路径,搜索头文件时将会从此处作为顶格目录开始搜索
 
@@ -48,7 +48,7 @@ else()
     endif()
 endif()
 target_link_libraries(OneLifeRelief  PRIVATE Qt6::Sql)#添加sql数据库头
-target_link_libraries(OneLifeRelief PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(OneLifeRelief PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)#将先前查到到的库的头文件链接到项目
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
