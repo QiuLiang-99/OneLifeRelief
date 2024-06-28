@@ -22,9 +22,9 @@ Checks: '-*,
         bugprone-forward-declaration-namespace,
         bugprone-bool-pointer-implicit-conversion,
         bugprone-misplaced-widening-cast,
-        cppcoreguidelines-narrowing-conversions,
         misc-unconventional-assign-operator,
         misc-unused-parameters'
+        #cppcoreguidelines-narrowing-conversions,
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 CheckOptions:

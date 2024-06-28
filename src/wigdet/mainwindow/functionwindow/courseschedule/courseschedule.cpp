@@ -27,11 +27,9 @@ int ScheduleModel::columnCount(const QModelIndex&) const {
   return ScheduleData.size();
 }
 QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
-  if (!index.isValid()) return QVariant();
+  if (!index.isValid()) { return QVariant(); }
   if (role == Qt::DisplayRole || role == Qt::EditRole) {
-    if (ScheduleData.at(index.column()).empty()) {
-      return QVariant();
-    }
+    if (ScheduleData.at(index.column()).empty()) { return QVariant(); }
     auto subData = ScheduleData.at(index.column());
     if (subData.at(index.row())) { // 如果目标数据为空则提前返回
       return QVariant();
@@ -49,13 +47,13 @@ QVariant ScheduleModel::data(const QModelIndex& index, int role) const {
 
 void ScheduleModel::analysislessonlItem(lessonlItem item) {
   auto StoI = [=](QString s) {
-    if (s == "星期一") return 0;
-    if (s == "星期二") return 1;
-    if (s == "星期三") return 2;
-    if (s == "星期四") return 3;
-    if (s == "星期五") return 4;
-    if (s == "星期六") return 5;
-    if (s == "星期天") return 6;
+    if (s == "星期一") { return 0; }
+    if (s == "星期二") { return 1; }
+    if (s == "星期三") { return 2; }
+    if (s == "星期四") { return 3; }
+    if (s == "星期五") { return 4; }
+    if (s == "星期六") { return 5; }
+    if (s == "星期天") { return 6; }
     return -1;
   };
   int                column         = StoI(item.dayofweek);
@@ -135,9 +133,7 @@ QString CourseScheduleView::openLessonjsonPath() {
   fileDialog->setViewMode(QFileDialog::Detail);
   // 获取选择的文件的路径
   QStringList fileNames;
-  if (fileDialog->exec()) {
-    fileNames = fileDialog->selectedFiles();
-  }
+  if (fileDialog->exec()) { fileNames = fileDialog->selectedFiles(); }
   return fileNames.at(0);
 }
 
@@ -187,13 +183,13 @@ void CourseScheduleView::analysisjson(QString path) {
       std::array<int, 2> timeoflessonA{timeoflessonSL.at(0).toInt() - 1,
                                        timeoflessonSL.at(1).toInt()};
       auto               StoI = [=](QString s) {
-        if (s == "星期一") return 0;
-        if (s == "星期二") return 1;
-        if (s == "星期三") return 2;
-        if (s == "星期四") return 3;
-        if (s == "星期五") return 4;
-        if (s == "星期六") return 5;
-        if (s == "星期天") return 6;
+        if (s == "星期一") { return 0; }
+        if (s == "星期二") { return 1; }
+        if (s == "星期三") { return 2; }
+        if (s == "星期四") { return 3; }
+        if (s == "星期五") { return 4; }
+        if (s == "星期六") { return 5; }
+        if (s == "星期天") { return 6; }
         return -1;
       }; // todo 提前就可以解析一下json，不用解析两次
       this->setSpan(timeoflessonA.at(0), StoI(dayofweek),
