@@ -32,10 +32,7 @@ March 2024
 14
 */
 
-MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
-  setupUI();
-}
-MainWindow::~MainWindow() {}
+MainWindow::MainWindow(QWidget* parent) : QWidget(parent) { setupUI(); }
 void MainWindow::setupUI() {
 #if defined(Q_OS_WIN)
   setGeometry(0, 0, 800, 600); // 规范窗体大小
@@ -121,6 +118,4 @@ void MainWindow::appendNewButton(const QString& name) {
 
   tablebtnGroup->addButton(pushbutton, index++);
 }
-void MainWindow::on_test_clicked() {
-  qDebug() << "yes";
-}
+void MainWindow::on_test_clicked() { qDebug() << "yes"; }

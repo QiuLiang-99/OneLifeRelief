@@ -13,13 +13,13 @@ class MainWindow : public QWidget {
 
   public:
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override = default;
 
   public:
     void appendNewButton(const QString&);
 
   protected:
-    virtual void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
   public:
     void setupUI();
