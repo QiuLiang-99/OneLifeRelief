@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
   // 加载QSS样式
   // CommonHelper::setStyle("style.qss");
-  // qx::dao::create_table<TaskData>();
   MainWindow   w;
   w.show();
   return a.exec();
