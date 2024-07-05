@@ -1,4 +1,7 @@
 #include "mainwindow.h"
+#include "QxOrm.h"
+#include <QxRegister/QxClass.h>
+#include <QxRegister/QxRegister.h>
 
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
@@ -18,6 +21,9 @@
 // todo Status board 拖拽选项卡
 // todo通过创建的时间的标签查找
 // todo 睡眠 助眠，听歌，更新
+// todo An alternative to putting the plugins in the plugins subdirectory is to
+// add a custom search path when you start your application using
+// QCoreApplication::addLibraryPath() or QCoreApplication::setLibraryPaths().
 /*
 
 // todo Roadmap
@@ -32,7 +38,14 @@ March 2024
 14
 */
 
-MainWindow::MainWindow(QWidget* parent) : QWidget(parent) { setupUI(); }
+MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
+  setupUI();
+  qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
+  qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
+  qx::QxSqlDatabase::getSingleton()->setHostName("localhost");
+  qx::QxSqlDatabase::getSingleton()->setUserName("root");
+  qx::QxSqlDatabase::getSingleton()->setPassword("");
+}
 void MainWindow::setupUI() {
 #if defined(Q_OS_WIN)
   setGeometry(0, 0, 800, 600); // 规范窗体大小

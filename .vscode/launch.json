@@ -7,15 +7,8 @@
             "program": "${command:cmake.launchTargetPath}",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "visualizerFile": "${command:qt-official.natvis}",
+            //"visualizerFile": "${command:qt-official.natvis}",
             "showDisplayString": true,
-            "linux": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "/usr/bin/gdb"
-            },
-            "osx": {
-                "MIMode": "lldb"
-            },
             "windows": {
                 "environment": [
                     {
