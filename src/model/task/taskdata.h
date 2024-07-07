@@ -1,5 +1,6 @@
 #ifndef TASKDATA_H
 #define TASKDATA_H
+#include "sqlite/precompiled.h"
 #include <QDate>
 #include <QString>
 #include <qcontainerfwd.h>
@@ -34,7 +35,7 @@ namespace TaskEnums {
     NotPlanned, // This is not planned currently #FFEFF7 #BF3989
   };
 } // namespace TaskEnums
-struct TaskData {
+struct QX_DLL_EXPORT TaskData {
 
     qulonglong id = 0;
     QString    projectId;
