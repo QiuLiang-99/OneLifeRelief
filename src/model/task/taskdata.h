@@ -8,16 +8,6 @@
 #include <QxRegister/QxRegister.h>
 #include <qcontainerfwd.h>
 #include <qdatetime.h>
-
-class test {
-  public:
-    QString name;
-    long    id;
-};
-
-// QxOrm需要的宏，用于注册数据模型
-QX_REGISTER_HPP_EXPORT_DLL(test, qx::trait::no_base_class_defined, 0)
-
 namespace TaskEnums {
   enum Priority { // todo 紧急 重要
     TOP,

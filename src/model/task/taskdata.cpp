@@ -1,4 +1,5 @@
 #include "taskdata.h"
+
 QX_REGISTER_CPP_EXPORT_DLL(TaskData)
 
 namespace qx {
