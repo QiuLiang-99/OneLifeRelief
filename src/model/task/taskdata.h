@@ -1,10 +1,23 @@
 #ifndef TASKDATA_H
 #define TASKDATA_H
+#include "QxOrm.h"
 #include "sqlite/precompiled.h"
 #include <QDate>
 #include <QString>
+#include <QxOrm_Impl.h> // 自动内存泄漏检测和 Boost 序列化导出宏
+#include <QxRegister/QxClass.h>
+#include <QxRegister/QxRegister.h>
 #include <qcontainerfwd.h>
 #include <qdatetime.h>
+
+class test {
+  public:
+    QString name;
+    long    id;
+};
+
+// QxOrm需要的宏，用于注册数据模型
+QX_REGISTER_HPP_EXPORT_DLL(test, qx::trait::no_base_class_defined, 0)
 
 namespace TaskEnums {
   enum Priority { // todo 紧急 重要
@@ -70,4 +83,5 @@ struct QX_DLL_EXPORT TaskData {
       return QDateTime::fromString(str, "yyyy-MM-dd hh:mm:ss");
     }
 };
+// QX_REGISTER_HPP_QX(TaskData, qx::trait::no_base_class_defined, 0)
 #endif // TASKDATA_H
