@@ -1,14 +1,13 @@
 #include "taskdata.h"
-QX_REGISTER_CPP_EXPORT_DLL(test)
+QX_REGISTER_CPP_EXPORT_DLL(TaskData)
 
 namespace qx {
   template <>
-  void register_class(QxClass<test>& t) {
+  void register_class(QxClass<TaskData>& t) {
 
-    t.setName("User"); // 设置表名
-    // 注册 User::id <=> 数据库中的主键
-    t.id(&test::id, "id");
-    // 注册 User::name 属性，使用的 key 是 name，version 是 1。
-    t.data(&test::name, "name");
+    t.setName("TaskData"); // 设置表名
+    t.id(&TaskData::id, "id");
+    t.data(&TaskData::title, "title");
+    t.data(&TaskData::content, "content");
   }
 } // namespace qx

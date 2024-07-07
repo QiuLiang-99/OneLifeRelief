@@ -82,5 +82,6 @@ struct QX_DLL_EXPORT TaskData {
       return QDateTime::fromString(str, "yyyy-MM-dd hh:mm:ss");
     }
 };
-// QX_REGISTER_HPP_QX(TaskData, qx::trait::no_base_class_defined, 0)
+QX_REGISTER_PRIMARY_KEY(TaskData, qulonglong)
+QX_REGISTER_HPP_EXPORT_DLL(TaskData, qx::trait::no_base_class_defined, 0)
 #endif // TASKDATA_H
