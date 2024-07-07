@@ -1,6 +1,5 @@
 #ifndef TASKDATA_H
 #define TASKDATA_H
-#include "QxOrm.h"
 #include "sqlite/precompiled.h"
 #include <QDate>
 #include <QString>

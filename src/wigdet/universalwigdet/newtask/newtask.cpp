@@ -58,7 +58,6 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   checkTaskNameInput(); // 任务必须有名字，否则禁用按钮
   connect(taskNameEdit, &QLineEdit::textChanged, this,
           &newTaskWidget::checkTaskNameInput);
-  TaskDB* taskdb = new TaskDB;
   qDebug() << "taskdb ok";
   /*QPropertyAnimation* propertyAnimation =
       new QPropertyAnimation(this, "geometry");
@@ -102,9 +101,7 @@ void newTaskWidget::onAddButtonClicked() {
   db.replaceTask(task);
   close();
 }
-void newTaskWidget::onTodayButtonClicked() {
-  calendarWindow->show();
-}
+void newTaskWidget::onTodayButtonClicked() { calendarWindow->show(); }
 void newTaskWidget::onPriorityButtonClicked() {
   // 在这里添加优先级按钮被点击时的处理代码
 }
@@ -117,9 +114,7 @@ void newTaskWidget::onUpgradeButtonClicked() {
 void newTaskWidget::onMoreButtonClicked() {
   // 在这里添加更多按钮被点击时的处理代码
 }
-void newTaskWidget::onCancelButtonClicked() {
-  close();
-}
+void newTaskWidget::onCancelButtonClicked() { close(); }
 void newTaskWidget::checkTaskNameInput() {
   bool isInputEmpty = taskNameEdit->text().isEmpty();
   addButton->setDisabled(isInputEmpty);
