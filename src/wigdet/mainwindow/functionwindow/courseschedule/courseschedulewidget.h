@@ -1,8 +1,8 @@
 #ifndef __COURSESCHEDULEWIDGET_H__
 #define __COURSESCHEDULEWIDGET_H__
 #include "courseschedule.h"
-#include "src/include/QTUI.h"
-#include "src/wigdet/universalwigdet/newtask/newtask.h"
+#include "include/QTUI.h"
+#include "wigdet/universalwigdet/newtask/newtask.h"
 
 class CourseScheduleWidget : public QWidget {
     Q_OBJECT

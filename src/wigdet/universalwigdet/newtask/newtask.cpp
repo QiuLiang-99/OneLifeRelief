@@ -1,7 +1,7 @@
 #include "newtask.h"
-#include "src/model/task/taskdata.h"
-#include "src/sqlite/snowflake/snowflake.h"
-#include "src/sqlite/taskdb.h"
+#include "sqlite/model/task/taskdata.h"
+#include "sqlite/snowflake/snowflake.h"
+#include "sqlite/taskdb.h"
 #include <qdatetime.h>
 
 // todo 几小时 几天 后

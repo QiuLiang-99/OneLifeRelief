@@ -1,8 +1,14 @@
 #include "mainwindow.h"
 #include "QxOrm.h"
+#include "src/wigdet/mainwindow/functionwindow/taskandgoal/taskandgoal.h"
+#include "src/wigdet/mainwindow/functionwindow/timeline/timeline.h"
 #include <QxRegister/QxClass.h>
 #include <QxRegister/QxRegister.h>
 
+// #include "src/module/olrmainwindow/olrmainwindow.h"
+#include "src/wigdet/mainwindow/functionwindow/courseschedule/courseschedulewidget.h"
+// #include "src/wigdet/mainwindow/functionwindow/setting/setting.h"
+#include "src/wigdet/mainwindow//olrmainwindow.h"
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
 // todo任务提醒

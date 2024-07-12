@@ -1,5 +1,5 @@
 #include "taskdb.h"
-#include "src/model/task/taskdata.h"
+#include "model/task/taskdata.h"
 
 TaskDB::TaskDB(QObject* parent) : QObject(parent) {
   if (QSqlDatabase::contains("qt_sql_default_connection")) {
@@ -17,9 +17,7 @@ TaskDB::TaskDB(QObject* parent) : QObject(parent) {
   // addTask(); // 添加数据
 }
 TaskDB::~TaskDB() {
-  if (DB.isOpen()) {
-    DB.close();
-  }
+  if (DB.isOpen()) { DB.close(); }
 }
 bool TaskDB::createTable() {
   QSqlQuery query;

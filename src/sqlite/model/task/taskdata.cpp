@@ -10,5 +10,6 @@ namespace qx {
     t.id(&TaskData::id, "id");
     t.data(&TaskData::title, "title");
     t.data(&TaskData::content, "content");
+    // todo dao完善
   }
 } // namespace qx

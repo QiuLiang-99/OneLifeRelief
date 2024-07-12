@@ -4,7 +4,7 @@
 
 class CalendarWindow : public QWidget {
   public:
-    CalendarWindow(QWidget* parent = nullptr);
+    explicit CalendarWindow(QWidget* parent = nullptr);
 
   private:
     QVBoxLayout*     mainLayout;
@@ -24,7 +24,7 @@ class PriorityButton : public QPushButton {
     Q_OBJECT
 
   public:
-    PriorityButton(QWidget* parent = nullptr);
+    explicit PriorityButton(QWidget* parent = nullptr);
 
   private:
     void setupMenu();

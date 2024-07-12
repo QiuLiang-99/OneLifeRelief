@@ -1,8 +1,6 @@
 #include "olrmainwindow.h"
 
-OLRMainWindow::OLRMainWindow(QWidget* parent) : QWidget(parent) {
-  setupUI();
-}
+OLRMainWindow::OLRMainWindow(QWidget* parent) : QWidget(parent) { setupUI(); }
 
 OLRMainWindow::~OLRMainWindow() {}
 

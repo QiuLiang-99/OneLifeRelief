@@ -2,7 +2,7 @@
 #define TASKDB_H
 #include <QObject>
 
-#include "src/model/task/taskdata.h"
+#include "model/task/taskdata.h"
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -14,7 +14,7 @@ class TaskDB : public QObject {
     Q_OBJECT
 
   public:
-    TaskDB(QObject* parent = nullptr);
+    explicit TaskDB(QObject* parent = nullptr);
     virtual ~TaskDB();
 
   public:
