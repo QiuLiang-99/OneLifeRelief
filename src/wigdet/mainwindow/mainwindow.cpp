@@ -1,9 +1,7 @@
 #include "mainwindow.h"
-#include "QxOrm.h"
+
 #include "src/wigdet/mainwindow/functionwindow/taskandgoal/taskandgoal.h"
 #include "src/wigdet/mainwindow/functionwindow/timeline/timeline.h"
-#include <QxRegister/QxClass.h>
-#include <QxRegister/QxRegister.h>
 
 // #include "src/module/olrmainwindow/olrmainwindow.h"
 #include "src/wigdet/mainwindow/functionwindow/courseschedule/courseschedulewidget.h"
@@ -42,14 +40,7 @@ March 2024
 14
 */
 
-MainWindow::MainWindow(QWidget* parent) : QWidget(parent) {
-  setupUI();
-  qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
-  qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
-  qx::QxSqlDatabase::getSingleton()->setHostName("localhost");
-  qx::QxSqlDatabase::getSingleton()->setUserName("root");
-  qx::QxSqlDatabase::getSingleton()->setPassword("");
-}
+MainWindow::MainWindow(QWidget* parent) : QWidget(parent) { setupUI(); }
 void MainWindow::setupUI() {
 #if defined(Q_OS_WIN)
   setGeometry(0, 0, 800, 600); // 规范窗体大小

@@ -1,18 +1,12 @@
 #include "taskdao.h"
 #include "model/task/taskdata.h"
+#include <QxOrm.h>
+#include <QxRegister/QxClass.h>
+#include <QxRegister/QxRegister.h>
 
 TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
-  if (QSqlDatabase::contains("qt_sql_default_connection")) {
-    DB = QSqlDatabase::database("qt_sql_default_connection");
-  } else {
-    DB = QSqlDatabase::addDatabase("QSQLITE");
-    DB.setDatabaseName("TaskDB.db");
-  }
-  if (DB.open()) {
-    qDebug() << "Database opened successfully！";
-  } else {
-    qDebug() << "无法打开数据库：" << DB.lastError().text();
-  }
+  qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
+  qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
   createTable();
   // addTask(); // 添加数据
 }
