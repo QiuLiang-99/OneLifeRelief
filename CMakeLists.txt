@@ -10,9 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
-set(CLANG_TIDY_COMMAND clang-tidy -header-filter=^${PROJECT_ROOT_DIR}/src/*)
-set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})#设置clang-tidy检查所有的文件
+set(CMAKE_PREFIX_PATH "F:/QT/6.7.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)#查找qt的widgets库
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -28,13 +26,13 @@ qt_add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCES}
     ${srcs} ${headers}
 )
-
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)#添加头文件路径,搜索头文件时将会从此处作为顶格目录开始搜索
+
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Sql)#添加sql数据库头
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)#将先前查到到的库的头文件链接到项目
 
 add_library(QxOrm SHARED IMPORTED)#导QxOrm库
-set(QxOrm_dir "D:/Qt/QxOrm/QxOrm-1.4.9")#设置QxOrm库的路径
+set(QxOrm_dir "F:/Desktop/QxOrm-1.4.9")#设置QxOrm库的路径
 # 检查目标平台
 if(WIN32)
     # 针对Windows的配置
