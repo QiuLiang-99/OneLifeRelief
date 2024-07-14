@@ -1,46 +1,40 @@
 #include "taskdao.h"
 #include "model/task/taskdata.h"
+#include <QxCommon/QxMacro.h>
+#include <QxDao/QxDao.h>
 #include <QxOrm.h>
 #include <QxRegister/QxClass.h>
 #include <QxRegister/QxRegister.h>
+#include <deque>
+#include <qcontainerfwd.h>
 
 TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
   qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
   qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
-  createTable();
-  // addTask(); // 添加数据
+  qx::dao::create_table<TaskData>();
+  // createTable();
+  //  addTask(); // 添加数据
+  TaskData td = {.id              = 1,
+                 .title           = "test",
+                 .content         = "test",
+                 .assignee        = "test",
+                 .progress        = 1,
+                 .status          = TaskEnums::Status::Backlog,
+                 .priority        = TaskEnums::Priority::TOP,
+                 .taskType        = TaskEnums::TaskType::STUDY,
+                 .createdDateTime = QDateTime::currentDateTime(),
+                 .startDateTime   = QDateTime::currentDateTime(),
+                 .completedTime   = QDateTime::currentDateTime(),
+                 .reminderTime    = QDateTime::currentDateTime()};
+  qx::dao::save(td);
+  std::deque<TaskData> dd;
+  QList<TaskData>      vv;
+  qx::dao::fetch_all(vv);
+  qAssert(vv.size() != 0);
+  qDebug() << vv.at(0).title;
 }
 TaskDAO::~TaskDAO() {
   if (DB.isOpen()) { DB.close(); }
-}
-bool TaskDAO::createTable() {
-  QSqlQuery query;
-  // 使用原始字符串文字(R"()")来避免转义字符问题
-  QString   createTableQuery = R"(
-        CREATE TABLE IF NOT EXISTS Task (
-            id TEXT PRIMARY KEY, 
-            name TEXT, 
-            description TEXT, 
-            assignee TEXT, 
-            progress INTEGER, 
-            status INTEGER, 
-            priority INTEGER, 
-            taskType INTEGER, 
-            createdDate TEXT, 
-            startDate TEXT, 
-            endDate TEXT, 
-            reminders TEXT
-        )
-    )";
-
-  // 执行SQL命令来创建一个名为"Tasks"的表
-  bool success               = query.exec(createTableQuery);
-  if (success) {
-    qDebug() << "Table 'Task' created or already exists.";
-  } else {
-    qDebug() << "Failed to create table 'Tasks':" << query.lastError().text();
-  }
-  return success;
 }
 bool TaskDAO::replaceTask(const TaskData& task) {
   // clang-format off

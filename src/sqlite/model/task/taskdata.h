@@ -48,7 +48,6 @@ struct QX_DLL_EXPORT TaskData {
     QString             content;
     QString             assignee; // 任务的负责人或执行者
     int                 progress; // 任务进度
-    int                 deleted;
     // 枚举 TEXT or NOTE(task or note)
     //  枚举类型
     TaskEnums::Status   status;

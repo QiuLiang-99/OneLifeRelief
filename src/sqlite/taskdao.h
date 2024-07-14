@@ -17,7 +17,6 @@ class TaskDAO : public QObject {
     virtual ~TaskDAO();
 
   public:
-    bool    createTable(); // 创建表
     // 定义一个变量，用于增删改查
     QString queryString;
 
