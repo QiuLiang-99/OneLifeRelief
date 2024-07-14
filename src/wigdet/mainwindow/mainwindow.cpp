@@ -30,8 +30,6 @@
 // todo An alternative to putting the plugins in the plugins subdirectory is to
 // add a custom search path when you start your application using
 // QCoreApplication::addLibraryPath() or QCoreApplication::setLibraryPaths().
-/*
-
 // todo Roadmap
 /*
 March 2024

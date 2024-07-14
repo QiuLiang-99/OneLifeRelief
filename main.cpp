@@ -2,8 +2,6 @@
 
 #include "wigdet/mainwindow/mainwindow.h"
 #include <QApplication>
-#include <qlist.h>
-#include <qlogging.h>
 // todo 启动参数
 // todo 整个软件只能打开一次，不能多次打开
 int main(int argc, char* argv[]) {

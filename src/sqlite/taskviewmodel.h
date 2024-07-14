@@ -6,9 +6,8 @@
 #ifndef TASKVIEWMODEL_H
 #define TASKVIEWMODEL_H
 
-#include "taskdb.h" // 引入TaskDB类
+#include "taskdao.h" // 引入TaskDB类
 #include <QObject>
-
 
 class TaskViewModel : public QObject {
     Q_OBJECT
@@ -29,7 +28,7 @@ class TaskViewModel : public QObject {
     void taskDeleted(bool success);                 // 任务删除结果信号
 
   private:
-    TaskDB* taskDB; // 持有一个TaskDB对象的指针，用于与数据库交互
+    TaskDAO* taskDB; // 持有一个TaskDB对象的指针，用于与数据库交互
 };
 
 #endif // TASKVIEWMODEL_H

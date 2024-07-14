@@ -2,7 +2,7 @@
 #include "taskviewmodel.h"
 
 TaskViewModel::TaskViewModel(QObject* parent) : QObject(parent) {
-  taskDB = new TaskDB(); // 初始化TaskDB对象
+  taskDB = new TaskDAO(); // 初始化TaskDB对象
 }
 
 void TaskViewModel::loadTasks() {

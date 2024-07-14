@@ -8,14 +8,13 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include <qlist.h>
 
-class TaskDB : public QObject {
+class TaskDAO : public QObject {
     Q_OBJECT
 
   public:
-    explicit TaskDB(QObject* parent = nullptr);
-    virtual ~TaskDB();
+    explicit TaskDAO(QObject* parent = nullptr);
+    virtual ~TaskDAO();
 
   public:
     bool    createTable(); // 创建表

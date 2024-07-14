@@ -1,7 +1,7 @@
 #include "newtask.h"
 #include "sqlite/model/task/taskdata.h"
 #include "sqlite/snowflake/snowflake.h"
-#include "sqlite/taskdb.h"
+#include "sqlite/taskdao.h"
 #include <qdatetime.h>
 
 // todo 几小时 几天 后
@@ -97,7 +97,7 @@ void newTaskWidget::onAddButtonClicked() {
   // ... 获取其他控件的内容 ...
   // ... 保存其他控件的内容 ...
   // 将控件的内容保存到 task 中
-  TaskDB    db;
+  TaskDAO   db;
   db.replaceTask(task);
   close();
 }

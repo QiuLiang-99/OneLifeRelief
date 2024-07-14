@@ -1,7 +1,7 @@
-#include "taskdb.h"
+#include "taskdao.h"
 #include "model/task/taskdata.h"
 
-TaskDB::TaskDB(QObject* parent) : QObject(parent) {
+TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
   if (QSqlDatabase::contains("qt_sql_default_connection")) {
     DB = QSqlDatabase::database("qt_sql_default_connection");
   } else {
@@ -16,10 +16,10 @@ TaskDB::TaskDB(QObject* parent) : QObject(parent) {
   createTable();
   // addTask(); // 添加数据
 }
-TaskDB::~TaskDB() {
+TaskDAO::~TaskDAO() {
   if (DB.isOpen()) { DB.close(); }
 }
-bool TaskDB::createTable() {
+bool TaskDAO::createTable() {
   QSqlQuery query;
   // 使用原始字符串文字(R"()")来避免转义字符问题
   QString   createTableQuery = R"(
@@ -48,7 +48,7 @@ bool TaskDB::createTable() {
   }
   return success;
 }
-bool TaskDB::replaceTask(const TaskData& task) {
+bool TaskDAO::replaceTask(const TaskData& task) {
   // clang-format off
   // ^^^ 注意空格 vvv
   QSqlQuery query;
@@ -79,7 +79,7 @@ bool TaskDB::replaceTask(const TaskData& task) {
   }
   return success;
 }
-bool TaskDB::addTask(const TaskData& task) {
+bool TaskDAO::addTask(const TaskData& task) {
   // clang-format off
   // ^^^ 注意空格 vvv
   queryString =
@@ -110,7 +110,7 @@ bool TaskDB::addTask(const TaskData& task) {
   return success;
 }
 
-bool TaskDB::Delete() // 删
+bool TaskDAO::Delete() // 删
 {
   // 在这里有时候要判断限制条件是否为空，这时候可以用这个sql语句，当班级名称不为空时删除
   // queryString = QString("delete from class where class_name is not null");
@@ -125,7 +125,7 @@ bool TaskDB::Delete() // 删
   return success;
 }
 
-bool TaskDB::Update() // 改
+bool TaskDAO::Update() // 改
 {
   // 更新数据，将班级名称作为限制条件进行数据更新
   queryString =
@@ -155,7 +155,7 @@ bool TaskDB::Update() // 改
   return success;
 }
 
-bool TaskDB::Select() // 查
+bool TaskDAO::Select() // 查
 {
   queryString = QString("SELECT * FROM Task WHERE id = %1").arg(1);
   QSqlQuery query(queryString);
@@ -188,7 +188,7 @@ bool TaskDB::Select() // 查
   }
   return true;
 }
-QList<TaskData> TaskDB::loadAllTask() // 查
+QList<TaskData> TaskDAO::loadAllTask() // 查
 {
   QList<TaskData> taskList;
   queryString = QString("SELECT * FROM Task");
@@ -244,7 +244,7 @@ QList<TaskData> TaskDB::loadAllTask() // 查
   return taskList;
 }
 // 对大量数据进行快速添加，尝试过添加几千条数据，不到一秒就添加完成
-bool TaskDB::FastAdd() {
+bool TaskDAO::FastAdd() {
   // 使用事务
   DB.transaction(); // 开启事务
   QSqlQuery query;

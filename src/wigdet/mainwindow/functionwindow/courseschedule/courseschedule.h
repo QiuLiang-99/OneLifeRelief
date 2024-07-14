@@ -11,13 +11,13 @@
 #include <qwidget.h>
 
 struct lessonlItem {
-    QString loaction     = "";
-    QString classname    = "";
-    QString teachername  = "";
-    QString dayofweek    = "";
-    QString weeks        = "";
-    QString timeoflesson = "";
-    operator bool() const {
+    QString  loaction     = "";
+    QString  classname    = "";
+    QString  teachername  = "";
+    QString  dayofweek    = "";
+    QString  weeks        = "";
+    QString  timeoflesson = "";
+    explicit operator bool() const {
       return loaction.isEmpty() || classname.isEmpty() ||
              teachername.isEmpty() || dayofweek.isEmpty() || weeks.isEmpty() ||
              timeoflesson.isEmpty();
@@ -34,12 +34,11 @@ class ScheduleModel : public QAbstractTableModel {
 
   public:
     explicit ScheduleModel(QObject* parent = nullptr);
-    virtual int rowCount(
-        const QModelIndex& = QModelIndex()) const override; // 目标行数
-    virtual int columnCount(
+    int rowCount(const QModelIndex& = QModelIndex()) const override; // 目标行数
+    int columnCount(
         const QModelIndex& = QModelIndex()) const override; // 目标列数
-    virtual QVariant data(const QModelIndex& index,
-                          int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index,
+                  int                role = Qt::DisplayRole) const override;
 };
 class CourseScheduleView : public QTableView {
   public:
