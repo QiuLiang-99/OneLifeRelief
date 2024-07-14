@@ -14,7 +14,7 @@ TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
   qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
   qx::dao::create_table<TaskData>();
   FunctionOnlyForTaskDataContainer(QList<TaskData>());
-  // createTable();
+
   //  addTask(); // 添加数据
   TaskData td = {.id              = 1,
                  .title           = "test",
