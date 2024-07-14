@@ -7,11 +7,13 @@
 #include <QxRegister/QxRegister.h>
 #include <deque>
 #include <qcontainerfwd.h>
+#include <qlist.h>
 
 TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
   qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
   qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
   qx::dao::create_table<TaskData>();
+  FunctionOnlyForTaskDataContainer(QList<TaskData>());
   // createTable();
   //  addTask(); // 添加数据
   TaskData td = {.id              = 1,

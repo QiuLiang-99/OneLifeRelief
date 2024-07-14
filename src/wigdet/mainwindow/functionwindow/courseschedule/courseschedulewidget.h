@@ -14,7 +14,7 @@ class CourseScheduleWidget : public QWidget {
       pageLayout->setContentsMargins(0, 0, 0, 0);
       QPushButton* importBtn = new QPushButton("导入");
       pageLayout->addWidget(importBtn);
-      connect(importBtn, &QPushButton::clicked, this, [=]() {
+      connect(importBtn, &QPushButton::clicked, this, [this]() {
         newTaskWidget* newTask = new newTaskWidget(this);
         newTask->show();
       });
