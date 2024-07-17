@@ -1,3 +1,5 @@
 .cache
 build
 TaskDB.db
+.idea
+cmake-build-debug
