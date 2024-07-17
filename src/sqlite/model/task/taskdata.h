@@ -39,7 +39,7 @@ namespace TaskEnums {
 } // namespace TaskEnums
 struct QX_DLL_EXPORT TaskData {
 
-    quint64 id = 0;
+    long    id = 0;
     QString projectId;
     int     imgMode;
     QString parentId;
@@ -71,6 +71,6 @@ struct QX_DLL_EXPORT TaskData {
       return QDateTime::fromString(str, "yyyy-MM-dd hh:mm:ss");
     }
 };
-QX_REGISTER_PRIMARY_KEY(TaskData, quint64)
+// QX_REGISTER_PRIMARY_KEY(TaskData, quint64)
 QX_REGISTER_HPP_EXPORT_DLL(TaskData, qx::trait::no_base_class_defined, 0)
 #endif // TASKDATA_H

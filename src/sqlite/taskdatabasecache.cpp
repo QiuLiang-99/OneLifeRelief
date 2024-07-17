@@ -10,7 +10,7 @@ TaskDatabaseCache::~TaskDatabaseCache() {
   for (auto& task : TaskDatabaseCache::getSingleton().data()) {
     qDebug() << task.id;
     qDebug() << task.title;
-  }
+  } // todo 存了就不要再存一次了
   dao.saveCachetoDatabase();
 }
 

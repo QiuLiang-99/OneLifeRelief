@@ -3,6 +3,7 @@
 #include "sqlite/snowflake/snowflake.h"
 #include "sqlite/taskdao.h"
 #include "sqlite/taskdatabasecache.h"
+#include <QxDao/QxDao.h>
 #include <qdatetime.h>
 
 // todo 几小时 几天 后
@@ -50,8 +51,7 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   actionLayout = new QHBoxLayout();
   cancelButton = new QPushButton("取消", this);
   addButton    = new QPushButton("添加任务", this);
-  addButton->setShortcut(QKeySequence(Qt::Key_Return)); // 主键盘的Enter键
-  addButton->setShortcut(QKeySequence(Qt::Key_Enter)); // 数字小键盘的Enter
+  addButton->setDefault(true); // 默认按钮
   addButton->setStyleSheet(
       "QPushButton { background-color: #FF6F61; color: white; } "
       "QPushButton:disabled { background-color: #CCCCCC; color: #757575; }");
@@ -93,15 +93,12 @@ void newTaskWidget::onAddButtonClicked() {
   QString   description = descriptionEdit->toPlainText();
   QDateTime timeNow     = QDateTime::currentDateTime();
   Snowflake snowflake(0);
-  TaskData  task = TaskData{.id              = snowflake.generateId(),
+  TaskData  task = TaskData{//.id              = snowflake.generateId(),
                             .title           = taskName,
                             .content         = description,
                             .createdDateTime = timeNow};
   TaskDatabaseCache::getSingleton().data().append(task);
-  for (auto& task : TaskDatabaseCache::getSingleton().data()) {
-    qDebug() << task.id;
-    qDebug() << task.title;
-  }
+
   close();
 }
 void newTaskWidget::onTodayButtonClicked() { calendarWindow->show(); }

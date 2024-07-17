@@ -19,6 +19,11 @@ TaskDAO::~TaskDAO() {}
 
 void TaskDAO::saveCachetoDatabase() {
   // bug 雪花id一存就不见了
+  for (auto& e : TaskDatabaseCache::getSingleton().data()) {
+    qDebug() << e.id;
+    qDebug() << e.title;
+  }
+
   qx::dao::save(DBcache.data());
 }
 void TaskDAO::loadDatabaseintoCache() { qx::dao::fetch_all(DBcache.data()); }
