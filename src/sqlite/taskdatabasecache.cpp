@@ -7,6 +7,10 @@ TaskDatabaseCache::TaskDatabaseCache(QObject* parent) : QObject(parent) {
 }
 TaskDatabaseCache::~TaskDatabaseCache() {
   TaskDAO dao(*this);
+  for (auto& task : TaskDatabaseCache::getSingleton().data()) {
+    qDebug() << task.id;
+    qDebug() << task.title;
+  }
   dao.saveCachetoDatabase();
 }
 

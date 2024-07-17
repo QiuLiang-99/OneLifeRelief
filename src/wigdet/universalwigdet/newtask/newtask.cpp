@@ -51,7 +51,7 @@ newTaskWidget::newTaskWidget(QWidget* parent) : QDialog(parent) {
   cancelButton = new QPushButton("取消", this);
   addButton    = new QPushButton("添加任务", this);
   addButton->setShortcut(QKeySequence(Qt::Key_Return)); // 主键盘的Enter键
-  // addButton->setShortcut(QKeySequence(Qt::Key_Enter)); // 数字小键盘的Enter
+  addButton->setShortcut(QKeySequence(Qt::Key_Enter)); // 数字小键盘的Enter
   addButton->setStyleSheet(
       "QPushButton { background-color: #FF6F61; color: white; } "
       "QPushButton:disabled { background-color: #CCCCCC; color: #757575; }");
@@ -98,6 +98,10 @@ void newTaskWidget::onAddButtonClicked() {
                             .content         = description,
                             .createdDateTime = timeNow};
   TaskDatabaseCache::getSingleton().data().append(task);
+  for (auto& task : TaskDatabaseCache::getSingleton().data()) {
+    qDebug() << task.id;
+    qDebug() << task.title;
+  }
   close();
 }
 void newTaskWidget::onTodayButtonClicked() { calendarWindow->show(); }

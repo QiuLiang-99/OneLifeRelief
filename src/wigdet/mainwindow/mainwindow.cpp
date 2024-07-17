@@ -7,6 +7,7 @@
 #include "src/wigdet/mainwindow/functionwindow/courseschedule/courseschedulewidget.h"
 // #include "src/wigdet/mainwindow/functionwindow/setting/setting.h"
 #include "src/wigdet/mainwindow//olrmainwindow.h"
+#include <qsize.h>
 // todo 窗口随着大小改变而改变控件QResizeEvent
 //  todo 提前时间累计
 // todo任务提醒
@@ -43,13 +44,17 @@ March 2024
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent) { setupUI(); }
 void MainWindow::setupUI() {
 #if defined(Q_OS_WIN)
-  setGeometry(0, 0, 800, 600); // 规范窗体大小
+  int   windowWidth  = 800;
+  int   windowHeight = 600;
+  QSize size         = QSize(windowWidth, windowHeight);
+  setFixedSize(size);
 #elif defined(Q_OS_ANDROID)
   QScreen* screen         = QGuiApplication::primaryScreen();
   QRect    screenGeometry = screen->geometry();
   int      height         = screenGeometry.height();
   int      width          = screenGeometry.width();
-  setGeometry(0, 0, width, height);
+  QSize    size           = QSize(width, height);
+  setFixedSize(size);
 #endif
 
   gridLayout = new QGridLayout(this); // 主要布局

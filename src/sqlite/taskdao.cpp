@@ -17,5 +17,8 @@ TaskDAO::TaskDAO(TaskDatabaseCache& db, QObject* parent) :
 }
 TaskDAO::~TaskDAO() {}
 
-void TaskDAO::saveCachetoDatabase() { qx::dao::save(DBcache.data()); }
+void TaskDAO::saveCachetoDatabase() {
+  // bug 雪花id一存就不见了
+  qx::dao::save(DBcache.data());
+}
 void TaskDAO::loadDatabaseintoCache() { qx::dao::fetch_all(DBcache.data()); }
