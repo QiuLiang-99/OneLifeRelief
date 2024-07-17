@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "F:/QT/6.7.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
+#set(CMAKE_PREFIX_PATH "F:/QT/6.7.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)#查找qt的widgets库
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)

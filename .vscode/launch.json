@@ -13,12 +13,17 @@
                 "environment": [
                     {
                         "name": "PATH",
-                        "value": "${env:PATH};${command:qt-official.kitDirectory}${/}bin"
+                        "value": "${env:PATH};${command:qt-official.kitDirectory}\\bin"
+                    },
+                    {
+                        "name": "CMAKE_PREFIX_PATH",
+                        "value": "F:/QT/6.7.2/mingw_64"
                     }
                 ],
                 "MIMode": "gdb",
                 "miDebuggerPath": "${command:qt-official.minGWgdb}"
-            }
+            },
+            "environment": []
         },
         {
             "name": "Debug Qt Application with Visual Studio Debugger",
@@ -33,7 +38,15 @@
                 "environment": [
                     {
                         "name": "PATH",
-                        "value": "${env:PATH};${command:qt-official.kitDirectory}${/}bin"
+                        "value": "${env:PATH};${command:qt-official.kitDirectory}\\bin"
+                    },
+                    {
+                        "name": "CMAKE_PREFIX_PATH",
+                        "value": "${command:qt-official.kitDirectory}"
+                    },
+                    {
+                        "name": "QxOrm_dir",
+                        "value": "F:/Desktop/QxOrm-1.4.9"
                     }
                 ]
             }
