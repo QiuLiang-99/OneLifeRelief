@@ -97,8 +97,6 @@ void newTaskWidget::onAddButtonClicked() {
   // ... 获取其他控件的内容 ...
   // ... 保存其他控件的内容 ...
   // 将控件的内容保存到 task 中
-  TaskDAO   db;
-  db.replaceTask(task);
   close();
 }
 void newTaskWidget::onTodayButtonClicked() { calendarWindow->show(); }

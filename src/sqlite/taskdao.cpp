@@ -9,7 +9,8 @@
 #include <qcontainerfwd.h>
 #include <qlist.h>
 
-TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
+TaskDAO::TaskDAO(TaskDatabaseCache& db, QObject* parent) :
+    QObject(parent), DBcache(db) {
   qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
   qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
   qx::dao::create_table<TaskData>();
@@ -35,9 +36,7 @@ TaskDAO::TaskDAO(QObject* parent) : QObject(parent) {
   qAssert(vv.size() != 0);
   qDebug() << vv.at(0).title;
 }
-TaskDAO::~TaskDAO() {
-  if (DB.isOpen()) { DB.close(); }
-}
+TaskDAO::~TaskDAO() {}
 bool TaskDAO::replaceTask(const TaskData& task) {
   // clang-format off
   // ^^^ 注意空格 vvv
@@ -232,20 +231,4 @@ QList<TaskData> TaskDAO::loadAllTask() // 查
     };
   }
   return taskList;
-}
-// 对大量数据进行快速添加，尝试过添加几千条数据，不到一秒就添加完成
-bool TaskDAO::FastAdd() {
-  // 使用事务
-  DB.transaction(); // 开启事务
-  QSqlQuery query;
-  query.prepare("INSERT INTO class (class_name, class_teacher, student_number) "
-                "VALUES (?, ?, ?)");
-  for (int i = 0; i < 100; ++i) {
-    query.bindValue(0, "二班");
-    query.bindValue(1, "张三");
-    query.bindValue(2, i);
-    query.exec();
-  }
-  DB.commit(); // 一次性提交，省去大量时间
-  return true;
 }

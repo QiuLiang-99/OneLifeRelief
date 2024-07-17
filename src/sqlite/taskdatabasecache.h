@@ -29,6 +29,9 @@ class TaskDatabaseCache : public QObject {
       return nullptr;
     }*/
 
+  public:
+    TaskDatabaseCache& getTaskDatabaseCache();
+
   private:
     TaskList taskList;
 };

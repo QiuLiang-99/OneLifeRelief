@@ -3,6 +3,7 @@
 #include <QObject>
 
 #include "model/task/taskdata.h"
+#include "sqlite/taskdatabasecache.h"
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -22,7 +23,7 @@ class TaskDAO : public QObject {
     Q_OBJECT
 
   public:
-    explicit TaskDAO(QObject* parent = nullptr);
+    explicit TaskDAO(TaskDatabaseCache& db, QObject* parent = nullptr);
     virtual ~TaskDAO();
 
   public:
@@ -35,9 +36,8 @@ class TaskDAO : public QObject {
     bool            Select(); // 查询数据，支持大量数据快速查询
     QList<TaskData> loadAllTask();
     bool            replaceTask(const TaskData&);
-    bool            FastAdd(); // 在sqlite中快速添加大量数据
 
   private:
-    QSqlDatabase DB; // 定义数据库名称
+    TaskDatabaseCache& DBcache; // 定义数据库名称
 };
-#endif               // TASKDB_H
+#endif                          // TASKDB_H
