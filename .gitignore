@@ -3,3 +3,4 @@ build
 TaskDB.db
 .idea
 cmake-build-debug
+cmake-build-debug-visual-studio
