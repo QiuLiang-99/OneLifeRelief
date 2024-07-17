@@ -7,7 +7,7 @@
 
 class Snowflake {
   public:
-    Snowflake(uint64_t workerId);
+    explicit Snowflake(uint64_t workerId);
     uint64_t generateId();
 
   private:

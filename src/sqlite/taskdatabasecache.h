@@ -3,6 +3,8 @@
 
 #include "sqlite/model/task/taskdata.h"
 #include <QList>
+#include <qmap.h>
+#include <qtypes.h>
 using TaskList = QList<TaskData>;
 
 // 任务数据库缓存类
@@ -11,6 +13,7 @@ class TaskDatabaseCache : public QObject {
 
   public:
     explicit TaskDatabaseCache(QObject* parent = nullptr);
+    ~TaskDatabaseCache();
 
     inline TaskList& data() { return taskList; }
 
@@ -32,9 +35,12 @@ class TaskDatabaseCache : public QObject {
     }*/
 
   public:
-    TaskDatabaseCache& getSingleton();
+    static TaskDatabaseCache& getSingleton();
 
   private:
-    TaskList taskList;
+    TaskList taskList = {};
+    // QMap<qulonglong, TaskData&> taskIDIndex = {};
+    // QMap<quint64, int> taskIDIndex = {};
+    // todo
 };
 #endif // TASKDATABASECACHE_H

@@ -29,7 +29,7 @@ class TaskDAO : public QObject {
 
   public:
     void saveCachetoDatabase();
-    void loadDatavaseintoCache();
+    void loadDatabaseintoCache();
 
   private:
     TaskDatabaseCache& DBcache; // 定义数据库名称

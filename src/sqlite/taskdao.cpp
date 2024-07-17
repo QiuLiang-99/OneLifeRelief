@@ -18,4 +18,4 @@ TaskDAO::TaskDAO(TaskDatabaseCache& db, QObject* parent) :
 TaskDAO::~TaskDAO() {}
 
 void TaskDAO::saveCachetoDatabase() { qx::dao::save(DBcache.data()); }
-void TaskDAO::loadDatavaseintoCache() { qx::dao::fetch_all(DBcache.data()); }
+void TaskDAO::loadDatabaseintoCache() { qx::dao::fetch_all(DBcache.data()); }
