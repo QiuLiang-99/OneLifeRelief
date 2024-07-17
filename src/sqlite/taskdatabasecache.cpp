@@ -2,4 +2,4 @@
 
 TaskDatabaseCache::TaskDatabaseCache(QObject* parent) : QObject(parent) {}
 Q_GLOBAL_STATIC(TaskDatabaseCache, taskDatabaseCache);
-TaskDatabaseCache& getTaskDatabaseCache() { return *taskDatabaseCache; }
+TaskDatabaseCache& getSingleton() { return *taskDatabaseCache; }

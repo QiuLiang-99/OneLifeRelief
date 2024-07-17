@@ -12,6 +12,8 @@ class TaskDatabaseCache : public QObject {
   public:
     explicit TaskDatabaseCache(QObject* parent = nullptr);
 
+    inline TaskList& data() { return taskList; }
+
     // 添加任务数据
     /*void addTask(const TaskData& task) { taskList.append(task); }
 
@@ -30,7 +32,7 @@ class TaskDatabaseCache : public QObject {
     }*/
 
   public:
-    TaskDatabaseCache& getTaskDatabaseCache();
+    TaskDatabaseCache& getSingleton();
 
   private:
     TaskList taskList;
