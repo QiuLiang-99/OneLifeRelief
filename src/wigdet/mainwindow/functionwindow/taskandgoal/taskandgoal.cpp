@@ -1,7 +1,8 @@
 #include "taskandgoal.h"
+#include <algorithm>
 
 TreeItem::TreeItem(QVector<QVariant> data, TreeItem* parent) :
-    itemData(data), parentItem(parent) {}
+    itemData(std::move(data)), parentItem(parent) {}
 
 TreeItem::~TreeItem() {
   qDeleteAll(childItems); // 删除所有子节点
@@ -32,7 +33,12 @@ int TreeItem::row() const { // 如果父节点中的子节点等于当前节点�
   return -1;
 }
 int TreeItem::columnCount() const { return static_cast<int>(itemData.count()); }
-QVariant  TreeItem::data(int column) const { return itemData.value(column); }
+QVariant TreeItem::data(int column) const { return itemData.value(column); }
+bool     TreeItem::setData(int column, const QVariant& value) {
+  if (column < 0 || column >= itemData.size()) { return false; }
+  itemData[column] = value;
+  return true;
+}
 TreeItem* TreeItem::parent() { return parentItem; }
 //---------------------------------------------------------------------------------------
 
@@ -104,9 +110,22 @@ QVariant TreeModel::data(const QModelIndex& index, int role) const {
   const auto* item = static_cast<const TreeItem*>(index.internalPointer());
   return item->data(index.column());
 }
+bool TreeModel::setData(const QModelIndex& index,
+                        const QVariant&    value,
+                        int                role) {
+  if (role != Qt::EditRole) { return false; }
+
+  TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+  item->setData(index.column(), value);
+  emit dataChanged(index, index, {role});
+  return true;
+}
 Qt::ItemFlags TreeModel::flags(const QModelIndex& index) const {
-  return index.isValid() ? QAbstractItemModel::flags(index) :
-                           Qt::ItemFlags(Qt::NoItemFlags);
+  if (!index.isValid()) { return Qt::ItemFlags(Qt::NoItemFlags); }
+  return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+  // todo感觉不可以从treevieww更改会更好，要不做成设置吧，单击动作是可更改或者不可以更改
+  // 使用|添加可编辑属性
+  // index使用flags函数检查是否有效，如果无效会返回空
 }
 QVariant TreeModel::headerData(int             section,
                                Qt::Orientation orientation,

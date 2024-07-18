@@ -24,7 +24,7 @@ class TimeLineWidget : public QWidget {
       QWidget*     scrollAreaWidgetContents = new QWidget;
       QVBoxLayout* scorllAreaLayout         = new QVBoxLayout;
       Timeline*    timeLine                 = new Timeline;
-
+      scrollArea->setWidget(scrollAreaWidgetContents);
       pageLayout->setSpacing(0); // 表示各个控件之间的上下间距
       pageLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -37,7 +37,7 @@ class TimeLineWidget : public QWidget {
       pageLayout->addWidget(scrollArea);
 
       timeLine->setVisible(true);
-      scrollArea->setWidget(scrollAreaWidgetContents);
+
       // connect(test, &QPushButton::clicked, this,
       // &MainWindow::on_test_clicked);
     };

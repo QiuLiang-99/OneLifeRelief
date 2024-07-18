@@ -1,5 +1,6 @@
 #ifndef TASKANDGOAL_H
 #define TASKANDGOAL_H
+#include "sqlite/model/task/taskdata.h"
 #include "src/include/QTUI.h"
 
 class TreeItem {
@@ -7,12 +8,15 @@ class TreeItem {
 
   public:
     explicit TreeItem(QVector<QVariant> data, TreeItem* parentItem = nullptr);
+    // explicit TreeItem(const TaskData& taskData, TreeItem* parentItem =
+    // nullptr);
     ~TreeItem();
     void      appendChild(TreeItem* child);
     TreeItem* child(int row);
     int       childCount() const;
     int       columnCount() const;
     QVariant  data(int column) const;
+    bool      setData(int column, const QVariant& value);
     int       row() const;
     TreeItem* parent();
 
@@ -31,6 +35,13 @@ class TreeModel : public QAbstractItemModel {
     ~TreeModel() override;
 
     QVariant      data(const QModelIndex& index, int role) const override;
+    bool          setData(const QModelIndex& index,
+                          const QVariant&    value,
+                          int                role = Qt::EditRole) override;
+    /*The dataChanged() and
+         headerDataChanged() signals must be emitted          explicitly when
+       reimplementing the setData() and setHeaderData() functions,
+       respectively.*/
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     QVariant      headerData(int             section,
                              Qt::Orientation orientation,
