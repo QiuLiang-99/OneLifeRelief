@@ -1,5 +1,6 @@
 // taskviewmodel.cpp
 #include "taskviewmodel.h"
+#include "taskdatabasecache.h"
 
 TaskViewModel::TaskViewModel(TaskData& _taskData, TaskDatabaseCache* parent) :
     taskData(_taskData), QObject(parent) {

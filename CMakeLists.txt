@@ -10,7 +10,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "D:/Qt/QT/6.6.2/mingw_64")#默认情况下，此字段为空。它将由项目设置。它额外指定了find_package(), find_program(), find_library(), find_file(), and find_path()命令的搜索路径。
 set(CLANG_TIDY_COMMAND clang-tidy -header-filter=^${PROJECT_ROOT_DIR}/src/*)
 set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_COMMAND})#设置clang-tidy检查所有的文件
 

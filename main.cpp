@@ -10,12 +10,14 @@ int main(int argc, char* argv[]) {
   QApplication       a(argc, argv);
   // 加载QSS样式
   // CommonHelper::setStyle("style.qss");
-  TaskDatabaseCache& db = TaskDatabaseCache::getSingleton();
+  TaskDatabaseCache& db = db::taskDatabaseCache;
   for (auto& task : db.data()) {
     qDebug() << task.id;
     qDebug() << task.title;
   }
   MainWindow w;
   w.show();
+
+
   return a.exec();
 }

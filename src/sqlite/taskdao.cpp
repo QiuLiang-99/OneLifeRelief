@@ -13,13 +13,16 @@ TaskDAO::TaskDAO(TaskDatabaseCache& db, QObject* parent) :
     QObject(parent), DBcache(db) {
   qx::QxSqlDatabase::getSingleton()->setDriverName("QSQLITE");
   qx::QxSqlDatabase::getSingleton()->setDatabaseName("sometest.db");
+  qx::QxSqlDatabase::getSingleton()->setHostName("localhost");
+  qx::QxSqlDatabase::getSingleton()->setUserName("root");
+  qx::QxSqlDatabase::getSingleton()->setPassword("");
   qx::dao::create_table<TaskData>();
 }
 TaskDAO::~TaskDAO() {}
 
 void TaskDAO::saveCachetoDatabase() {
   // bug 雪花id一存就不见了
-  for (auto& e : TaskDatabaseCache::getSingleton().data()) {
+  for (auto& e : DBcache.data()) {
     qDebug() << e.id;
     qDebug() << e.title;
   }

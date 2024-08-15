@@ -97,7 +97,7 @@ void newTaskWidget::onAddButtonClicked() {
                             .title           = taskName,
                             .content         = description,
                             .createdDateTime = timeNow};
-  TaskDatabaseCache::getSingleton().data().append(task);
+  db::taskDatabaseCache.data().append(task);
 
   close();
 }
